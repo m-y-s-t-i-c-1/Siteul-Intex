@@ -1093,6 +1093,22 @@ function setLanguage(lang) {
     }
 }
 
+function normalizeAllImagePaths() {
+    const base = (typeof getBasePath === 'function') ? getBasePath() : (window.location.pathname.includes('/pagini/') ? '../' : './');
+    document.querySelectorAll('img').forEach(img => {
+        const srcAttr = img.getAttribute('src');
+        if (!srcAttr) return;
+        if (/^https?:\/\//i.test(srcAttr) || srcAttr.startsWith('data:')) return;
+        // if already explicitly relative with ./ or ../, leave it alone
+        if (/^(?:\.\/|\.\.\/)/.test(srcAttr)) return;
+        // strip leading slashes
+        const cleaned = srcAttr.replace(/^\/+/, '');
+        // avoid duplicating base if already present
+        if (cleaned.startsWith(base)) return;
+        img.src = base + cleaned;
+    });
+}
+
 function initialize() {
     console.log('[MAIN] Initializing...');
     
@@ -1110,6 +1126,8 @@ function initialize() {
     setupLanguageSwitchers();
     
     try {
+        // normalize image paths (fixes GitHub Pages absolute path issues)
+        try { normalizeAllImagePaths(); } catch (e) {}
         window.dispatchEvent(new CustomEvent('mainJsReady', { detail: { lang: savedLang } }));
     } catch (e) {
 

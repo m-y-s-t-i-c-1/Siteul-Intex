@@ -141,7 +141,8 @@ function submitOrder() {
         const prod = allProducts.find(p => p.id === ci.id || String(p.id) === String(ci.id));
         const price = (prod && prod.price) ? Number(prod.price) : (ci.price ? Number(ci.price) : 0);
         const name = prod ? (typeof prod.title === 'object' ? (prod.title.ro || prod.title.en || Object.values(prod.title)[0]) : prod.title) : (ci.name || 'Produs');
-        const image = prod ? (prod.image || prod.img || '/assets/img/intex.jpg') : (ci.image || '/assets/img/intex.jpg');
+        const defaultImg = (typeof standardizeImagePath === 'function') ? standardizeImagePath('intex.jpg') : 'assets/img/intex.jpg';
+        const image = prod ? (prod.image || prod.img || defaultImg) : (ci.image || defaultImg);
         const qty = Number(ci.qty || 1);
         subtotal += price * qty;
         return {

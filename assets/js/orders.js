@@ -263,17 +263,21 @@
         },
 
         normalizeImagePath(url) {
-            if (!url) return url;
-            if (/^(https?:)?\/\//.test(url) || url.startsWith('/')) return url;
-            if (url.startsWith('../')) return url;
+            if (!url) return (typeof standardizeImagePath === 'function') ? standardizeImagePath('intex.jpg') : './assets/img/intex.jpg';
+            if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+            if (/^(?:\.\/|\.\.\/)/.test(url)) return url;
+            // remove leading slashes
+            url = url.replace(/^\/+/, '');
+            if (typeof standardizeImagePath === 'function') {
+                return standardizeImagePath(url);
+            }
             try {
                 const path = window.location && window.location.pathname ? window.location.pathname : '';
-                if (path.includes('/pagini/') || path.startsWith('/pagini/')) {
-                    return '../' + url;
-                }
+                const base = (path.includes('/pagini/') ? '../' : './');
+                return base + url;
             } catch (e) {
+                return './' + url;
             }
-            return url;
         },
 
         resolveProductImage(imgEl, title) {
@@ -606,11 +610,9 @@
                     this.orders = this.generateDemoOrders();
                     this.saveOrders();
                 } else {
-                    // If there are no stored orders, fall back to integrated sample orders
                     this.orders = this.getIntegratedSampleOrders();
                 }
 
-                // Merge integrated sample orders into the list (do not persist) so samples are visible
                 try {
                     const integrated = this.getIntegratedSampleOrders() || [];
                     integrated.forEach(sample => {
@@ -859,7 +861,6 @@
             ];
         }
 
-        // Integrated sample orders (code-level, not persisted in localStorage)
         getIntegratedSampleOrders() {
             const now = Date.now();
             const day = 86400000;
@@ -1092,9 +1093,7 @@
                 `<div style="color: #64748b; font-size: 0.85rem;">+${moreNamesCount} ${t('items_count', {count: moreNamesCount}).replace(moreNamesCount, '').trim()}</div>` : '';
 
             const canCancel = ['pending', 'processing'].includes(order.status);
-            // allow reorder for delivered/cancelled (existing) and also for shipped and pending as requested
             const canReorder = ['delivered', 'cancelled', 'shipped', 'pending'].includes(order.status);
-            // tracking only for orders currently shipped
             const canTrack = ['shipped'].includes(order.status);
 
             return `
@@ -1438,7 +1437,6 @@
                 console.error('[OrdersManager] Order not found for reorder:', orderId);
                 return;
             }
-            // Show styled confirmation modal for reordering
             try {
                 const existing = document.querySelector('.order-reorder-modal');
                 if (existing) existing.remove();
@@ -1491,7 +1489,6 @@
 
             } catch (e) {
                 console.error('[OrdersManager] reorder modal error', e);
-                // fallback to native confirm
                 if (!confirm(t('confirm_reorder'))) return;
                 try {
                     const newOrder = await this.createNewOrderFromExisting(order);
@@ -1556,12 +1553,10 @@
 
             const order = this.orders[orderIndex];
             if (!['pending', 'processing'].includes(order.status)) {
-                // Use styled toast/modal fallback
                 this.showToast('Această comandă nu poate fi anulată', 'error');
                 return;
             }
 
-            // Build styled confirmation modal
             try {
                 const existing = document.querySelector('.order-cancel-modal');
                 if (existing) existing.remove();
@@ -1604,7 +1599,6 @@
 
             } catch (e) {
                 console.error('[OrdersManager] cancel modal error', e);
-                // fallback to native confirm
                 if (confirm(t('confirm_cancel'))) {
                     order.status = 'cancelled';
                     order.timeline.push({ status: 'cancelled', date: new Date().toISOString(), note: 'Comandă anulată de client' });

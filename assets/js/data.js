@@ -10,17 +10,23 @@ function getBasePath() {
 const BASE_PATH = getBasePath();
 
 function standardizeImagePath(path) {
-    if (!path) return '/assets/img/intex.jpg';
+    if (!path) return BASE_PATH + 'assets/img/intex.jpg';
 
-    const cleaned = String(path).replace(/^(?:\.\.\/|\.\/)+/, '');
+    let cleaned = String(path).trim();
 
-    if (cleaned.startsWith('/')) return cleaned;
+    // If it's an absolute URL, return as-is
+    if (/^https?:\/\//i.test(cleaned)) return cleaned;
+
+    // strip any leading ./ or ../
+    cleaned = cleaned.replace(/^(?:\.\.\/|\.\/)+/, '');
+    // strip leading slashes so we build a relative path from BASE_PATH
+    cleaned = cleaned.replace(/^\/+/, '');
 
     if (cleaned.startsWith('assets/img/')) {
-        return '/' + cleaned;
+        return encodeURI(BASE_PATH + cleaned);
     }
 
-    return '/assets/img/' + cleaned;
+    return encodeURI(BASE_PATH + 'assets/img/' + cleaned);
 }
 
 const CATEGORIES_DATA = [
