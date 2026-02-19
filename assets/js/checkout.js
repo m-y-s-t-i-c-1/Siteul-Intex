@@ -1,11 +1,7 @@
-// Checkout Page Script
-
-// Helper function to get stored language
 function getLang() {
     return localStorage['intex_language'] || 'ro';
 }
 
-// Get product title in current language
 function getProductTitle(product) {
     const lang = getLang();
     if (typeof product.title === 'object' && product.title[lang]) {
@@ -17,14 +13,12 @@ function getProductTitle(product) {
     return product.title || 'Product';
 }
 
-// Initialize checkout page
 function initCheckout() {
     displayCheckoutItems();
     setupFormSubmit();
     restoreLanguage();
 }
 
-// Display cart items in checkout
 function displayCheckoutItems() {
     const cart = JSON.parse(localStorage['intex_cart'] || '[]');
     const container = document.getElementById('checkout-items-container');
@@ -83,19 +77,16 @@ function displayCheckoutItems() {
     updateTotals(subtotal);
 }
 
-// Update totals
 function updateTotals(subtotal) {
     const totalEl = document.getElementById('checkout-total');
     
     if (totalEl) totalEl.textContent = subtotal.toFixed(2) + ' LEI';
 }
 
-// Get shipping cost based on selected method
 function getShippingCost() {
     return 0.00;
 }
 
-// Update shipping when delivery method changes
 function updateShipping() {
     const cart = JSON.parse(localStorage['intex_cart'] || '[]');
     let subtotal = 0;
@@ -111,7 +102,6 @@ function updateShipping() {
     updateTotals(subtotal);
 }
 
-// Setup form submission
 function setupFormSubmit() {
     const form = document.getElementById('checkout-form');
     if (!form) return;
@@ -122,7 +112,6 @@ function setupFormSubmit() {
     });
 }
 
-// Submit order
 function submitOrder() {
     const form = document.getElementById('checkout-form');
     
@@ -146,15 +135,12 @@ function submitOrder() {
         timestamp: new Date().toISOString()
     };
     
-    // Save order to localStorage
     const orders = JSON.parse(localStorage['intex_orders'] || '[]');
     orders.push(formData);
     localStorage['intex_orders'] = JSON.stringify(orders);
     
-    // Clear cart
     localStorage['intex_cart'] = JSON.stringify([]);
     
-    // Show success toast (if available) via i18n helper
     if (window.showSuccessI18n) {
         window.showSuccessI18n('order_placed_toast');
     } else if (window.showSuccess) {
@@ -163,7 +149,6 @@ function submitOrder() {
         window.showSuccess(t.order_placed_toast || 'Comanda a fost plasată cu succes!');
     }
 
-    // Show a styled order confirmation modal
     try {
         const existing = document.querySelector('.order-confirmation');
         if (existing) existing.remove();
@@ -191,7 +176,6 @@ function submitOrder() {
         document.body.appendChild(modal);
         document.body.style.overflow = 'hidden';
 
-        // Handlers
         modal.querySelector('.order-confirm-close').addEventListener('click', () => {
             modal.remove(); document.body.style.overflow = '';
             window.location.href = './produse.html';
@@ -202,18 +186,14 @@ function submitOrder() {
         });
         modal.querySelector('#oc-view-orders').addEventListener('click', () => {
             modal.remove(); document.body.style.overflow = '';
-            // If there's an orders page implement later, for now redirect to products
             window.location.href = './produse.html';
         });
     } catch (e) {
-        // Fallback
         window.location.href = './produse.html';
     }
 }
 
-// Get all products (merged from data.js and using descriptions)
 function getAllProducts() {
-    // Dacă avem funcția de descrieri, folosește-o
     if (typeof getAllProductsWithDescriptions === 'function') {
         console.log('[DEBUG Checkout] Using getAllProductsWithDescriptions from descrieri_produse.js');
         const allProducts = getAllProductsWithDescriptions();
@@ -232,7 +212,6 @@ function getAllProducts() {
     
     console.log('[DEBUG Checkout] getAllProductsWithDescriptions NOT available, using fallback');
     
-    // Fallback la vechea metodă dacă descriptions.js nu este încărcat
     const list = [];
     const accessoryAliases = ['accessories', 'swim-accessories', 'boats_pool_accessories', 'boats_care', 'pool_accessories'];
     
@@ -267,7 +246,6 @@ function getAllProducts() {
         });
     }
 
-    // Dacă există funcționalitate pentru a atașa descrieri, folosește-o
     if (typeof enhanceExistingProducts === 'function') {
         try { 
             console.log('[DEBUG Checkout] Using enhanceExistingProducts, list length before:', list.length);
@@ -280,7 +258,6 @@ function getAllProducts() {
     return list;
 }
 
-// Restore language from localStorage and set language selector
 function restoreLanguage() {
     const lang = getLang();
     const langSelect = document.getElementById('language-select');
@@ -289,5 +266,4 @@ function restoreLanguage() {
     }
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', initCheckout);

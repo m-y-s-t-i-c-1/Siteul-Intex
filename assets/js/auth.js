@@ -1,8 +1,3 @@
-/**
- * Authentication Module - INTEX Moldova
- * Handles user registration, login, and session management
- */
-
 class AuthManager {
     constructor() {
         this.usersKey = 'intex_users';
@@ -11,7 +6,6 @@ class AuthManager {
         console.log('[AUTH] AuthManager initialized');
     }
 
-    // Helper: get current language and translation
     getLang() {
         try { return localStorage.getItem('intex_language') || 'ro'; } catch (e) { return 'ro'; }
     }
@@ -26,9 +20,6 @@ class AuthManager {
         return s;
     }
 
-    /**
-     * Initialize users storage if it doesn't exist
-     */
     initializeUsers() {
         if (!localStorage.getItem(this.usersKey)) {
             localStorage.setItem(this.usersKey, JSON.stringify([]));
@@ -39,9 +30,6 @@ class AuthManager {
         }
     }
 
-    /**
-     * Get all registered users
-     */
     getAllUsers() {
         try {
             return JSON.parse(localStorage.getItem(this.usersKey) || '[]');
@@ -51,9 +39,6 @@ class AuthManager {
         }
     }
 
-    /**
-     * Get current logged-in user
-     */
     getCurrentUser() {
         try {
             const user = localStorage.getItem(this.currentUserKey);
@@ -64,39 +49,24 @@ class AuthManager {
         }
     }
 
-    /**
-     * Check if user is logged in
-     */
     isLoggedIn() {
         return this.getCurrentUser() !== null;
     }
 
-    /**
-     * Validate email format
-     */
     isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    /**
-     * Validate password strength
-     */
     isValidPassword(password) {
         return password && password.length >= 6;
     }
 
-    /**
-     * Check if email already exists
-     */
     emailExists(email) {
         const users = this.getAllUsers();
         return users.some(user => user.email.toLowerCase() === email.toLowerCase());
     }
 
-    /**
-     * Simple hash password (client-side for demo)
-     */
     hashPassword(password) {
         let hash = 0;
         for (let i = 0; i < password.length; i++) {
@@ -107,9 +77,6 @@ class AuthManager {
         return 'hash_' + Math.abs(hash).toString(16);
     }
 
-    /**
-     * MD5 hash for Gravatar
-     */
     md5(str) {
         function rotateLeft(x, n) {
             return ((x << n) | (x >>> (32 - n)));
@@ -279,17 +246,11 @@ class AuthManager {
         return temp.toLowerCase();
     }
 
-    /**
-     * Get Gravatar URL from email
-     */
     getGravatarUrl(email) {
         const hash = this.md5(email.toLowerCase().trim());
         return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=32`;
     }
 
-    /**
-     * Register a new user
-     */
     register(userData) {
         console.log('[AUTH.register] Starting registration with email:', userData.email);
         const { name, email, phone, password, confirmPassword } = userData;
@@ -342,9 +303,6 @@ class AuthManager {
         };
     }
 
-    /**
-     * Login user
-     */
     login(email, password) {
         console.log('[AUTH.login] Attempting login with email:', email);
         
@@ -383,7 +341,6 @@ class AuthManager {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            // Always generate avatar from current email to ensure Gravatar reflects the email
             avatar: this.getGravatarUrl(user.email),
             loginTime: new Date().toISOString()
         };
@@ -399,9 +356,6 @@ class AuthManager {
         };
     }
 
-    /**
-     * Logout user
-     */
     logout() {
         const currentUser = this.getCurrentUser();
         if (currentUser) {
@@ -411,9 +365,6 @@ class AuthManager {
         return { success: true, message: this.translate('auth_logout_success', 'Deconectare reușită') };
     }
 
-    /**
-     * Update user profile
-     */
     updateProfile(userId, updateData) {
         const users = this.getAllUsers();
         const userIndex = users.findIndex(u => u.id === userId);
@@ -456,9 +407,6 @@ class AuthManager {
         return { success: true, message: this.translate('auth_profile_updated', 'Profil actualizat cu succes'), user };
     }
 
-    /**
-     * Change password
-     */
     changePassword(userId, oldPassword, newPassword, confirmNewPassword) {
         if (!this.isValidPassword(newPassword)) {
             return { success: false, message: this.translate('auth_password_length', 'Parola nouă trebuie să aibă cel puțin 6 caractere') };
@@ -489,9 +437,7 @@ class AuthManager {
         return { success: true, message: this.translate('auth_password_changed', 'Parolă schimbată cu succes') };
     }
 
-    /**
-     * Delete user account
-     */
+ 
     deleteAccount(userId, password) {
         const users = this.getAllUsers();
         const user = users.find(u => u.id === userId);
@@ -517,28 +463,20 @@ class AuthManager {
         return { success: true, message: this.translate('auth_account_deleted', 'Cont șters cu succes') };
     }
 
-    /**
-     * Get user by ID
-     */
     getUserById(userId) {
         const users = this.getAllUsers();
         return users.find(u => u.id === userId) || null;
     }
 
-    /**
-     * Get user by email
-     */
     getUserByEmail(email) {
         const users = this.getAllUsers();
         return users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
     }
 
     /**
-     * Check if user is authenticated and redirect if not
-     * Use this on protected pages like orders page
-     * @param {string} redirectUrl - URL to redirect if not logged in (default: '../index.html')
-     * @param {boolean} showAlert - Whether to show alert message (default: true)
-     * @returns {object|null} - Current user if authenticated, null otherwise
+     * @param {string} redirectUrl 
+     * @param {boolean} showAlert 
+     * @returns {object|null}
      */
     requireAuth(redirectUrl = '../index.html', showAlert = true) {
         const currentUser = this.getCurrentUser();
@@ -551,14 +489,12 @@ class AuthManager {
                 alert(message);
             }
             
-            // Save current URL to redirect back after login
             try {
                 sessionStorage.setItem('auth_redirect_url', window.location.href);
             } catch (e) {
                 console.warn('[AUTH] Could not save redirect URL');
             }
             
-            // Redirect to login page
             window.location.href = redirectUrl;
             return null;
         }
@@ -568,16 +504,13 @@ class AuthManager {
     }
 
     /**
-     * Check authentication status without redirect
-     * Use this to conditionally show/hide content
-     * @returns {object|null} - Current user if authenticated, null otherwise
+     * @returns {object|null}
      */
     checkAuth() {
         return this.getCurrentUser();
     }
 
     /**
-     * Get redirect URL after login (if saved)
      * @returns {string|null}
      */
     getRedirectUrl() {
@@ -591,10 +524,8 @@ class AuthManager {
     }
 }
 
-// Create global auth manager instance
 window.authManager = new AuthManager();
 
-// Expose auth functions globally
 window.authRegister = (userData) => window.authManager.register(userData);
 window.authLogin = (email, password) => window.authManager.login(email, password);
 window.authLogout = () => window.authManager.logout();
@@ -604,12 +535,9 @@ window.authRequireAuth = (redirectUrl, showAlert) => window.authManager.requireA
 window.authCheck = () => window.authManager.checkAuth();
 window.authGetRedirectUrl = () => window.authManager.getRedirectUrl();
 
-// Auto-check for protected pages on load
 (function() {
-    // List of protected pages that require authentication
     const protectedPages = ['comenzi.html', 'orders.html', 'checkout.html'];
     
-    // Check if current page is protected
     const currentPage = window.location.pathname.split('/').pop();
     const isProtectedPage = protectedPages.some(page => 
         currentPage.toLowerCase() === page.toLowerCase() ||
@@ -619,7 +547,6 @@ window.authGetRedirectUrl = () => window.authManager.getRedirectUrl();
     if (isProtectedPage) {
         console.log('[AUTH] Protected page detected:', currentPage);
         
-        // Wait for DOM to be ready, then check auth
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 window.authManager.requireAuth('../index.html', true);

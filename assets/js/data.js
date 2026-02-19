@@ -12,7 +12,7 @@ const BASE_PATH = getBasePath();
 
 // Helper function to standardize image paths
 function standardizeImagePath(path) {
-    if (!path) return BASE_PATH + 'assets/img/no-image.jpg';
+    if (!path) return BASE_PATH + 'assets/img/intex.jpg';
     
     // If already starts with assets/img/, leave as is (relative path)
     if (path.startsWith('assets/img/')) {

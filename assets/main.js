@@ -1,11 +1,3 @@
-// ============================================
-// INTEX MOLDOVA - Main JavaScript (Refactored)
-// ============================================
-
-// ============================================
-// SECȚIUNEA 1: TRANSLATIONS (Safe Merge)
-// ============================================
-
 const translations = {
     ro: {
         main_page_title: "INTEX Moldova - Piscine și Accesorii",
@@ -690,7 +682,6 @@ const translations = {
     }
 };
 
-// Safe merge - nu suprascrie traducerile existente
 window.translations = window.translations || {};
 Object.keys(translations).forEach(lang => {
     window.translations[lang] = {
@@ -698,10 +689,6 @@ Object.keys(translations).forEach(lang => {
         ...translations[lang]
     };
 });
-
-// ============================================
-// SECȚIUNEA 2: DOM REFERENCES (Safe Initialization)
-// ============================================
 
 const DOM = {
     _cache: {},
@@ -726,7 +713,6 @@ const DOM = {
     }
 };
 
-// Variabile pentru backward compatibility
 let searchOverlay = null;
 let searchInput = null;
 let langOptions = null;
@@ -736,7 +722,6 @@ function initializeDOMElements() {
     searchInput = DOM.get('search-input');
     langOptions = DOM.queryAll('.lang-opt');
     
-    // Log warnings în development
     if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
         if (!searchOverlay) console.warn('[INIT] #search-overlay not found in DOM');
         if (!searchInput) console.warn('[INIT] #search-input not found in DOM');
@@ -744,13 +729,6 @@ function initializeDOMElements() {
     }
 }
 
-// ============================================
-// SECȚIUNEA 3: TRANSLATION HELPER
-// ============================================
-
-/**
- * Get translation for a key in current language
- */
 function getTranslation(key, params = {}) {
     const lang = window.currentLang || localStorage.getItem('intex_language') || 'ro';
     const translations = window.translations && window.translations[lang];
@@ -762,7 +740,6 @@ function getTranslation(key, params = {}) {
     
     let text = translations[key];
     
-    // Replace params {param}
     Object.keys(params).forEach(k => {
         text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
     });
@@ -770,12 +747,7 @@ function getTranslation(key, params = {}) {
     return text;
 }
 
-// Export global
 window.getTranslation = getTranslation;
-
-// ============================================
-// SECȚIUNEA 4: SEARCH FUNCTIONALITY
-// ============================================
 
 function openSearch() {
     if (!searchOverlay) {
@@ -811,20 +783,16 @@ function performSearch(event) {
         return;
     }
     
-    // Verificăm dacă suntem pe pagina de produse
     const isOnProductsPage = window.location.pathname.includes('produse.html');
     
     if (isOnProductsPage && typeof window.productsSearch === 'function') {
-        // Folosim funcția din produse.html
         window.productsSearch(query);
         closeSearch();
     } else {
-        // Redirecționăm către pagina de produse
         window.location.href = './pagini/produse.html?search=' + encodeURIComponent(query);
     }
 }
 
-// Helper pentru mesaje (fallback dacă notifications.js nu e încărcat)
 function showWarningMessage(key) {
     const lang = localStorage.getItem('intex_language') || 'ro';
     const translations = window.translations && window.translations[lang];
@@ -836,10 +804,6 @@ function showWarningMessage(key) {
         alert(message);
     }
 }
-
-// ============================================
-// SECȚIUNEA 5: AUTHENTICATION
-// ============================================
 
 function openLoginModal() {
     const modal = DOM.get('login-modal');
@@ -939,7 +903,6 @@ function handleRegister(event) {
         const form = document.getElementById('registerForm');
         if (form) form.reset();
         
-        // Auto-login
         setTimeout(() => {
             const loginResult = window.authManager.login(
                 emailInput ? emailInput.value.trim() : '',
@@ -957,7 +920,6 @@ function handleRegister(event) {
     }
 }
 
-// Helper functions pentru auth messages
 function showAuthSuccess(key, params = {}) {
     if (window.showSuccessI18n) {
         window.showSuccessI18n(key, params);
@@ -996,7 +958,6 @@ function updateLoginState(isLoggedIn, user = null) {
 }
 
 function showUserMenu(user) {
-    // Remove existing menu
     const existing = document.querySelector('.user-menu');
     if (existing) existing.remove();
     
@@ -1009,7 +970,6 @@ function showUserMenu(user) {
     const menu = document.createElement('div');
     menu.className = 'user-menu';
     
-    // HTML structură - folosind getTranslation pentru texte traduse
     menu.innerHTML = `
         <div class="user-menu-arrow" aria-hidden="true"></div>
         <div class="user-menu-body">
@@ -1031,7 +991,6 @@ function showUserMenu(user) {
     
     document.body.appendChild(menu);
     
-    // Positioning
     try {
         const rect = loginBtn.getBoundingClientRect();
         const top = rect.bottom + window.scrollY + 8;
@@ -1041,7 +1000,6 @@ function showUserMenu(user) {
         menu.style.cssText = 'position: absolute; right: 16px; top: 60px; z-index: 9999;';
     }
     
-    // Logout handler
     const logoutBtn = menu.querySelector('.user-menu-logout');
     logoutBtn.addEventListener('click', () => {
         if (window.authManager) {
@@ -1055,7 +1013,6 @@ function showUserMenu(user) {
         }
     });
     
-    // Close on outside click
     function onDocClick(e) {
         if (!menu.contains(e.target) && e.target !== loginBtn) {
             menu.remove();
@@ -1076,10 +1033,6 @@ function showUserMenu(user) {
     document.addEventListener('keydown', onKeyDown);
 }
 
-// ============================================
-// SECȚIUNEA 6: TRANSLATION SYSTEM
-// ============================================
-
 function setLanguage(lang) {
     console.log('[TRANSLATION] Setting language:', lang);
     
@@ -1091,7 +1044,6 @@ function setLanguage(lang) {
         return;
     }
     
-    // Update data-i18n elements
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const translation = currentTranslations[key];
@@ -1107,7 +1059,6 @@ function setLanguage(lang) {
         }
     });
     
-    // Update placeholders
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
         if (currentTranslations[key]) {
@@ -1115,7 +1066,6 @@ function setLanguage(lang) {
         }
     });
     
-    // Update titles
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
         if (currentTranslations[key]) {
@@ -1123,7 +1073,6 @@ function setLanguage(lang) {
         }
     });
     
-    // Update values
     document.querySelectorAll('[data-i18n-value]').forEach(el => {
         const key = el.getAttribute('data-i18n-value');
         if (currentTranslations[key]) {
@@ -1131,54 +1080,39 @@ function setLanguage(lang) {
         }
     });
     
-    // Update language switcher
     document.querySelectorAll('.lang-opt').forEach(span => {
         const isActive = span.textContent.toLowerCase().trim() === lang;
         span.classList.toggle('active', isActive);
     });
     
-    // Save preference
     localStorage.setItem('intex_language', lang);
     
-    // Notify other scripts
     try {
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
     } catch (e) {
-        // Ignore
     }
 }
-
-// ============================================
-// SECȚIUNEA 7: INITIALIZATION
-// ============================================
 
 function initialize() {
     console.log('[MAIN] Initializing...');
     
-    // Initialize DOM references
     initializeDOMElements();
     
-    // Set language
     const savedLang = localStorage.getItem('intex_language') || 'ro';
     setLanguage(savedLang);
     
-    // Setup hamburger menu
     setupMobileMenu();
     
-    // Setup search
     setupSearch();
     
-    // Setup auth
     setupAuth();
     
-    // Setup language switchers
     setupLanguageSwitchers();
     
-    // Dispatch ready event
     try {
         window.dispatchEvent(new CustomEvent('mainJsReady', { detail: { lang: savedLang } }));
     } catch (e) {
-        // Ignore
+
     }
     
     console.log('[MAIN] Initialization complete');
@@ -1199,7 +1133,6 @@ function setupMobileMenu() {
         }
     });
     
-    // Close on link click
     if (navMenu) {
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
@@ -1212,7 +1145,6 @@ function setupMobileMenu() {
         });
     }
     
-    // Close button
     const closeMobile = document.querySelector('.close-mobile');
     if (closeMobile && navMenu) {
         closeMobile.addEventListener('click', () => {
@@ -1235,7 +1167,6 @@ function setupSearch() {
         closeSearchBtn.addEventListener('click', closeSearch);
     }
     
-    // Setup search form
     const searchForm = DOM.get('search-form');
     if (searchForm) {
         searchForm.addEventListener('submit', performSearch);
@@ -1250,7 +1181,6 @@ function setupAuth() {
     const loginBtn = DOM.get('loginBtn');
     if (!loginBtn) return;
     
-    // Check existing session
     if (window.authManager) {
         const currentUser = window.authManager.getCurrentUser();
         if (currentUser) {
@@ -1261,7 +1191,6 @@ function setupAuth() {
     
     loginBtn.addEventListener('click', openLoginModal);
     
-    // Setup forms
     const loginForm = DOM.get('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
@@ -1283,10 +1212,6 @@ function setupLanguageSwitchers() {
     });
 }
 
-// ============================================
-// SECȚIUNEA 8: UTILITIES
-// ============================================
-
 function escapeHtml(str) {
     if (!str) return '';
     const map = {
@@ -1299,19 +1224,13 @@ function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, m => map[m]);
 }
 
-// ============================================
-// SECȚIUNEA 9: STARTUP
-// ============================================
-
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize);
 } else {
     initialize();
 }
 
-// ============================================
-// SECȚIUNEA 10: EXPORTS
-// ============================================
+
 
 window.IntexApp = {
     setLanguage,
@@ -1329,7 +1248,6 @@ window.IntexApp = {
     escapeHtml
 };
 
-// Backward compatibility
 window.setLanguage = setLanguage;
 window.openSearch = openSearch;
 window.closeSearch = closeSearch;
