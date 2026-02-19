@@ -13,7 +13,6 @@
 </head>
 <body>
 
-    <!-- Navbar identic cu index.html -->
     <nav>
         <button class="hamburger-btn" id="hamburgerBtn">
             <span></span>
@@ -65,19 +64,16 @@
         </div>
     </nav>
 
-    <!-- Conținut principal -->
     <main class="orders-section">
         <div class="orders-container">
             <h1 data-i18n="orders_title">Comenzile Mele</h1>
             <p class="orders-subtitle" data-i18n="orders_subtitle">Vizualizați și urmăriți toate comenzile dumneavoastră</p>
 
-            <!-- Loading state -->
             <div id="orders-loading" class="orders-loading">
                 <i class="fas fa-spinner fa-spin"></i>
                 <span data-i18n="loading_orders">Se încarcă comenzile...</span>
             </div>
 
-            <!-- Empty state -->
             <div id="orders-empty" class="orders-empty" style="display: none;">
                 <i class="fas fa-shopping-bag"></i>
                 <h3 data-i18n="no_orders_title">Nu aveți comenzi încă</h3>
@@ -85,21 +81,17 @@
                 <a href="produse.html" class="btn-main" data-i18n="browse_products">Vezi Produse</a>
             </div>
 
-            <!-- Lista comenzi -->
             <div id="orders-list" class="orders-list" style="display: none;">
-                <!-- Comenzile vor fi injectate aici de JS -->
             </div>
         </div>
     </main>
 
-    <!-- Footer simplu -->
     <footer class="orders-footer">
         <div class="footer-bottom">
             © 2023 Intex Moldova. All rights reserved.
         </div>
     </footer>
 
-    <!-- Search Overlay -->
     <div id="search-overlay" class="search-overlay">
         <div class="search-content">
             <span class="close-btn" onclick="closeSearch()">&times;</span>
@@ -108,7 +100,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/main.js"></script>
     <script src="../assets/js/notifications.js"></script>

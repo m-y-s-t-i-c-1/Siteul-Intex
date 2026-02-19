@@ -64,8 +64,6 @@ body {
     position: relative;
     min-height: 100vh;
 }
-
-/* Safe typography for mobile */
 body {
     font-size: 16px;
     line-height: 1.5;
@@ -184,7 +182,6 @@ nav {
     position: relative;
 }
 
-/* Mobile controls sizing */
 .hamburger-btn {
     width: 28px;
     height: 28px;
@@ -199,7 +196,6 @@ nav {
     height: 32px;
 }
 
-/* Ensure images and iframes stay inside */
 img, video, iframe {
     max-width: 100%;
     height: auto;
@@ -382,7 +378,6 @@ body.dark-mode .filter-list li:hover {
 .category-grid {
     flex-grow: 1;
     display: grid;
-    /* Default: 1 column on very small screens */
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 16px;
 }
@@ -407,7 +402,6 @@ body.dark-mode .filter-list li:hover {
     border-color: var(--accent);
 }
 
-/* Make the icon act like a product image block */
 .category-card .card-icon {
     width: 100%;
     height: 140px;
@@ -452,14 +446,12 @@ body.dark-mode .filter-list li:hover {
     justify-content: center;
 }
 
-/* Truncate long descriptions to keep card height compact (portable fallback)
-   Replaced -webkit-line-clamp with max-height + line-height for broader support */
 .category-card p,
 .product-item .product-name {
     display: block;
     overflow: hidden;
     line-height: 1.2;
-    max-height: calc(1.2em * 2); /* approx. 2 lines */
+    max-height: calc(1.2em * 2);
     text-overflow: ellipsis;
 }
 
@@ -504,126 +496,100 @@ body.dark-mode .list-title {
 
 .product-list-grid {
     display: grid;
-    /* Default: 1 product on very small screens */
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 16px;
 }
 
-/* From 400px: 2 columns on small-medium screens */
 @media (min-width: 400px) {
     .product-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
     .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 }
 
-/* From 680px and up: 3 columns (covers 680-1280 and 1280+) */
 @media (min-width: 680px) {
     .product-list-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
     .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 }
-/* ==========================================================================
-   NOUA STRUCTURĂ GRILĂ RESPONSIVE (PRODUSE ȘI CATEGORII)
-   ========================================================================== */
 
-/* 1. Setări Generale pentru Containerele de Grilă */
 .category-grid,
 .product-list-grid {
     display: grid;
     width: 100%;
-    /* Asigură-te că padding-ul nu lărgește containerul peste 100% */
     box-sizing: border-box; 
-    /* Centrare și aliniere */
     justify-content: center;
 }
 
-/* 2. Setări Generale pentru Carduri (ca să nu iasă din chenar) */
 .category-card, 
 .product-item, 
 .product-card {
     width: 100%;
-    min-width: 0; /* Critic pentru CSS Grid: previne lățirea forțată a coloanei */
+    min-width: 0;
     box-sizing: border-box;
-    height: 100%; /* Face ca toate cardurile de pe un rând să aibă aceeași înălțime */
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-/* ================= BREAKPOINTS (Puncte de rupere) ================= */
-
-/* SCENARIUL 1: Ecrane Mici (< 680px) -> 2 Coloane */
-/* Aceasta este regula de bază, se aplică implicit, apoi e suprascrisă de ecrane mai mari */
 .category-grid,
 .product-list-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 coloane egale */
-    gap: 12px; /* Spațiu mai mic între ele pentru a economisi loc pe mobil */
-    padding: 0 10px; /* Padding lateral mic */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+    padding: 0 10px; 
 }
 
-/* Ajustări fine pentru carduri pe mobil ca să arate bine "înghesuite" în 2 coloane */
 @media (max-width: 679px) {
     .category-card, 
     .product-item {
-        padding: 12px 8px; /* Reducem padding-ul intern al cardului */
+        padding: 12px 8px; 
     }
     
     .category-card h4,
     .product-item .product-name {
-        font-size: 0.9rem; /* Micșorăm puțin textul */
+        font-size: 0.9rem; 
     }
     
     .category-card .card-icon i,
     .product-item .product-icon i {
-        font-size: 1.5rem; /* Micșorăm iconițele */
+        font-size: 1.5rem;
     }
 
-    /* Asigură imagini responsive */
     .product-card .img-wrapper,
     .product-item .img-wrapper {
-        height: 120px; /* Înălțime fixă mai mică pentru imagini pe mobil */
+        height: 120px; 
     }
 }
 
-/* SCENARIUL 2: Ecrane Medii (680px - 1025px) -> 3 Coloane */
 @media (min-width: 680px) {
     .category-grid,
     .product-list-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 coloane egale */
-        gap: 20px; /* Spațiu mediu */
-        padding: 0; /* Resetăm padding-ul containerului dacă e cazul */
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 20px;
+        padding: 0; 
     }
     
     .product-card .img-wrapper {
-        height: 180px; /* Imagini mai mari */
+        height: 180px;
     }
 }
 
-/* SCENARIUL 3: Ecrane Mari (> 1025px) -> 4 Coloane */
 @media (min-width: 1026px) {
     .category-grid,
     .product-list-grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 coloane egale */
-        gap: 25px; /* Spațiu generos */
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 25px; 
     }
     
     .product-card .img-wrapper {
-        height: 200px; /* Imagini full size */
+        height: 200px;
     }
 }
 
-/* ================= SIGURANȚĂ PENTRU ECRANE FOARTE MICI ================= */
-/* Opțional: Pentru telefoane extrem de vechi/înguste (sub 320px), 
-   2 coloane arată strivit. Aici forțăm 1 coloană doar în cazuri extreme. */
+
 @media (max-width: 330px) {
     .category-grid,
     .product-list-grid {
-        grid-template-columns: 1fr; /* 1 coloană */
+        grid-template-columns: 1fr; 
     }
 }
-/* LEGACY GRID MEDIA QUERIES COMMENTED OUT
-   The older media queries that previously controlled
-   .category-grid and .product-list-grid were disabled
-   to prevent conflicts with the unified responsive grid
-   appended at the end of the file.
-*/
 
 .product-item {
     background: var(--card-bg);
@@ -667,7 +633,6 @@ body.dark-mode .list-title {
     font-weight: 700;
 }
 
-/* Price layout fixes: keep old/new price inside card and allow wrapping */
 .product-price, .price-container {
     box-sizing: border-box;
     overflow: hidden;
@@ -1028,7 +993,6 @@ body.dark-mode .contact-item i {
     border: 5px solid rgba(255,255,255,0.8);
 }
 
-/* Contact container responsive grid fix: allow shrinking below 350px */
 .contact-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
@@ -1104,13 +1068,12 @@ body.dark-mode .page-btn.active {
     color: #fff;
 }
 
-/* Pagination: keep buttons on a single centered line and improve appearance */
 #pagination-container, .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap; /* allow wrapping to avoid horizontal scroll on small screens */
+    flex-wrap: wrap; 
     margin: 24px 0;
 }
 
@@ -1202,7 +1165,6 @@ body.dark-mode .page-btn.active {
         max-width: 200px; 
     }
     
-    /* Hide desktop nav-menu but keep mobile menu available */
     .nav-menu:not(.mobile) {
         display: none;
     }
@@ -1247,7 +1209,6 @@ body.dark-mode .page-btn.active {
     }
 }
 
-/* Cart Overlay Styling */
 #cart-overlay {
     display: none;
     position: fixed;
@@ -1412,7 +1373,6 @@ body.dark-mode .page-btn.active {
     font-size: 1.1em;
 }
 
-/* Pagination Styling */
 #pagination-container {
     display: flex;
     justify-content: center;
@@ -1465,7 +1425,6 @@ body.dark-mode .page-btn.active {
     border-color: var(--primary);
 }
 
-/* Subcategory cards */
 .subcategory-card {
     cursor: pointer;
     padding: 24px;
@@ -1538,59 +1497,46 @@ body.dark-mode .subcategory-card {
     }
 }
 
-/* ==========================================================================
-   FIX FINAL: GRID RESPONSIVE & PROPORȚIONARE CARDURI
-   Adaugă acest cod la finalul fișierului produse.css
-   ========================================================================== */
-
-/* 1. Resetăm structura gridului pentru a fi fluidă */
 .category-grid,
 .product-list-grid {
     display: grid;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 10px; /* Puțin spațiu în laterale */
+    padding: 0 10px; 
     justify-content: center;
 }
 
-/* 2. Asigurăm că toate cardurile stau în interiorul coloanei */
 .category-card, 
 .product-item, 
 .product-card {
     width: 100%;
-    min-width: 0; /* Critic: previne ieșirea textului din card */
+    min-width: 0; 
     box-sizing: border-box;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-/* =========================================
-   SCENARIUL 1: Ecrane Mici (< 680px) -> 2 Coloane
-   Aici facem "magia" de micșorare a elementelor
-   ========================================= */
 @media (max-width: 679px) {
-    /* SETARE GRID: 2 Coloane */
     .category-grid,
     .product-list-grid {
-        grid-template-columns: repeat(2, 1fr); /* Fix 2 coloane */
-        gap: 10px; /* Spațiu mic între carduri */
-        padding: 0 8px; /* Padding extern minim */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+        padding: 0 8px;
     }
 
-    /* --- Ajustare Carduri CATEGORII pe mobil --- */
     .category-card {
-        padding: 10px 5px; /* Reducem masiv spațiul interior */
+        padding: 10px 5px;
         border-radius: 8px;
     }
 
     .category-card .card-icon i {
-        font-size: 1.5rem; /* Iconiță mai mică */
+        font-size: 1.5rem;
         margin-bottom: 8px;
     }
 
     .category-card h4 {
-        font-size: 0.85rem; /* Titlu mai mic */
+        font-size: 0.85rem; 
         line-height: 1.2;
         margin-bottom: 4px;
         padding: 0 2px;
@@ -1601,55 +1547,46 @@ body.dark-mode .subcategory-card {
         margin: 0;
     }
     
-    /* Ascundem săgeata sau alte elemente extra pe mobil dacă e prea aglomerat */
     .category-card .subcategory-arrow {
         display: none; 
     }
 
-    /* --- Ajustare Carduri PRODUSE pe mobil --- */
     .product-item, 
     .product-card {
-        padding: 8px; /* Card compact */
+        padding: 8px; 
         border-radius: 8px;
     }
 
-    /* Imaginea produsului mai mică */
     .product-card .img-wrapper,
     .product-item .img-wrapper {
-        height: 110px; /* Înălțime fixă redusă */
+        height: 110px; 
         margin-bottom: 8px;
     }
 
-    /* Titlul produsului */
     .product-item .product-name {
         font-size: 0.8rem;
         line-height: 1.3;
         margin-bottom: 5px;
-        height: 34px; /* Limităm la 2 rânduri */
+        height: 34px; 
         overflow: hidden;
     }
 
-    /* Prețul */
     .product-item .product-price {
         font-size: 0.9rem;
         margin-bottom: 8px;
     }
 
-    /* BUTONUL - Problema principală din poze */
     .product-item .btn-main,
     .product-card .btn-main {
-        padding: 6px 4px; /* Buton subțire */
-        font-size: 0.75rem; /* Text mic în buton */
+        padding: 6px 4px; 
+        font-size: 0.75rem; 
         width: 100%;
         min-width: auto;
-        white-space: nowrap; /* Textul pe un singur rând */
+        white-space: nowrap;
         border-radius: 6px;
     }
 }
 
-/* =========================================
-   SCENARIUL 2: Tablete (680px - 1024px) -> 3 Coloane
-   ========================================= */
 @media (min-width: 680px) and (max-width: 1024px) {
     .category-grid,
     .product-list-grid {
@@ -1658,7 +1595,6 @@ body.dark-mode .subcategory-card {
         padding: 0;
     }
 
-    /* Revenim la dimensiuni medii */
     .category-card, .product-item {
         padding: 15px;
     }
@@ -1668,9 +1604,7 @@ body.dark-mode .subcategory-card {
     }
 }
 
-/* =========================================
-   SCENARIUL 3: Desktop (> 1025px) -> 4 Coloane
-   ========================================= */
+
 @media (min-width: 1025px) {
     .category-grid,
     .product-list-grid {
@@ -1683,8 +1617,6 @@ body.dark-mode .subcategory-card {
     }
 }
 
-/* SMALLER BUTTONS & CATEGORY TITLE TRUNCATION */
-/* Reduce button sizes on small screens and ensure centered text */
 @media (max-width: 679px) {
     .product-item .btn-main,
     .product-card .btn-main,
@@ -1704,19 +1636,17 @@ body.dark-mode .subcategory-card {
         box-sizing: border-box !important;
     }
 
-    /* Make sure the category titles don't overflow and are centered */
     .category-card h4 {
         display: block;
         overflow: hidden;
         line-height: 1.1;
-        max-height: calc(1.1em * 2); /* clamp to ~2 lines */
+        max-height: calc(1.1em * 2); 
         text-overflow: ellipsis;
         text-align: center;
         font-size: 0.9rem;
         margin-bottom: 6px;
     }
 
-    /* Also clamp description if too long */
     .category-card p {
         display: block;
         overflow: hidden;
@@ -1728,16 +1658,12 @@ body.dark-mode .subcategory-card {
     }
 }
 
-/* Global smaller button tweak for very compact areas */
 .btn-main {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-/* ========================================
-   DIMMING CARDS WHEN MODAL IS OPEN
-   ======================================== */
 body.modal-open .product-card,
 body.modal-open .category-card,
 body.modal-open .product-item {
@@ -1746,11 +1672,6 @@ body.modal-open .product-item {
     transition: opacity 0.3s ease;
 }
 
-/* ========================================
-   PRODUCT DETAILS MODAL STYLES
-   ======================================== */
-
-/* Animație pentru slide-down din sus */
 @keyframes slideDownModal {
     from {
         opacity: 0;
@@ -1762,7 +1683,6 @@ body.modal-open .product-item {
     }
 }
 
-/* Animație pentru fade-in background */
 @keyframes fadeInBackground {
     from {
         background: rgba(0, 0, 0, 0);
@@ -1833,7 +1753,6 @@ body.dark-mode .product-modal-content {
     background: rgba(0, 0, 0, 0.05);
 }
 
-/* Animation de închidere */
 @keyframes slideUpModal {
     from {
         opacity: 1;
@@ -1963,7 +1882,6 @@ body.dark-mode .product-modal-content {
     justify-content: center;
 }
 
-/* Light mode styling for desktop/tablet */
 body:not(.dark-mode) .product-modal-content {
     background: rgba(255, 255, 255, 0.98);
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -2005,7 +1923,6 @@ body:not(.dark-mode) .product-modal-content .close-btn:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive: Mobile */
 @media (max-width: 768px) {
     .product-modal-content {
         background: linear-gradient(135deg, rgba(20, 30, 50, 0.95) 0%, rgba(30, 45, 70, 0.95) 100%);
@@ -2112,7 +2029,6 @@ body:not(.dark-mode) .product-modal-content .close-btn:hover {
         background: linear-gradient(135deg, #ff7a33 0%, #ff6b22 100%) !important;
     }
 
-    /* Light mode overrides for mobile */
     body:not(.dark-mode) .product-modal-content {
         background: rgba(255, 255, 255, 0.98);
         border: 1px solid rgba(0, 0, 0, 0.1);

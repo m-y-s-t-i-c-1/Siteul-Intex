@@ -1,9 +1,5 @@
 (function() {
     'use strict';
-
-    // ============================================
-    // SECȚIUNEA 1: CONFIG ȘI CONSTANTE
-    // ============================================
     
     const CONFIG = {
         STORAGE_KEY: 'intex_orders',
@@ -14,8 +10,7 @@
         ANIMATION_DURATION: 300
     };
 
-    // Expose Utils to global scope so inline onerror handlers can access it
-    try { window.Utils = Utils; } catch (e) { /* ignore if not writable */ }
+    try { window.Utils = Utils; } catch (e) { }
 
     const ORDER_STATUS = {
         PENDING: { key: 'pending', color: '#92400e', icon: 'fa-clock', text: { ro: 'În așteptare', ru: 'В ожидании', en: 'Pending' } },
@@ -25,11 +20,6 @@
         CANCELLED: { key: 'cancelled', color: '#991b1b', icon: 'fa-times-circle', text: { ro: 'Anulată', ru: 'Отменён', en: 'Cancelled' } },
         REFUNDED: { key: 'refunded', color: '#6b7280', icon: 'fa-undo', text: { ro: 'Rambursată', ru: 'Возвращён', en: 'Refunded' } }
     };
-
-    // ============================================
-    // SECȚIUNEA 2: TRANSLATION SYSTEM
-    // ============================================
-
     const TranslationManager = {
         getCurrentLang() {
             return localStorage.getItem('intex_language') || 
@@ -221,11 +211,6 @@
             return product.title || product.name || 'Product';
         }
     };
-
-    // ============================================
-    // SECȚIUNEA 3: UTILITĂȚI
-    // ============================================
-
     const Utils = {
         escapeHtml(str) {
             if (!str) return '';
@@ -284,18 +269,14 @@
         ,
         normalizeImagePath(url) {
             if (!url) return url;
-            // Dacă este URL absolut sau începe cu slash (root), returnăm direct
             if (/^(https?:)?\/\//.test(url) || url.startsWith('/')) return url;
-            // Dacă este deja relativ dintr-un nivel în sus, lăsăm așa
             if (url.startsWith('../')) return url;
-            // Dacă suntem pe o pagină din folderul /pagini/, prefixăm cu ../
             try {
                 const path = window.location && window.location.pathname ? window.location.pathname : '';
                 if (path.includes('/pagini/') || path.startsWith('/pagini/')) {
                     return '../' + url;
                 }
             } catch (e) {
-                // ignorăm eroarea și returnăm url-ul original
             }
             return url;
         }
@@ -307,19 +288,16 @@
                 const attempts = Number(imgEl.dataset.imgAttempts || 0);
                 const candidates = [];
 
-                // try product id first if available
                 const pid = imgEl.dataset.productId;
                 if (pid) {
                     exts.forEach(ext => candidates.push(`assets/img/${pid}.${ext}`));
                 }
 
-                // build slug from title
                 if (title) {
                     const slug = String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                     if (slug) exts.forEach(ext => candidates.push(`assets/img/${slug}.${ext}`));
                 }
 
-                // finally try common names based on title tokens
                 if (title) {
                     const parts = String(title).toLowerCase().split(/\s+/).filter(Boolean).slice(0,4);
                     for (let i = parts.length; i > 0; i--) {
@@ -328,10 +306,8 @@
                     }
                 }
 
-                // remove duplicates
                 const uniq = [...new Set(candidates)];
 
-                // if no more candidates, fallback to intex.jpg
                 if (attempts >= uniq.length) {
                     imgEl.src = Utils.normalizeImagePath('assets/img/intex.jpg');
                     return;
@@ -344,7 +320,6 @@
                 };
                 tester.onerror = function() {
                     imgEl.dataset.imgAttempts = attempts + 1;
-                    // try next candidate
                     Utils.resolveProductImage(imgEl, title);
                 };
                 tester.src = candidate;
@@ -353,10 +328,6 @@
             }
         }
     };
-
-    // ============================================
-    // SECȚIUNEA 4: PRODUCT MANAGER - CORECTAT
-    // ============================================
 
     const ProductManager = {
         products: null,
@@ -394,12 +365,10 @@
                 products.push(normalizedProduct);
             };
 
-            // 1. Din PRODUCTS_DATA
             if (window.PRODUCTS_DATA && Array.isArray(window.PRODUCTS_DATA)) {
                 window.PRODUCTS_DATA.forEach(p => addProduct(p, 'PRODUCTS_DATA'));
             }
 
-            // 2. Din POOLS_PRODUCTS
             if (window.POOLS_PRODUCTS && window.POOLS_PRODUCTS.pools && Array.isArray(window.POOLS_PRODUCTS.pools)) {
                 window.POOLS_PRODUCTS.pools.forEach(p => {
                     const normalized = {
@@ -411,12 +380,10 @@
                 });
             }
 
-            // 3. Din ALL_PRODUCTS dacă există
             if (window.ALL_PRODUCTS && Array.isArray(window.ALL_PRODUCTS)) {
                 window.ALL_PRODUCTS.forEach(p => addProduct(p, 'ALL_PRODUCTS'));
             }
 
-            // 4. Din data.js - căutare globală
             if (typeof window !== 'undefined') {
                 for (let key in window) {
                     if (key.toLowerCase().includes('product') && Array.isArray(window[key])) {
@@ -490,9 +457,6 @@
 
     window.debugProducts = () => ProductManager.debug();
 
-    // ============================================
-    // SECȚIUNEA 5: CLASA PRINCIPALĂ
-    // ============================================
 
     class OrdersManager {
         constructor() {
@@ -671,11 +635,6 @@
         simulateDelay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-
-        // ============================================
-        // GENERARE COMENZI DEMO - CORECTAT
-        // ============================================
-
         generateDemoOrders() {
             const now = Date.now();
             const day = 86400000;
@@ -687,13 +646,11 @@
                 return this.generateFallbackOrders();
             }
 
-            // Selectează produse specifice pentru demo
             const product1 = allProducts[0];
             const product2 = allProducts[1] || allProducts[0];
             const product3 = allProducts[2] || allProducts[0];
             const product4 = allProducts[3] || allProducts[0];
 
-            // IMPORTANT: Salvăm toate datele produsului inclusiv imaginea
             const items1 = [
                 {
                     id: product1.id,
@@ -834,10 +791,6 @@
             ];
         }
 
-        // ============================================
-        // RENDERING - CORECTAT PENTRU PRODUSE
-        // ============================================
-
         showLoading(show) {
             if (this.dom.loading) {
                 this.dom.loading.style.display = show ? 'flex' : 'none';
@@ -922,7 +875,6 @@
             }
 
             this.animateEntrance();
-            // Attach image error handlers to try better matches when images fail
             try {
                 const thumbs = this.dom.list.querySelectorAll('.order-item-thumb');
                 thumbs.forEach(img => {
@@ -930,7 +882,6 @@
                     img.addEventListener('error', function onErr() {
                         img.removeEventListener('error', onErr);
                         const name = img.dataset.productName || img.alt || img.dataset.productId || '';
-                        // call global Utils.resolveProductImage if available
                         if (window.Utils && typeof window.Utils.resolveProductImage === 'function') {
                             window.Utils.resolveProductImage(img, name);
                         } else {
@@ -938,7 +889,7 @@
                         }
                     });
                 });
-            } catch (e) { /* ignore */ }
+            } catch (e) {}
         }
 
         createOrderCard(order) {
@@ -947,7 +898,6 @@
             const date = Utils.formatDate(order.date);
             const itemCount = order.items.reduce((sum, item) => sum + item.qty, 0);
             
-            // CORECȚIE: Folosim direct datele din order.items care au fost salvate corect în generateDemoOrders
             const _fallbackImg = Utils.normalizeImagePath('assets/img/intex.jpg');
             const imagesHtml = order.items.slice(0, 3).map((item, index) => {
                 let imageUrl = item.image;
@@ -970,7 +920,6 @@
             const moreHtml = moreCount > 0 ? 
                 `<div class="order-item-more" style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-weight: 600; border: 2px solid rgba(56, 189, 248, 0.3);">+${moreCount}</div>` : '';
 
-            // Afișează numele primelor 2 produse
             const productNamesHtml = order.items.slice(0, 2).map(item => 
                 `<div style="color: #e2e8f0; font-size: 0.9rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
                     ${Utils.escapeHtml(item.name || 'Produs')}
@@ -1120,10 +1069,6 @@
             });
         }
 
-        // ============================================
-        // MODAL DETALII - CORECTAT
-        // ============================================
-
         viewDetails(orderId) {
             const order = this.orders.find(o => o.id === orderId);
             if (!order) {
@@ -1146,7 +1091,6 @@
             
             const timelineHtml = order.timeline ? this.renderTimeline(order.timeline) : '';
             
-            // CORECȚIE: Folosim direct datele din order.items cu fallback la ProductManager
             const _fallbackImgDetail = Utils.normalizeImagePath('assets/img/intex.jpg');
             const itemsHtml = order.items.map(item => {
                 let imageUrl = item.image;
@@ -1159,10 +1103,10 @@
                 return `
                     <div class="order-item-detail" style="display: flex; gap: 1rem; padding: 1rem; background: rgba(15, 23, 42, 0.5); border-radius: 12px; margin-bottom: 0.75rem; border: 1px solid rgba(56, 189, 248, 0.1);">
                         <img src="${Utils.escapeHtml(imageUrl)}" 
-                                     alt="${Utils.escapeHtml(item.name || 'Produs')}" 
-                                     data-product-id="${Utils.escapeHtml(item.id || '')}"
-                                     data-product-name="${Utils.escapeHtml(item.name || '')}"
-                                     style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(56, 189, 248, 0.2);">
+                             alt="${Utils.escapeHtml(item.name || 'Produs')}" 
+                             data-product-id="${Utils.escapeHtml(item.id || '')}"
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(56, 189, 248, 0.2);"
+                             onerror="this.onerror=null; Utils.resolveProductImage(this, '${Utils.escapeHtml(item.name || item.id || '')}');">
                         <div class="order-item-info" style="flex: 1;">
                             <div class="order-item-name" style="color: #fff; font-weight: 600; margin-bottom: 0.25rem; font-size: 1rem;">${Utils.escapeHtml(item.name || 'Produs')}</div>
                             <div class="order-item-meta" style="color: #94a3b8; font-size: 0.9rem;">
@@ -1291,7 +1235,6 @@
 
             document.body.insertAdjacentHTML('beforeend', modalHtml);
             
-            // Animație de intrare
             const modal = document.querySelector('.order-details-modal:last-child');
             const content = modal.querySelector('.order-details-content');
             content.style.opacity = '0';
@@ -1302,23 +1245,6 @@
                 content.style.opacity = '1';
                 content.style.transform = 'scale(1)';
             });
-
-            // Attach error handlers for images inside modal
-            try {
-                const modalImgs = document.querySelectorAll('.order-details-modal:last-child img[data-product-id]');
-                modalImgs.forEach(img => {
-                    img.dataset.imgAttempts = img.dataset.imgAttempts || 0;
-                    img.addEventListener('error', function onErr() {
-                        img.removeEventListener('error', onErr);
-                        const name = img.dataset.productName || img.alt || img.dataset.productId || '';
-                        if (window.Utils && typeof window.Utils.resolveProductImage === 'function') {
-                            window.Utils.resolveProductImage(img, name);
-                        } else {
-                            img.src = Utils.normalizeImagePath('assets/img/intex.jpg');
-                        }
-                    });
-                });
-            } catch (e) { /* ignore */ }
         }
 
         renderTimeline(timeline) {
@@ -1340,9 +1266,6 @@
             }).join('');
         }
 
-        // ============================================
-        // ACȚIUNI - REORDER CORECTAT
-        // ============================================
 
         async reorder(orderId) {
             const t = (key, params) => TranslationManager.translate(key, params);
@@ -1353,27 +1276,21 @@
                 return;
             }
 
-            // Confirmare
             if (!confirm(t('confirm_reorder'))) {
                 return;
             }
 
             try {
-                // NOU: Creăm o comandă nouă direct, nu doar adăugăm în coș
                 const newOrder = await this.createNewOrderFromExisting(order);
                 
                 if (newOrder) {
-                    // Adăugăm noua comandă în listă
                     this.orders.unshift(newOrder);
                     this.saveOrders();
                     
-                    // Reafișăm comenzile
                     this.renderOrders();
                     
-                    // Afișăm notificare de succes
                     this.showToast(t('order_placed_success'), 'success');
                     
-                    // Scroll la noua comandă
                     setTimeout(() => {
                         const newOrderCard = document.querySelector(`[data-order-id="${newOrder.id}"]`);
                         if (newOrderCard) {
@@ -1389,17 +1306,14 @@
             }
         }
 
-        // NOU: Metodă pentru crearea unei comenzi noi dintr-una existentă
         async createNewOrderFromExisting(originalOrder) {
             const now = new Date();
             
-            // Calculăm totalurile
             const subtotal = originalOrder.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const shippingCost = originalOrder.shippingCost || 50;
             const tax = Math.round(subtotal * 0.09 * 100) / 100;
             const total = subtotal + shippingCost + tax;
 
-            // Creăm noua comandă
             const newOrder = {
                 id: 'ORD-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + Math.random().toString(36).substr(2, 6).toUpperCase(),
                 date: now.toISOString(),
@@ -1410,7 +1324,6 @@
                 tax: tax,
                 items: originalOrder.items.map(item => ({
                     ...item,
-                    // Re-confirmăm datele produsului din ProductManager pentru a avea cele mai recente informații
                     name: item.name,
                     price: item.price,
                     image: item.image
@@ -1424,10 +1337,9 @@
                         note: TranslationManager.translate('order_from_reorder')
                     }
                 ],
-                parentOrderId: originalOrder.id // Referință la comanda originală
+                parentOrderId: originalOrder.id 
             };
 
-            // Simulăm un delay pentru realism
             await this.simulateDelay(800);
 
             console.log('[OrdersManager] Created new order from reorder:', newOrder);
@@ -1451,7 +1363,6 @@
                 return;
             }
 
-            // Actualizăm statusul
             order.status = 'cancelled';
             order.timeline.push({
                 status: 'cancelled',
@@ -1468,10 +1379,8 @@
             const order = this.orders.find(o => o.id === orderId);
             if (!order) return;
 
-            // Deschidem modalul de detalii care include timeline-ul
             this.viewDetails(orderId);
             
-            // Sau putem implementa o pagină separată de tracking
             console.log('[OrdersManager] Tracking order:', orderId);
         }
 
@@ -1482,13 +1391,11 @@
         }
 
         showToast(message, type = 'success') {
-            // Folosim sistemul de toast existent dacă e disponibil
             if (window.showToast) {
                 window.showToast(message, type);
                 return;
             }
 
-            // Fallback - creăm un toast simplu
             const toast = document.createElement('div');
             toast.style.cssText = `
                 position: fixed;
@@ -1514,7 +1421,6 @@
         }
 
         setupEventListeners() {
-            // Search
             const searchInput = document.getElementById('orders-search');
             if (searchInput) {
                 searchInput.addEventListener('input', Utils.debounce((e) => {
@@ -1524,7 +1430,6 @@
                 }, CONFIG.DEBOUNCE_DELAY));
             }
 
-            // Status filter
             const statusFilter = document.getElementById('orders-status-filter');
             if (statusFilter) {
                 statusFilter.addEventListener('change', (e) => {
@@ -1534,7 +1439,6 @@
                 });
             }
 
-            // Date filters
             const dateFrom = document.getElementById('orders-date-from');
             const dateTo = document.getElementById('orders-date-to');
             
@@ -1554,9 +1458,6 @@
         }
     }
 
-    // ============================================
-    // SECȚIUNEA 6: INITIALIZARE
-    // ============================================
 
     let ordersManagerInstance = null;
 
@@ -1567,7 +1468,6 @@
         return ordersManagerInstance;
     }
 
-    // Expunem API-ul global
     window.IntexOrders = {
         init: initOrdersManager,
         viewDetails: (orderId) => ordersManagerInstance?.viewDetails(orderId),
@@ -1578,7 +1478,6 @@
         refresh: () => ordersManagerInstance?.loadOrders()
     };
 
-    // Inițializare automată când DOM-ul este gata
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initOrdersManager);
     } else {

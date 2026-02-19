@@ -78,14 +78,12 @@ body {
     line-height: 1.5;
 }
 
-/* Safe typography for mobile */
 h1, h2, h3, p {
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
 }
 
-/* Navbar base for small screens */
 nav {
     width: 100%;
     padding: 8px 12px;
@@ -93,7 +91,6 @@ nav {
     box-sizing: border-box;
 }
 
-/* Touchable hamburger */
 .hamburger-btn {
     width: 28px;
     height: 28px;
@@ -103,7 +100,6 @@ nav {
     box-sizing: border-box;
 }
 
-/* Controls sizing */
 .search-btn,
 .theme-toggle {
     width: 32px;
@@ -119,7 +115,6 @@ nav {
     box-sizing: border-box;
 }
 
-/* Mobile menu full width, no lateral leaks */
 .nav-menu.mobile {
     width: 100vw;
     max-width: 100vw;
@@ -135,7 +130,6 @@ nav {
     box-sizing: border-box;
 }
 
-/* Search overlay safety */
 .search-content {
     width: calc(100% - 24px);
     max-width: 100%;
@@ -149,7 +143,6 @@ nav {
     box-sizing: border-box;
 }
 
-/* Section padding to avoid edge overflow */
 section,
 .hero,
 .about-section,
@@ -159,13 +152,11 @@ section,
     box-sizing: border-box;
 }
 
-/* Flex/grid children safety */
 .flex,
 .grid {
     min-width: 0;
 }
 
-/* Responsive tweaks */
 @media (max-width: 480px) {
     h1 {
         font-size: 1.8rem;
@@ -205,7 +196,6 @@ section,
     }
 }
 
-/* At <=680px make contact layout single-column so the map stacks under contact info */
 @media (max-width: 680px) {
     .contact-container {
         grid-template-columns: 1fr;
@@ -213,7 +203,6 @@ section,
         padding: 18px;
     }
 
-    /* ensure contact info appears first and map after */
     .contact-info {
         order: 1;
         width: 100%;
@@ -222,7 +211,7 @@ section,
     .map-container {
         order: 2;
         width: 100%;
-        height: 260px; /* reasonable mobile map height */
+        height: 260px;
         margin: 0 auto;
     }
 
@@ -275,12 +264,12 @@ ul {
 nav {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Împinge grupurile la extremități */
+    justify-content: space-between; 
     width: 100%;
-    max-width: none; /* allow nav to span full viewport width */
-    margin: 0; /* remove centering that clipped available space */
-    padding: 10px 24px; /* consistent horizontal padding */
-    height: 60px; /* Controlează înălțimea navbar-ului */
+    max-width: none;
+    margin: 0; 
+    padding: 10px 24px;
+    height: 60px; 
     background: var(--bg-nav);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -291,20 +280,19 @@ nav {
     z-index: 1000;
 }
 
-/* Reordonare elemente navbar pentru a pune titlul după hamburger */
 .hamburger-btn {
-    order: -1; /* Hamburger în poziția cea mai din stânga */
+    order: -1; 
 }
 
 .site-title {
-    order: 0; /* Titlul după hamburger */
+    order: 0; 
 }
 
 .nav-menu {
-    order: 1; /* În centru */
+    order: 1; 
 }
 
-/* Prevent long nav items from forcing width and overflowing their flex container */
+
 .nav-menu {
     min-width: 0;
 }
@@ -316,7 +304,7 @@ nav {
 }
 
 .nav-controls {
-    order: 2; /* În dreapta */
+    order: 2; 
 }
 
 
@@ -325,7 +313,6 @@ nav {
     font-weight: 800;
     color: var(--text-main);
     letter-spacing: -1px;
-    /* allow logo to shrink on small screens to avoid pushing nav controls */
     flex: 0 1 auto;
     max-width: 50%;
     overflow: hidden;
@@ -336,14 +323,13 @@ nav {
     color: var(--accent);
 }
 
-/* site-title: vizibil și cu mărime normală */
 .site-title {
-    display: none; /* Rămâne ascuns implicit, îl activăm în @media */
+    display: none; 
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--text-main);
     white-space: nowrap;
-    flex-shrink: 0; /* Împiedică strivirea titlului */
+    flex-shrink: 0; 
 }
 .site-title span { color: var(--accent); }
 
@@ -354,13 +340,11 @@ nav {
     margin: 0 30px;
 }
 
-/* Make nav-menu flexible so it can shrink when logo is long */
 .nav-menu {
     flex: 1 1 auto;
-    min-width: 0; /* allow children to shrink properly */
+    min-width: 0; 
 }
 
-/* Mobile menu styles */
 .nav-menu.mobile {
     position: fixed;
     top: 80px;
@@ -372,15 +356,14 @@ nav {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 10px; /* Redus și mai mult pentru aspect mai compact */
-    gap: 15px; /* Redus pentru spațiere mai strânsă */
-    /* push further off-screen to avoid a visible sliver */
+    padding-top: 10px; 
+    gap: 15px; 
     transform: translateX(-150%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.3s ease, opacity 0.25s ease;
     z-index: 999;
-    box-shadow: none; /* remove shadow when hidden to avoid showing edges */
+    box-shadow: none;
     border-left: none;
 }
 
@@ -419,12 +402,10 @@ nav {
     transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
-    /* restore optional visual treatments when open */
     box-shadow: var(--glass-shadow);
     border-left: var(--card-border);
 }
 
-/* Stronger rules for debugging: ensure the mobile menu is visible and overlays content */
 .nav-menu.mobile.active {
     transform: translateX(0) !important;
     display: flex !important;
@@ -435,12 +416,11 @@ nav {
     width: 100vw !important;
     height: 100vh !important;
     background: var(--bg-nav) !important;
-    padding-top: 85px !important; /* Redus pentru aspect mai compact */
+    padding-top: 85px !important; 
     z-index: 2000 !important;
     box-sizing: border-box !important;
 }
 
-/* Ensure fallback body.mobile-open also displays full overlay */
 body.mobile-open .nav-menu {
     transform: translateX(0) !important;
     display: flex !important;
@@ -450,11 +430,10 @@ body.mobile-open .nav-menu {
     width: 100% !important;
     height: 100vh !important;
     background: var(--bg-nav) !important;
-    padding-top: 85px !important; /* Consistent cu override-ul de mai sus */
+    padding-top: 85px !important; 
     z-index: 2000 !important;
 }
 
-/* Fallback: show any nav-menu when body has mobile-open (used when mobile specific selector wasn't found) */
 body.mobile-open .nav-menu {
     transform: translateX(0);
     position: fixed;
@@ -466,7 +445,7 @@ body.mobile-open .nav-menu {
     z-index: 999;
     display: flex;
     flex-direction: column;
-    padding-top: 5px; /* Consistent cu stilurile de bază */
+    padding-top: 5px; 
     gap: 20px;
 }
 
@@ -503,12 +482,10 @@ body.mobile-open .nav-menu {
     flex-shrink: 0;
 }
 
-/* Ensure controls stay compact */
 .nav-controls {
     flex: 0 0 auto;
 }
 
-/* Hamburger button for mobile */
 .hamburger-btn {
     display: flex;
     flex-direction: column;
@@ -541,7 +518,6 @@ body.mobile-open .nav-menu {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* STILIZARE BUTON CĂUTARE */
 .search-btn {
     background: rgba(125, 125, 125, 0.1);
     width: 36px;
@@ -565,7 +541,6 @@ body.dark-mode .search-btn {
     background: rgba(255, 255, 255, 0.1);
     color: var(--text-main);
 }
-/* END MODIFICARE BUTON CĂUTARE */
 
 .lang-switch {
     display: flex;
@@ -804,7 +779,6 @@ body.dark-mode .about-image img {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    /* allow columns to shrink on small screens to avoid horizontal overflow */
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     gap: 40px;
     background: var(--card-bg);
@@ -891,7 +865,6 @@ body.dark-mode .map-container {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* STILIZARE CĂUTARE OVERLAY (NOU) */
 .search-overlay {
     height: 100%;
     width: 100%;
@@ -933,7 +906,7 @@ body.dark-mode .map-container {
     transition: border-color 0.3s;
 }
 #search-input {
-    min-width: 0; /* allow shrinking inside flex */
+    min-width: 0; 
     flex: 1 1 auto;
 }
 #search-input:focus {
@@ -957,7 +930,6 @@ body.dark-mode .map-container {
     transform: rotate(90deg);
 }
 
-/* Dark Mode Adjustments pentru Overlay */
 body.dark-mode .search-overlay {
     background-color: rgba(11, 17, 32, 0.95);
 }
@@ -966,7 +938,6 @@ body.dark-mode #search-input {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile tuning: reduce sizes to prevent overflow and improve tap targets */
 @media (max-width: 480px) {
     .contact-container {
         padding: 20px;
@@ -1076,9 +1047,7 @@ body.dark-mode #search-input {
     }
 }
 
-/* EXTRA: tighter margins/paddings globally for small screens */
 @media (max-width: 480px) {
-    /* reduce section side padding */
     section,
     .hero,
     .about-section,
@@ -1087,7 +1056,6 @@ body.dark-mode #search-input {
         padding-right: 12px;
     }
 
-    /* reduce global gaps and container paddings */
     .container,
     .contact-container,
     .hero-content {
@@ -1095,19 +1063,16 @@ body.dark-mode #search-input {
         padding-right: 8px !important;
     }
 
-    /* tighten headings and meta spacing */
     h1, h2, h3 {
         margin-top: 0.25rem;
         margin-bottom: 0.5rem;
     }
 
-    /* smaller common controls spacing */
     .nav-controls,
     .header-controls {
         gap: 6px !important;
     }
 
-    /* reduce generic element paddings that commonly cause overflow */
     .card,
     .panel,
     .contact-item,
@@ -1166,7 +1131,6 @@ body.dark-mode #search-input {
     }
 }
 
-/* Ensure search input and button stay on one line */
 .search-content {
     flex-wrap: nowrap;
     align-items: center;
@@ -1197,13 +1161,11 @@ body.dark-mode #search-input {
     }
 }
 
-/* Animatie pentru overlay */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-50px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* LOGIN MODAL */
 .login-modal {
     display: none;
     position: fixed;
@@ -1302,7 +1264,6 @@ body.dark-mode #search-input {
     font-weight: 700;
 }
 
-/* Style primary action inside modal */
 .login-content .btn-main {
     display: inline-block;
     padding: 0.6rem 1rem;
@@ -1317,12 +1278,10 @@ body.dark-mode #search-input {
 }
 .login-content .btn-main:hover { transform: translateY(-2px); }
 
-/* custom scrollbar for modal */
 .login-content::-webkit-scrollbar { width: 10px; }
 .login-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 10px; }
 .login-content::-webkit-scrollbar-track { background: transparent; }
 
-/* Order confirmation modal */
 .order-confirmation {
     position: fixed;
     inset: 0;
@@ -1411,7 +1370,6 @@ body.dark-mode #search-input {
     text-decoration: underline;
 }
 
-/* Login button in nav */
 .login-btn {
     background: none;
     border: 1px solid var(--card-border);
@@ -1426,7 +1384,6 @@ body.dark-mode #search-input {
     justify-content: center;
 }
 
-/* User menu dropdown */
 .user-menu {
     width: 240px;
     background: var(--card-bg);
@@ -1481,30 +1438,20 @@ body.dark-mode #search-input {
     box-shadow: 0 0 8px rgba(14, 165, 233, 0.5);
 }
 
-/* =========================================
-   RESPONSIVE FINAL & STRICT (MODIFICAT)
-   ========================================= */
-
-/* 1. PC / DESKTOP MARE (Ecrane peste 1281px)
-   - Aici avem loc suficient pentru meniul desfășurat */
 @media screen and (min-width: 1281px) {
     nav {
         justify-content: space-between !important;
     }
 
-    /* On large screens we don't use the mobile hamburger button */
     .hamburger-btn {
         display: none !important;
     }
 
-    /* Show site title and allow it to occupy normal header flow */
     .site-title {
         display: block !important;
         margin-right: 20px;
     }
 
-    /* Apply these layout rules only to the non-mobile nav so the
-       mobile overlay remains hidden until `.active` is applied */
     .nav-menu:not(.mobile) {
         position: static !important;
         transform: none !important;
@@ -1514,123 +1461,97 @@ body.dark-mode #search-input {
         width: auto !important;
         height: auto !important;
         background: transparent !important;
-        margin: 0 !important; /* don't center the menu container - allow it to use flex space */
+        margin: 0 !important;
         gap: 2vw !important;
-        flex: 1 1 auto !important; /* take available horizontal space */
+        flex: 1 1 auto !important; 
         display: flex !important;
-        justify-content: center !important; /* center menu items within the middle area */
-        min-width: 0 !important; /* prevent overflow due to long items */
+        justify-content: center !important; 
+        min-width: 0 !important; 
     }
 
     .nav-controls {
-        margin-left: auto; /* push controls to the far right */
+        margin-left: auto; 
         flex-shrink: 0 !important;
         display: flex;
         align-items: center;
         gap: 12px;
     }
 
-    /* Ascundem elementele specifice meniului mobil */
     .nav-menu.mobile .menu-title {
         display: none;
     }
 
-    /* =========================================
-       FIX PENTRU BUGUL nav-menu.mobile PE DESKTOP
-       ========================================= */
-
-    /* 1. Anulăm lățimea de 100% a butoanelor de pe mobil */
     .nav-menu.mobile li {
-        width: auto !important;     /* Lăsăm elementul să aibă lățimea naturală */
+        width: auto !important;     
         text-align: left !important;
         margin: 0 !important;
     }
 
-    /* 2. Reparăm link-urile (să nu fie cât tot rândul) */
     .nav-menu.mobile li a {
         display: inline-block !important;
         width: auto !important;
-        padding: 0 !important;      /* Scoatem padding-ul mare de mobil */
-        font-size: 0.9rem !important; /* Ajustăm fontul pentru desktop */
+        padding: 0 !important;      
+        font-size: 0.9rem !important; 
     }
 
-    /* 3. Ascundem titlul meniului mobil care ar putea apărea accidental */
     .nav-menu.mobile .menu-title {
         display: none !important;
     }
 }
 
-/* Show site title when hamburger is active on large screens */
-/* On desktop the hamburger is hidden; keeping title display deterministic above. */
-
-/* 2. LAPTOPURI MEDII SI TABLETE (Sub 1280px)
-   - Activăm Hamburger-ul aici pentru a preveni suprapunerea */
 @media screen and (max-width: 1280px) {
     .hamburger-btn {
         display: flex !important;
         z-index: 1100;
-        /* Modificat: Scoatem auto pentru a lăsa titlul să vină lângă */
         margin-right: 15px;
         margin-left: 0;
     }
 
-    /* Ascundem link-urile orizontale standard */
     .nav-menu:not(.mobile) {
         display: none !important;
     }
 
-    /* Asigurăm că titlul este vizibil și împinge restul în dreapta */
     .site-title {
         display: block !important;
         font-size: 1.2rem;
-        margin-right: auto; /* <--- AICI este secretul: titlul împinge controalele în dreapta */
+        margin-right: auto; 
     }
 
     nav {
-        justify-content: flex-start; /* Aliniem totul la stânga inițial */
+        justify-content: flex-start; 
     }
 
-    /* Pe ecrane foarte mici (telefoane), ascundem titlul text dacă e nevoie */
     @media screen and (max-width: 600px) {
         .site-title {
             display: none !important;
         }
-        /* Pe mobil, hamburger-ul preia din nou funcția de a împinge controalele */
         .hamburger-btn {
             margin-right: auto;
         }
     }
 }
 
-/* =========================================
-   FIX SUPRAPUNERE MENIU (Laptopuri / Ecrane Medii)
-   ========================================= */
 
-/* Între 1025px și 1280px: Micșorăm spațiile pentru laptopuri medii */
 @media screen and (min-width: 1025px) and (max-width: 1280px) {
 
-    /* 1. Micșorăm spațiul dintre link-uri */
     .nav-menu {
-        gap: 15px !important;  /* Redus de la 30px */
+        gap: 15px !important;  
         margin: 0 10px !important;
-        font-size: 0.8rem;     /* Scris puțin mai mic */
+        font-size: 0.8rem;    
     }
 
-    /* 2. Micșorăm puțin logo-ul */
     .logo {
         font-size: 1.4rem;
         max-width: 200px;
     }
 
-    /* 3. Apropiem butoanele de control (Search, Theme, Lang) */
     .nav-controls {
         gap: 10px !important;
     }
 
-    /* 4. Asigurăm că butoanele nu sunt acoperite */
     .nav-controls {
-        flex-shrink: 0; /* Nu permite strivirea butoanelor */
-        z-index: 1002;  /* Le aduce deasupra dacă totuși se ating */
+        flex-shrink: 0; 
+        z-index: 1002;  
         background: transparent;
     }
 }
@@ -1639,7 +1560,6 @@ body.dark-mode #search-input {
     font-size: 0.85rem;
 }
 
-/* Final overrides: ensure contact/map stack correctly on small screens (placed at file end to win cascade) */
 @media (max-width: 680px) {
     .contact-container {
         display: grid !important;
@@ -1669,19 +1589,17 @@ body.dark-mode #search-input {
         display: block !important;
     }
 
-    /* ensure children don't overflow */
     .contact-item,
     .contact-container > * {
         min-width: 0 !important;
     }
 }
 
-/* Strong override to ensure the mobile overlay covers the viewport
-    but only when the menu is active or the body fallback is used. */
+
 .nav-menu.mobile.active,
 body.mobile-open .nav-menu {
     position: fixed !important;
-    inset: 0 !important; /* top:0; right:0; bottom:0; left:0 */
+    inset: 0 !important; 
     left: 0 !important;
     right: 0 !important;
     top: 0 !important;
@@ -1689,7 +1607,7 @@ body.mobile-open .nav-menu {
     max-width: 100vw !important;
     height: 100vh !important;
     margin: 0 !important;
-    padding-top: 72px !important; /* push content below header */
+    padding-top: 72px !important; 
     transform: none !important;
     opacity: 1 !important;
     pointer-events: auto !important;
@@ -1702,7 +1620,6 @@ body.mobile-open .nav-menu {
     box-sizing: border-box !important;
 }
 
-/* Remove any accidental margins/padding that could visually indent the overlay */
 .nav-menu.mobile li,
 .nav-menu.mobile li a {
     margin: 0 !important;

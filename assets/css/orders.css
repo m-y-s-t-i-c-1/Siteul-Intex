@@ -1,9 +1,6 @@
-/* ============================================
-   ORDERS PAGE STYLES
-   ============================================ */
 
 .orders-section {
-    min-height: calc(100vh - 60px - 60px); /* viewport - nav - footer */
+    min-height: calc(100vh - 60px - 60px);
     padding: 40px 20px;
     background: var(--bg-gradient);
 }
@@ -27,7 +24,6 @@
     font-size: 1.05rem;
 }
 
-/* Loading State */
 .orders-loading {
     text-align: center;
     padding: 60px 20px;
@@ -41,7 +37,6 @@
     color: var(--accent);
 }
 
-/* Empty State */
 .orders-empty {
     text-align: center;
     padding: 60px 20px;
@@ -74,14 +69,12 @@
     padding: 12px 32px;
 }
 
-/* Orders List */
 .orders-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Order Card */
 .order-card {
     background: var(--card-bg);
     border-radius: 16px;
@@ -124,7 +117,6 @@
     text-transform: uppercase;
 }
 
-/* Status colors */
 .status-pending {
     background: #fef3c7;
     color: #92400e;
@@ -239,7 +231,6 @@
     background: rgba(0,0,0,0.05);
 }
 
-/* Order Details Modal */
 .order-details-modal {
     position: fixed;
     inset: 0;
@@ -351,14 +342,12 @@
     color: var(--primary);
 }
 
-/* Footer */
 .orders-footer {
     background: var(--footer-bg);
     padding: 20px;
     text-align: center;
 }
 
-/* Responsive */
 @media (max-width: 680px) {
     .orders-section {
         padding: 20px 12px;
@@ -386,7 +375,6 @@
     }
 }
 
-/* Animation */
 @keyframes slideUp {
     from {
         opacity: 0;

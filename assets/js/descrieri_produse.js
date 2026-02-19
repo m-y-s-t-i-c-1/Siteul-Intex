@@ -1,8 +1,4 @@
-// Complete product descriptions for ALL products
 const PRODUCT_DESCRIPTIONS = {
-    // ==============================================
-    // BĂRCI (CATEGORIA boats) - 12 products
-    // ==============================================
     'b1': {
         ro: 'Set complet barcă gonflabilă Explorer 200 pentru 2 persoane, perfectă pentru pescuit și plimbări pe ape calme. Include vâsle și pompă manuală.',
         ru: 'Полный комплект надувной лодки Explorer 200 для 2 человек, идеально для рыбалки и прогулок по спокойной воде. Включает весла и ручной насос.',
@@ -64,9 +60,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Intex inflatable SUP board for stand-up paddleboarding, stable and easy to transport in special backpack. Perfect for water fitness.'
     },
 
-    // ==============================================
-    // TERENURI DE JOACĂ (CATEGORIA joaca) - 5 products
-    // ==============================================
     'j1': {
         ro: 'Tobogan Intex pentru copii cu platformă sigură, rampă curbă și dimensiuni generoase pentru distracție maximă. Pentru vârste 3-8 ani.',
         ru: 'Детская горка Intex с безопасной платформой, изогнутым спуском и большими размерами для максимального веселья. Для возрастов 3-8 лет.',
@@ -93,9 +86,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Simple Intex swing, easy to install and adjust, perfect for private gardens and play areas. Durable construction.'
     },
 
-    // ==============================================
-    // TRANSPORT COPII (CATEGORIA transport) - 68 products + 8 rollerblades
-    // ==============================================
     't1': {
         ro: 'Tricicletă pentru copii cu cadru robust, pedale ușoare și sistem sigur pentru primele începuturi în ciclism. Pentru vârste 2-4 ani.',
         ru: 'Детский трехколесный велосипед с прочной рамой, легкими педалями и безопасной системой для первых шагов в велоспорте. Для возрастов 2-4 лет.',
@@ -207,7 +197,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Kids skateboard Model 808, with 7-layer maple deck for optimal strength and flexibility. For children 7-12 years.'
     },
 
-    // ROLE (Rollerblades) - TRANSPORT
     'r1': {
         ro: 'Role negre mărime L (39-42) Model 9087, cu închizătoare rapidă și roți din poliuretan de calitate. Pentru adulți.',
         ru: 'Ролики черные размер L (39-42) Model 9087, с быстрой застежкой и колесами из качественного полиуретана. Для взрослых.',
@@ -249,7 +238,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Pink rollerblades size S (31-34) Model 9807, perfect for recreational skating and balance practice. For children 6-10 years.'
     },
 
-    // Alte trotinete - TRANSPORT
     't23': {
         ro: 'Trotinetă pentru copii Model 918-4, cu 4 roți pentru stabilitate maximă, ideală pentru copii mici. Pentru vârste 2-4 ani.',
         ru: 'Детский самокат Model 918-4, с 4 колесами для максимальной устойчивости, идеально для маленьких детей. Для возрастов 2-4 лет.',
@@ -481,9 +469,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Professional longboard for adults and teenagers, with long deck for stability and high speeds. For ages 14+ years.'
     },
 
-    // ==============================================
-    // BAZINE COPII (CATEGORIA copii-pools) - 40 products
-    // ==============================================
     'kp1': {
         ro: 'Bazin gonflabil pentru copii 168x46cm cu design curcubeu, capacitate 617L, recomandat pentru copii de 3+ ani. Fund gonflabil pentru comfort.',
         ru: 'Надувной бассейн для детей 168x46см с дизайном радуги, емкость 617л, рекомендуется для детей от 3 лет. Надувное дно для комфорта.',
@@ -684,10 +669,6 @@ const PRODUCT_DESCRIPTIONS = {
         ru: 'Полнолицевая панорамная маска для плавания размер XS для маленьких детей. Уменьшенные размеры, идеально подходящие для детских лиц.',
         en: 'Full face panoramic snorkel mask size XS for young children. Reduced dimensions perfectly adapted for children\'s faces.'
     },
-
-    // ==============================================
-    // ACCESORII ÎNOT (CATEGORIA swim-accessories) - 75 products
-    // ==============================================
     'sa1': {
         ro: 'Ochelari de înot "Play" pentru copii 3-8 ani, disponibili în 3 culori. Design ergonomic, etanși și confortabili pentru lecții de înot.',
         ru: 'Очки для плавания "Play" для детей 3-8 лет, доступны в 3 цветах. Эргономичный дизайн, герметичные и удобные для уроков плавания.',
@@ -1063,10 +1044,6 @@ const PRODUCT_DESCRIPTIONS = {
         ru: 'Полнолицевая панорамная маска для плавания размер XS для маленьких детей. Идеальные размеры для маленьких детских лиц.',
         en: 'Full face panoramic snorkel mask size XS for young children. Perfect dimensions for small children\'s faces.'
     },
-
-    // ==============================================
-    // SALTELE GONFLABILE (CATEGORIA inflatable-mattresses) - 31 products
-    // ==============================================
     'im1': {
         ro: 'Kit de reparații universal pentru saltele și produse gonflabile, include plasturi și lipici rezistent la apă pentru reparații durabile.',
         ru: 'Универсальный ремонтный комплект для матрасов и надувных изделий, включает заплатки и водостойкий клей для долговечного ремонта.',
@@ -1273,11 +1250,6 @@ const PRODUCT_DESCRIPTIONS = {
         en: 'Manual pump Double Quick Mini 29cm. The most compact manual pump, easy to carry in bag or backpack. For quick inflation of small accessories.'
     },
 
-    // ==============================================
-    // BAZINE INTEX - POOLS PRODUCTS (CATEGORIA pools)
-    // ==============================================
-    
-    // Chimicale pentru Apă / Water Chemicals
     'care_water': {
         "ph-minus-5kg.jpg": {
             ro: "PH Minus Granulat 5kg pentru reglarea nivelului de pH în piscine. Produs granulat de calitate profesională care reduce eficient pH-ul apei, prevenind formarea depunerilor calcaroase și protejând echipamentele piscinei. Asigură un echilibru chimic optim pentru o apă cristalină și confortabilă.",
@@ -1315,8 +1287,6 @@ const PRODUCT_DESCRIPTIONS = {
             en: "Tablet tester 2 in 1 for measuring pH and chlorine in pool water. Simple and accurate system with reactive tablets providing instant results. Essential tool for monitoring water quality and maintaining optimal chemical balance."
         }
     },
-
-    // Piese INTEX / INTEX Parts
     'intex_parts': {
         "intex-liner-10090.jpg": {
             ro: "10090 Cuvă Intex pentru bazin cadru Prism Frame 457x122cm. Cuvă de înlocuire originală Intex fabricată din PVC rezistent cu triplă protecție UV. Grosime de 0,56mm, complet etanșă, cu suprafață antiderapantă. Ușor de instalat, compatibilă cu toate modelele Prism Frame 457x122cm.",
@@ -1515,7 +1485,6 @@ const PRODUCT_DESCRIPTIONS = {
         }
     },
 
-    // Bazine Cadru / Frame Pools
     'frame_pools': {
         "ultra-frame-26326.jpg": {
             ro: "26326 Bazin cadru Ultra Frame Intex 488x122cm. Bazin premium cu sistem de cadru Ultra Frame pentru stabilitate excepțională. Material PVC cu triplă protecție UV, capacitate 13.994 litri. Include filtru-pompă Krystal Clear 2.006L/h și scară.",
@@ -1569,7 +1538,6 @@ const PRODUCT_DESCRIPTIONS = {
         }
     },
 
-    // Bazine Gonflabile / Easy Set Pools
     'easy_set': {
         "easy-set-28101.jpg": {
             ro: "28101 Bazin Easy Set Intex 183x51cm - Piscină compactă pentru copii. Bazin gonflabil cu inel superior gonflat pentru susținere. Ușor de instalat în 10 minute, necesită doar o sursă de apă. Material PVC cu dublă protecție UV.",
@@ -1593,7 +1561,6 @@ const PRODUCT_DESCRIPTIONS = {
         }
     },
 
-    // Filtre și Pompe / Filters & Pumps
     'filters': {
         "filter-pump-26604.jpg": {
             ro: "26604 Filtru-Pompă Krystal Clear 2006L/h pentru bazine mici. Sistem complet de filtrare cu cartuș pentru bazine până la 4.500 litri. Ușor de instalat și întreținut, purifică eficient apa.",
@@ -1623,25 +1590,19 @@ const PRODUCT_DESCRIPTIONS = {
     }
 }
 
-// Return product description object {ro,ru,en} for a given product id or fall back to generic
 function getProductDescription(productId, categoryId, subcategoryId) {
-    // If a specific description exists for this product id, return it
     if (productId && PRODUCT_DESCRIPTIONS && PRODUCT_DESCRIPTIONS[productId]) {
         return PRODUCT_DESCRIPTIONS[productId];
     }
 
-    // Handle pool product IDs (format: pool_0000, pool_0001, etc.)
-    // Map them to their description keys (kp1, kp2, etc.)
     if (productId && productId.startsWith('pool_')) {
         const poolIndex = parseInt(productId.replace('pool_', ''), 10);
-        // Pool products start from index 0, descriptions start from kp1
         const descriptionKey = `kp${poolIndex + 1}`;
         if (PRODUCT_DESCRIPTIONS && PRODUCT_DESCRIPTIONS[descriptionKey]) {
             return PRODUCT_DESCRIPTIONS[descriptionKey];
         }
     }
 
-    // Fallback: generate a simple generic description per language
     const genericByCategory = {
         ro: (categoryId && typeof categoryId === 'string') ? `Produs din categoria ${categoryId}` : 'Produs de calitate pentru activități de exterior și acvatice, durabil și ușor de utilizat.',
         ru: (categoryId && typeof categoryId === 'string') ? `Товар из категории ${categoryId}` : 'Качественный продукт для мероприятий на открытом воздухе и водных мероприятий, долговечный и простой в использовании.',
@@ -1651,16 +1612,13 @@ function getProductDescription(productId, categoryId, subcategoryId) {
     return genericByCategory;
 }
 
-// Funcție pentru a adăuga descrieri la toate produsele
 function enhanceAllProductsWithDescriptions() {
-    // Verifică dacă avem acces la structurile de date
     if (typeof PRODUCTS_DATA === 'undefined' && typeof POOLS_PRODUCTS === 'undefined') {
         console.warn('PRODUCTS_DATA or POOLS_PRODUCTS not available for adding descriptions');
         return [];
     }
     const allProducts = [];
    
-    // Adaugă produsele din PRODUCTS_DATA cu descrieri
     if (typeof PRODUCTS_DATA !== 'undefined') {
         PRODUCTS_DATA.forEach(product => {
             const enhancedProduct = {
@@ -1670,11 +1628,9 @@ function enhanceAllProductsWithDescriptions() {
             allProducts.push(enhancedProduct);
         });
     }
-   
-    // Adaugă produsele din POOLS_PRODUCTS cu descrieri
+
     if (typeof POOLS_PRODUCTS !== 'undefined' && POOLS_PRODUCTS.pools) {
         POOLS_PRODUCTS.pools.forEach((product, index) => {
-            // Generate consistent pool IDs based on index: pool_0000, pool_0001, etc.
             const poolId = `pool_${String(index).padStart(4, '0')}`;
             
             const enhancedProduct = {
@@ -1691,17 +1647,14 @@ function enhanceAllProductsWithDescriptions() {
     return allProducts;
 }
 
-// Funcție pentru a obține toate produsele cu descrieri
 function getAllProductsWithDescriptions() {
     return enhanceAllProductsWithDescriptions();
 }
 
-// Export pentru utilizare globală
 if (typeof window !== 'undefined') {
     window.PRODUCT_DESCRIPTIONS = PRODUCT_DESCRIPTIONS;
     window.getProductDescription = getProductDescription;
     window.getAllProductsWithDescriptions = getAllProductsWithDescriptions;
-       // Adaugă și funcția pentru a extinde produsele existente
     window.enhanceExistingProducts = function(productsArray) {
         if (!Array.isArray(productsArray)) return productsArray;
        

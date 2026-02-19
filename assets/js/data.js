@@ -1,7 +1,6 @@
-// Determine base path based on current location
+
 function getBasePath() {
     const currentPath = window.location.pathname;
-    // If on a page in /pagini/, go back to root, otherwise stay at root
     if (currentPath.includes('/pagini/')) {
         return '../';
     }
@@ -10,16 +9,13 @@ function getBasePath() {
 
 const BASE_PATH = getBasePath();
 
-// Helper function to standardize image paths
 function standardizeImagePath(path) {
     if (!path) return BASE_PATH + 'assets/img/intex.jpg';
     
-    // If already starts with assets/img/, leave as is (relative path)
     if (path.startsWith('assets/img/')) {
         return path;
     }
     
-    // If path doesn't include 'assets/img/', add BASE_PATH + assets/img/
     if (!path.includes('assets/img/')) {
         return BASE_PATH + 'assets/img/' + path;
     }
@@ -27,7 +23,6 @@ function standardizeImagePath(path) {
     return path;
 }
 
-// Categories configuration
 const CATEGORIES_DATA = [
     {
         id: 'boats',
@@ -151,7 +146,6 @@ const CATEGORIES_DATA = [
     }
 ];
 
-// Subcategories configuration with unique IDs
 const SUBCATEGORIES_DATA = {
     baseine_intex: [
         {
@@ -239,10 +233,8 @@ const SUBCATEGORIES_DATA = {
     ]
 };
 
-// Pools products data with standardized image paths
 const POOLS_PRODUCTS = {
     pools: [
-        // Produse pentru Îngrijirea Apei
         {
             sub: "care_water",
             title: {
@@ -314,7 +306,6 @@ const POOLS_PRODUCTS = {
             image: standardizeImagePath('tablet-tester.jpg')
         },
 
-        // Piese de Schimb Intex
         {
             sub: "intex_parts",
             title: {
@@ -1528,12 +1519,10 @@ const POOLS_PRODUCTS = {
     ]
 };
 
-// Helper function to generate unique IDs for POOLS_PRODUCTS
 function generateProductId(prefix, index) {
     return `${prefix}_${index.toString().padStart(4, '0')}`;
 }
 
-// Generate unique IDs for POOLS_PRODUCTS
 POOLS_PRODUCTS.pools.forEach((product, index) => {
     product.id = generateProductId('pool', index);
     product.category = 'baseine_intex';
@@ -1541,9 +1530,7 @@ POOLS_PRODUCTS.pools.forEach((product, index) => {
     delete product.sub;
 });
 
-// General products data - TOATE PRODUSELE ORIGINALE PĂSTRATE
 const PRODUCTS_DATA = [
-    // Categoria de bărci
     {
         id: 'b1',
         category: 'boats',
@@ -1999,7 +1986,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('skate-808.jpg')
     },
 
-    // ROLE (Rollerblades)
     {
         id: 'r1',
         category: 'transport',
@@ -2091,7 +2077,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('role-9807-pink.jpg')
     },
 
-    // Alte trotinete - TOATE PRODUSELE ORIGINALE
     {
         id: 't23',
         category: 'transport',
@@ -2162,7 +2147,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-m6.jpg')
     },
 
-    // SCOOTER SERIES 5S & Y5
     {
         id: 't29',
         category: 'transport',
@@ -2188,8 +2172,7 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-y5.jpg')
     },
 
-    // SCOOTER SERIES 898 (Diverse Culori & Modele)
-    // Model 003
+
     {
         id: 't31',
         category: 'transport',
@@ -2239,7 +2222,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-003-red.jpg')
     },
 
-    // Model 003S
     {
         id: 't35',
         category: 'transport',
@@ -2289,7 +2271,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-003s-violet.jpg')
     },
 
-    // Model 145
     {
         id: 't39',
         category: 'transport',
@@ -2375,7 +2356,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-145s-violet.jpg')
     },
 
-    // Model 180S & SL
     {
         id: 't46',
         category: 'transport',
@@ -2461,7 +2441,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-180sl-white.jpg')
     },
 
-    // Model 5D
     {
         id: 't53',
         category: 'transport',
@@ -2547,7 +2526,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('scooter-5d-white.jpg')
     },
 
-    // Alte modele 898 & Diverse
     {
         id: 't60',
         category: 'transport',
@@ -2650,7 +2628,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('longboard.jpg')
     },
 
-    // Copii-pools (Детские бассейны) - TOATE PRODUSELE ORIGINALE
     {
         id: 'kp1',
         category: 'copii-pools',
@@ -3121,7 +3098,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('mask-snorkel-xs.jpg')
     },
 
-    // Swim-accessories (Аксессуары для плавания) - TOATE PRODUSELE ORIGINALE
     {
         id: 'sa1',
         category: 'swim-accessories',
@@ -3955,7 +3931,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('mask-full-face-xs.jpg')
     },
 
-    // Inflatable-mattresses (Надувные матрасы Intex) - TOATE PRODUSELE ORIGINALE
     {
         id: 'im1',
         category: 'inflatable-mattresses',
@@ -4314,7 +4289,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('pillow-neck-36.jpg')
     },
 
-    // Pumps (Насосы) - TOATE PRODUSELE ORIGINALE
     {
         id: 'pump1',
         category: 'pumps',
@@ -4430,7 +4404,6 @@ const PRODUCTS_DATA = [
     }
 ];
 
-// Utility functions for multilingual support with improved fallback
 const LanguageUtils = {
     currentLanguage: 'ro',
 
@@ -4441,7 +4414,6 @@ const LanguageUtils = {
     },
 
     getText: function (textObject) {
-        // Fallback chain: current language -> Romanian -> English -> first available -> empty string
         if (!textObject) return '';
 
         if (textObject[this.currentLanguage]) {
@@ -4453,7 +4425,6 @@ const LanguageUtils = {
         if (textObject['en']) {
             return textObject['en'];
         }
-        // Return first available value if none of the above exist
         const firstKey = Object.keys(textObject)[0];
         return firstKey ? textObject[firstKey] : '';
     },
@@ -4484,7 +4455,6 @@ const LanguageUtils = {
     getAllProductsByCategory: function (categoryId) {
         const allProducts = [...PRODUCTS_DATA];
         
-        // Add POOLS_PRODUCTS if the category is 'pools'
         if (categoryId === 'pools' && POOLS_PRODUCTS.pools) {
             POOLS_PRODUCTS.pools.forEach(poolProduct => {
                 allProducts.push({
@@ -4505,7 +4475,6 @@ const LanguageUtils = {
     getProductsBySubcategory: function (categoryId, subcategoryId) {
         const allProducts = [...PRODUCTS_DATA];
         
-        // Add POOLS_PRODUCTS if the category is 'pools'
         if (categoryId === 'pools' && POOLS_PRODUCTS.pools) {
             POOLS_PRODUCTS.pools.forEach(poolProduct => {
                 allProducts.push({
@@ -4525,17 +4494,14 @@ const LanguageUtils = {
         );
     },
 
-    // New function to get POOLS_PRODUCTS with proper structure
     getPoolsProductsBySubcategory: function (subcategoryId) {
         if (!POOLS_PRODUCTS.pools) return [];
         return POOLS_PRODUCTS.pools.filter(product => product.sub === subcategoryId);
     },
 
-    // Get all products including both PRODUCTS_DATA and POOLS_PRODUCTS
     getAllProducts: function () {
         const allProducts = [...PRODUCTS_DATA];
 
-        // Add POOLS_PRODUCTS to the main array with proper structure
         if (POOLS_PRODUCTS.pools) {
             POOLS_PRODUCTS.pools.forEach(poolProduct => {
                 allProducts.push({
@@ -4554,18 +4520,15 @@ const LanguageUtils = {
     }
 };
 
-// Data validation function
 function validateData() {
     const issues = [];
 
-    // Check for duplicate IDs in PRODUCTS_DATA
     const allIds = PRODUCTS_DATA.map(p => p.id);
     const duplicateIds = allIds.filter((id, index) => allIds.indexOf(id) !== index);
     if (duplicateIds.length > 0) {
         issues.push(`Duplicate product IDs found in PRODUCTS_DATA: ${duplicateIds.join(', ')}`);
     }
 
-    // Check for duplicate IDs in POOLS_PRODUCTS
     if (POOLS_PRODUCTS.pools) {
         const poolIds = POOLS_PRODUCTS.pools.map(p => p.id);
         const duplicatePoolIds = poolIds.filter((id, index) => poolIds.indexOf(id) !== index);
@@ -4574,14 +4537,12 @@ function validateData() {
         }
     }
 
-    // Check for missing images
     PRODUCTS_DATA.forEach(product => {
         if (!product.image) {
             issues.push(`Product ${product.id} is missing image`);
         }
     });
 
-    // Check POOLS_PRODUCTS for images
     if (POOLS_PRODUCTS.pools) {
         POOLS_PRODUCTS.pools.forEach((product, index) => {
             if (!product.image) {
@@ -4590,7 +4551,6 @@ function validateData() {
         });
     }
 
-    // Check for missing prices or invalid prices
     PRODUCTS_DATA.forEach(product => {
         if (typeof product.price !== 'number' || product.price <= 0) {
             issues.push(`Product ${product.id} has invalid price: ${product.price}`);
@@ -4599,13 +4559,11 @@ function validateData() {
             issues.push(`Product ${product.id} has invalid oldPrice: ${product.oldPrice}`);
         }
         
-        // Check for missing translations
         if (!product.title.ro || !product.title.ru || !product.title.en) {
             issues.push(`Product ${product.id} missing some translations`);
         }
     });
 
-    // Check POOLS_PRODUCTS prices
     if (POOLS_PRODUCTS.pools) {
         POOLS_PRODUCTS.pools.forEach((product, index) => {
             if (typeof product.price !== 'number' || product.price <= 0) {
@@ -4615,14 +4573,12 @@ function validateData() {
                 issues.push(`POOLS_PRODUCTS item ${index} (ID: ${product.id}) has invalid oldPrice: ${product.oldPrice}`);
             }
             
-            // Check for missing translations
             if (!product.title.ro || !product.title.ru || !product.title.en) {
                 issues.push(`POOLS_PRODUCTS item ${index} (ID: ${product.id}) missing some translations`);
             }
         });
     }
 
-    // Check for valid categories and subcategories
     PRODUCTS_DATA.forEach(product => {
         const categoryExists = CATEGORIES_DATA.some(cat => cat.id === product.category);
         if (!categoryExists) {
@@ -4637,7 +4593,6 @@ function validateData() {
         }
     });
 
-    // Check POOLS_PRODUCTS categories and subcategories
     if (POOLS_PRODUCTS.pools) {
         POOLS_PRODUCTS.pools.forEach((product, index) => {
             if (product.subcategory) {
@@ -4654,7 +4609,6 @@ function validateData() {
 
 const ALL_PRODUCTS = [...PRODUCTS_DATA, ...(POOLS_PRODUCTS.pools || [])];
 
-// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         CATEGORIES_DATA,

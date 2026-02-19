@@ -1,4 +1,3 @@
-// Simplified product page script: rendering, search, pagination, and cart
 (function () {
     const CONFIG = { ITEMS_PER_PAGE: 12 };
 
@@ -12,12 +11,10 @@
         showingSubcategory: null
     };
 
-    // Helpers
     function byId(id) { return document.getElementById(id); }
 
     function normalizeImagePath(path) {
         if (!path) return '';
-        // Paths are now correct with BASE_PATH
         return path;
     }
 
@@ -26,13 +23,11 @@
         return price.toFixed(2) + ' LEI';
     }
 
-    // Language helper: reads saved language (fallback to 'ro')
     function getLang() {
         try { return localStorage.getItem('intex_language') || 'ro'; } catch (e) { return 'ro'; }
     }
 
     function getAllProducts() {
-        // Dacă avem funcția de descrieri, folosește-o
         if (typeof getAllProductsWithDescriptions === 'function') {
             console.log('[DEBUG] Using getAllProductsWithDescriptions from descrieri_produse.js');
             const allProducts = getAllProductsWithDescriptions();
@@ -52,7 +47,6 @@
         
         console.log('[DEBUG] getAllProductsWithDescriptions NOT available, using fallback');
         
-        // Fallback la vechea metodă dacă descriptions.js nu este încărcat
         const list = [];
         const accessoryAliases = ['accessories', 'swim-accessories', 'boats_pool_accessories', 'boats_care', 'pool_accessories'];
         
@@ -74,7 +68,6 @@
                 const pSub = (p.sub || p.subcategory || '').toString();
                 const isAccessorySub = accessoryAliases.includes(pSub);
 
-                // Generate consistent pool IDs based on index
                 const poolId = `pool_${String(index).padStart(4, '0')}`;
 
                 const item = Object.assign({
@@ -92,7 +85,6 @@
             });
         }
 
-        // Dacă există funcționalitate pentru a atașa descrieri, folosește-o
         if (typeof enhanceExistingProducts === 'function') {
             try { 
                 console.log('[DEBUG] Using enhanceExistingProducts, list length before:', list.length);
@@ -114,7 +106,6 @@
         return list;
     }
 
-    // Cart
     function loadCart() {
         try {
             State.cart = JSON.parse(localStorage.getItem('intex_cart') || '[]');
@@ -137,7 +128,6 @@
         saveCart();
         updateCartCount();
         renderCartItems();
-        // Show notification with product title
         try {
             const products = getAllProducts();
             const p = products.find(x=>String(x.id) === String(id));
@@ -152,7 +142,6 @@
             }
             const lang = getLang();
             const t = (window.translations && window.translations[lang]) ? window.translations[lang] : (window.translations && window.translations.ro) || {};
-            // Use i18n notification helper so message is translated at runtime
             if (window.showSuccessI18n) {
                 window.showSuccessI18n('add_to_cart_success', { title });
             } else {
@@ -160,11 +149,10 @@
                 const msg = template.replace('{title}', title);
                 if (window.showSuccess) window.showSuccess(msg); else alert(msg);
             }
-        } catch (e) { /* ignore */ }
+        } catch (e) {}
     }
 
     function removeFromCart(id) {
-        // Try to get product title for a friendly message
         try {
             const products = getAllProducts();
             const p = products.find(x=>String(x.id) === String(id));
@@ -183,7 +171,6 @@
 
             const lang = getLang();
             const t = (window.translations && window.translations[lang]) ? window.translations[lang] : (window.translations && window.translations.ro) || {};
-            // Use i18n notification helper so message is translated at runtime
             if (window.showInfoI18n) {
                 window.showInfoI18n('removed_from_cart', { title });
             } else {
@@ -202,7 +189,6 @@
         if (!it) return;
         it.qty = (it.qty||0) + delta;
         if (it.qty <= 0) {
-            // removal will show notification
             removeFromCart(id);
         } else {
             saveCart(); updateCartCount(); renderCartItems();
@@ -226,7 +212,7 @@
                     const msg = template.replace('{title}', title);
                     alert(msg);
                 }
-            } catch (e) { /* ignore */ }
+            } catch (e) {  }
         }
     }
 
@@ -248,7 +234,6 @@
             const line = (p.price||0) * (item.qty||1);
             total += line;
             
-            // Get product title in current language
             let title = p.title;
             if (p.title && typeof p.title === 'object') {
                 const lang = getLang();
@@ -301,13 +286,10 @@
             container.appendChild(div);
         });
         if (totalEl) totalEl.innerText = formatPrice(total);
-        // Ensure any newly inserted elements with data-i18n are translated
-        try { if (typeof setLanguage === 'function') setLanguage(getLang()); } catch (e) { /* ignore */ }
+        try { if (typeof setLanguage === 'function') setLanguage(getLang()); } catch (e) {  }
     }
 
-    // UI: categories & products
     function getCategoryTitle(cat) {
-        // Normalize legacy id 'pools' to our canonical 'baseine_intex'
         if (cat === 'pools') cat = 'baseine_intex';
         const c = (typeof CATEGORIES_DATA !== 'undefined') ? CATEGORIES_DATA.find(x=>x.id===cat) : null;
         if (!c) return cat;
@@ -318,11 +300,9 @@
         return c.title || c.id;
     }
 
-    // Subcategory title resolver (uses SUBCATEGORIES_DATA where available)
     function getSubcategoryLabel(subId) {
         if (!subId || typeof SUBCATEGORIES_DATA === 'undefined') return subId || '';
         const lang = getLang();
-        // look for the subId inside pools subcategories first
         for (const key in SUBCATEGORIES_DATA) {
             if (!Array.isArray(SUBCATEGORIES_DATA[key])) continue;
             const found = SUBCATEGORIES_DATA[key].find(s => s.id === subId);
@@ -338,7 +318,6 @@
         if (!menu || typeof CATEGORIES_DATA === 'undefined') return;
         menu.innerHTML = '';
         
-        // Icon mapping for categories (Font Awesome)
         const categoryIcons = {
             'boats': 'fas fa-water',
             'joaca': 'fas fa-gamepad',
@@ -375,9 +354,8 @@
         });
     }
 
-    // Re-render categories when language changes so titles/descriptions update
     window.addEventListener('languageChanged', (e) => {
-        try { renderCategories(); } catch (err) { /* ignore */ }
+        try { renderCategories(); } catch (err) {  }
     });
 
     function viewProducts(categoryId) {
@@ -386,11 +364,10 @@
         const menu = byId('category-menu');
         if (menu) menu.classList.add('hidden');
         if (container) container.classList.remove('hidden');
-        // Normalizează id-ul pentru categoria "Bazine Intex" astfel încât să folosească logica existentă
         if (categoryId === 'pools') categoryId = 'baseine_intex';
         State.currentCategory = categoryId;
         State.page = 1;
-        State.showingSubcategory = null; // Reset subcategory view
+        State.showingSubcategory = null; 
         const all = getAllProducts();
         console.log('[DEBUG] viewProducts called for:', categoryId);
         console.log('[DEBUG] total products from data:', Array.isArray(all) ? all.length : typeof all);
@@ -402,7 +379,7 @@
             console.log('[DEBUG] first 8 products:', all.slice(0,8).map(p=>({id:p.id||p.title, category:p.category, title: (p.title && (p.title.ro||p.title.en||p.title))}))); 
         }
         
-        // Map category aliases to actual subcategories
+
         const categoryMap = {
             'accessories': ['swim-accessories', 'boats_pool_accessories', 'boats_care'],
             'spares': ['intex_parts']
@@ -410,9 +387,7 @@
 
         let filtered = [];
         if (categoryId === 'baseine_intex') {
-            // Include all products that come from POOLS_PRODUCTS (have sub/subcategory)
-            // and group them into ordered subcategories for display
-            // Build groupsOrder using multilingual labels from SUBCATEGORIES_DATA when possible
+
             const poolAccessoryLabels = {
                 ro: 'Accesorii pentru bazine',
                 ru: 'Аксессуары для бассейнов',
@@ -428,24 +403,19 @@
                 { id: 'pool_accessories', label: poolAccessoryLabels[lang] || poolAccessoryLabels.ro }
             ];
 
-            // Build groups and assign each product to the first matching group to avoid duplicates
             const groupsMap = {};
             groupsOrder.forEach(g => { groupsMap[g.id] = { id: g.id, label: g.label, items: [] }; });
 
-            // helper to check equality
             function eq(a, b) { return a && b && a.toString() === b.toString(); }
 
-            // iterate products and put each into the first matching group
             all.forEach(p => {
-                // only consider pool-related products (those with sub/subcategory or pool-related categories)
                 const pSub = p.sub || p.subcategory || null;
                 const pCat = p.category || '';
 
                 let assigned = false;
 
-                // 1) exact sub match groups
                 for (const g of groupsOrder) {
-                    if (g.id === 'pool_accessories') continue; // skip accessories here
+                    if (g.id === 'pool_accessories') continue; 
                     if (pSub && eq(pSub, g.id)) {
                         groupsMap[g.id].items.push(p);
                         assigned = true;
@@ -455,44 +425,32 @@
 
                 if (assigned) return;
 
-                // 2) intex_parts may also be present in category field
                 if (pCat === 'intex_parts' && groupsMap['intex_parts']) {
                     groupsMap['intex_parts'].items.push(p);
                     return;
                 }
 
-                // 3) pool_accessories: catch remaining pool/accessory related items
-                // Only include products into pool_accessories when they are clearly pool-related
                 const accessoryCats = ['accessories', 'swim-accessories', 'boats_pool_accessories', 'boats_care'];
-                // pool-related keywords used only for products that originate from pools or are category 'pools'
                 const poolKeywords = ['filter', 'filtr', 'pompa', 'pompe', 'pump', 'skimmer', 'chlor', 'clor', 'intex', 'bazin', 'bazinul', 'piscin', 'piscină', 'pool', 'filter-sand', 'adapter', 'valve'];
                 const titleStr = ((p.title && (p.title.ro || p.title.en || p.title)) || '').toString().toLowerCase();
                 const titleMatches = poolKeywords.some(k => titleStr.includes(k));
 
-                // Rules:
-                // - If product explicitly belongs to 'pools' (or was merged from POOLS_PRODUCTS), allow matching by keywords or sub
-                // - If product already has an accessory-like category/subcategory, include it
-                // - Do NOT include arbitrary PRODUCTS_DATA items based only on title keyword matches
                 const isFromPools = !!p.__fromPools || pCat === 'pools';
 
                 if (isFromPools) {
-                    // allow if subcategory suggests accessory or title contains pool keyword
                     if ((pSub && accessoryCats.includes(pSub)) || titleMatches || accessoryCats.includes(pCat)) {
                         groupsMap['pool_accessories'].items.push(p);
                         return;
                     }
                 } else {
-                    // not from pools: only include if its category/subcategory is explicitly an accessory category
                     if (accessoryCats.includes(pCat) || (pSub && accessoryCats.includes(pSub))) {
                         groupsMap['pool_accessories'].items.push(p);
                         return;
                     }
                 }
 
-                // 5) otherwise ignore (not pool-related)
             });
 
-            // Dedupe produse între grupuri: fiecare produs apare o singură dată, în primul grup în care a fost găsit
             const seenIds = new Set();
             State.grouped = groupsOrder.map(g => {
                 const group = groupsMap[g.id];
@@ -508,16 +466,13 @@
                 return { id: group.id, label: group.label, items: uniqueItems };
             });
             
-            // Afișează direct lista de subcategorii (doar antetele)
-            State.currentProducts = []; // Nu afișăm produsele direct
+            State.currentProducts = [];
         } else if (categoryMap[categoryId]) {
-            // If category has aliases, filter by those subcategories
             filtered = all.filter(p => categoryMap[categoryId].includes(p.category));
             console.log('[DEBUG] categoryMap filter for', categoryId, 'found', filtered.length, 'items');
             State.grouped = null;
             State.currentProducts = filtered;
         } else {
-            // Otherwise filter by exact category match
             filtered = all.filter(p=>p.category===categoryId || (p.category && p.category.toString()===categoryId));
             console.log('[DEBUG] exact filter for', categoryId, 'found', filtered.length, 'items');
             State.grouped = null;
@@ -530,7 +485,6 @@
         renderProductsPage();
     }
 
-    // Funcție nouă pentru a afișa produsele unei subcategorii
     function showSubcategoryProducts(group) {
         State.showingSubcategory = group;
         State.page = 1;
@@ -545,7 +499,6 @@
         if (!grid) return;
         grid.innerHTML = '';
 
-        // Helper to render compact pagination (1 2 ... n-1 n with neighbors)
         function createPaginationButtons(paginationEl, totalPages, currentPage) {
             if (!paginationEl) return;
             const appendNav = (pageNum) => {
@@ -556,17 +509,14 @@
                 paginationEl.appendChild(btn);
             };
 
-            // if few pages, show all
             if (totalPages <= 7) {
                 for (let i = 1; i <= totalPages; i++) appendNav(i);
                 return;
             }
 
-            // Always show first two
             appendNav(1);
             appendNav(2);
 
-            // Determine middle window
             const left = Math.max(3, currentPage - 1);
             const right = Math.min(totalPages - 2, currentPage + 1);
 
@@ -586,14 +536,11 @@
                 appendNav(totalPages - 2);
             }
 
-            // Always show last two
             appendNav(totalPages - 1);
             appendNav(totalPages);
         }
 
-        // Dacă suntem în modul de vizualizare a unei subcategorii
         if (State.showingSubcategory) {
-            // Schimbă textul butonului "Înapoi" (folosind traduceri)
             if (backBtnText) {
                 const lang = getLang();
                 backBtnText.textContent = (window.translations && window.translations[lang] && window.translations[lang].back_btn_subcats) || 'La Subcategorii';
@@ -611,19 +558,16 @@
                 return;
             }
 
-            // Actualizează titlul paginii
             if (catTitle) {
                 catTitle.textContent = `${getCategoryTitle(State.currentCategory)} - ${State.showingSubcategory.label}`;
             }
 
-            // Afișează produsele cu paginare
             const totalPages = Math.max(1, Math.ceil(products.length / CONFIG.ITEMS_PER_PAGE));
             if (State.page > totalPages) State.page = totalPages;
             const start = (State.page - 1) * CONFIG.ITEMS_PER_PAGE;
             const end = start + CONFIG.ITEMS_PER_PAGE;
 
-            // Use the existing #productListGrid so CSS controls responsive columns
-            const productsGrid = grid; // alias to the real container
+            const productsGrid = grid; 
             productsGrid.classList.add('product-list-grid');
             productsGrid.style.gap = '16px';
 
@@ -659,9 +603,7 @@
                 const btn = card.querySelector('.btn-add-cart');
                 btn.addEventListener('click', (e) => { e.stopPropagation(); addToCart(p.id || p.title); });
                 
-                // On both mobile and larger screens: open modal on card click
                 card.addEventListener('click', (e) => {
-                    // Don't open modal if clicking the add to cart button
                     if (e.target.closest('.btn-add-cart')) return;
                     openProductModal(p);
                 });
@@ -669,7 +611,6 @@
                 productsGrid.appendChild(card);
             });
 
-            // Paginare
             if (pagination) {
                 pagination.innerHTML = '';
                 if (totalPages > 1) {
@@ -705,9 +646,7 @@
             return;
         }
 
-        // Dacă avem grupuri (pentru baseine_intex) - afișăm doar lista de subcategorii
         if (State.grouped && State.currentCategory === 'baseine_intex') {
-            // Schimbă textul butonului "Înapoi" (folosind traduceri)
             if (backBtnText) {
                 const lang = getLang();
                 backBtnText.textContent = (window.translations && window.translations[lang] && window.translations[lang].back_btn_categories) || 'La Categorii';
@@ -717,7 +656,7 @@
             subcatList.className = 'subcategory-list';
             
             State.grouped.forEach(group => {
-                if (group.items.length === 0) return; // Sari peste subcategoriile goale
+                if (group.items.length === 0) return;
                 
                 const subcatCard = document.createElement('div');
                 subcatCard.className = 'subcategory-card';
@@ -731,7 +670,6 @@
                     </div>
                 `;
                 
-                // Click pentru a vedea produsele
                 subcatCard.addEventListener('click', () => showSubcategoryProducts(group));
                 
                 subcatList.appendChild(subcatCard);
@@ -742,7 +680,6 @@
             return;
         }
 
-        // Cazul normal - afișare produse directe (pentru alte categorii)
         const products = State.currentProducts || [];
         const lang = getLang();
         if (!products.length) {
@@ -756,8 +693,7 @@
         const start = (State.page - 1) * CONFIG.ITEMS_PER_PAGE;
         const end = start + CONFIG.ITEMS_PER_PAGE;
         
-        // Use the existing #productListGrid so CSS controls responsive columns
-        const productsGrid = grid; // alias to the real container
+        const productsGrid = grid; 
         productsGrid.classList.add('product-list-grid');
         productsGrid.style.gap = '16px';
         
@@ -793,30 +729,21 @@
             const btn = card.querySelector('.btn-add-cart');
             btn.addEventListener('click', (e) => { e.stopPropagation(); addToCart(p.id || p.title); });
             
-            // On both mobile and larger screens: open modal on card click
             card.addEventListener('click', (e) => {
-                // Don't open modal if clicking the add to cart button
                 if (e.target.closest('.btn-add-cart')) return;
                 openProductModal(p);
             });
             
             productsGrid.appendChild(card);
         });
-        
-        // productsGrid is the grid itself; no need to append it.
-        
-        // Paginare pentru cazul normal
         if (pagination) {
             pagination.innerHTML = '';
-            // Setează stiluri inline pentru containerul de paginare
             pagination.style.display = 'flex';
             pagination.style.justifyContent = 'center';
             pagination.style.alignItems = 'center';
             pagination.style.gap = '8px';
             pagination.style.marginTop = '40px';
             pagination.style.marginBottom = '40px';
-            // allow wrapping controlled by CSS to avoid horizontal page scroll
-            // pagination.style.flexWrap = 'nowrap';
             if (totalPages > 1) {
                 if (State.page > 1) {
                     const prev = document.createElement('button');
@@ -825,8 +752,6 @@
                     prev.onclick = () => { State.page--; renderProductsPage(); };
                     pagination.appendChild(prev);
                 }
-                
-                    // compact pagination
                     createPaginationButtons(pagination, totalPages, State.page);
                 
                 if (State.page < totalPages) {
@@ -840,9 +765,7 @@
         }
     }
 
-    // Search - FUNCȚIA REPARATĂ
     function performSearch(q) {
-        // Handle both string query and event object from form submit
         if (q && typeof q === 'object' && q.preventDefault) {
             q.preventDefault();
             const inp = document.querySelector('#search-overlay input') || document.querySelector('input#search-input');
@@ -856,22 +779,18 @@
         const query = q.toLowerCase();
         const lang = getLang();
         
-        // Helper: check if query matches any category/subcategory name or description
         function matchesCategory(p) {
             const pCat = p.category || '';
             const pSub = p.sub || p.subcategory || '';
             
-            // Get category title
             if (typeof CATEGORIES_DATA !== 'undefined') {
                 const cat = CATEGORIES_DATA.find(c => c.id === pCat);
                 if (cat) {
-                    // Check category title in all languages
                     if (cat.i18n_title && typeof cat.i18n_title === 'object') {
                         for (const langKey in cat.i18n_title) {
                             if (cat.i18n_title[langKey].toLowerCase().includes(query)) return true;
                         }
                     }
-                    // Check category description in all languages
                     if (cat.i18n_desc && typeof cat.i18n_desc === 'object') {
                         for (const langKey in cat.i18n_desc) {
                             if (cat.i18n_desc[langKey].toLowerCase().includes(query)) return true;
@@ -880,7 +799,6 @@
                 }
             }
             
-            // Get subcategory title (if in SUBCATEGORIES_DATA)
             if (typeof SUBCATEGORIES_DATA !== 'undefined' && pSub) {
                 for (const key in SUBCATEGORIES_DATA) {
                     if (!Array.isArray(SUBCATEGORIES_DATA[key])) continue;
@@ -897,16 +815,13 @@
         }
         
         State.currentProducts = all.filter(p => {
-            // Handle both object and string titles
             let title = '';
             if (p.title && typeof p.title === 'object') {
-                // Try all languages
                 title = (p.title[lang] || p.title.ro || Object.values(p.title)[0] || '').toLowerCase();
             } else {
                 title = (p.title || '').toLowerCase();
             }
             
-            // Also search in description if available
             let description = '';
             if (p.description && typeof p.description === 'object') {
                 description = (p.description[lang] || p.description.ro || Object.values(p.description)[0] || '').toLowerCase();
@@ -914,7 +829,6 @@
                 description = (p.description || '').toLowerCase();
             }
             
-            // Search in title, description, OR category/subcategory match
             return title.includes(query) || 
                    description.includes(query) || 
                    matchesCategory(p);
@@ -923,7 +837,7 @@
         State.page = 1;
         State.currentCategory = null;
         State.grouped = null;
-        State.showingSubcategory = null; // Reset subcategory view when searching
+        State.showingSubcategory = null; 
         
         const catTitle = byId('currentCategoryTitle');
         if (catTitle) {
@@ -944,16 +858,13 @@
         
         renderProductsPage();
         
-        // Close search overlay if open
         const searchOverlay = document.getElementById('search-overlay');
         if (searchOverlay) searchOverlay.style.display = 'none';
         
-        // Clear search input
         const searchInput = document.querySelector('#search-overlay input') || document.querySelector('input#search-input');
         if (searchInput) searchInput.value = '';
     }
 
-    // Search overlay controls
     function openSearch() {
         const overlay = byId('search-overlay');
         if (overlay) {
@@ -974,7 +885,6 @@
         }
     }
 
-    // Quick filter function
     function applyQuickFilter(filter) {
         const all = getAllProducts();
         let filtered = [];
@@ -982,13 +892,10 @@
         if (filter === 'all') {
             filtered = all;
         } else if (filter === 'pools') {
-            // Map 'pools' filter to 'baseine_intex' category
             filtered = all.filter(p => p.category === 'baseine_intex');
         } else if (filter === 'accessories') {
-            // Map 'accessories' to 'swim-accessories' category
             filtered = all.filter(p => p.category === 'swim-accessories');
         } else if (filter === 'spares') {
-            // Map 'spares' to products with 'intex_parts' subcategory
             filtered = all.filter(p => p.subcategory === 'intex_parts');
         }
 
@@ -998,7 +905,6 @@
         State.grouped = null;
         State.showingSubcategory = null;
 
-        // Update title
         const catTitle = byId('currentCategoryTitle');
         if (catTitle) {
             const lang = getLang();
@@ -1011,7 +917,6 @@
             catTitle.innerText = filterTitles[filter][lang] || filterTitles[filter].ro;
         }
 
-        // Show product list, hide categories
         const categoryMenu = byId('category-menu');
         if (categoryMenu) categoryMenu.classList.add('hidden');
 
@@ -1021,7 +926,6 @@
         renderProductsPage();
     }
 
-    // Cart overlay controls
     function openCart() {
         const el = byId('cart-overlay');
         if (el) {
@@ -1038,31 +942,25 @@
         }
     }
 
-    // Init
     function init() {
-        // Bind global helpers for HTML inline handlers used in cart items
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.changeQty = changeQty;
         window.openCart = openCart;
         window.closeCart = closeCart;
-        window.showSubcategoryProducts = showSubcategoryProducts; // Expun funcția global
-
+        window.showSubcategoryProducts = showSubcategoryProducts; 
         loadCart(); renderCartItems();
         renderCategories();
 
-        // Check URL search parameter (from main.js redirect or direct search URL)
         const urlParams = new URLSearchParams(window.location.search);
         const searchQuery = urlParams.get('search');
         if (searchQuery) {
             performSearch(searchQuery);
         }
 
-        // Bind search button click to open overlay
         const searchBtn = byId('searchBtn');
         if (searchBtn) searchBtn.addEventListener('click', openSearch);
 
-        // Bind filter list clicks
         const filterList = byId('filterList');
         if (filterList) {
             filterList.addEventListener('click', (e) => {
@@ -1071,14 +969,12 @@
                     const filter = li.getAttribute('data-filter');
                     applyQuickFilter(filter);
                     
-                    // Update active class
                     filterList.querySelectorAll('li').forEach(item => item.classList.remove('active'));
                     li.classList.add('active');
                 }
             });
         }
 
-        // Bind search - IMPROVED SEARCH BINDING
         const searchForms = document.querySelectorAll('form[action*="search"], form[id*="search"]');
         searchForms.forEach(form => {
             form.addEventListener('submit', (e) => {
@@ -1091,7 +987,6 @@
             });
         });
 
-        // Also bind Enter key on search inputs
         const searchInputs = document.querySelectorAll('input[type="text"][placeholder*="căutare"], input[type="text"][placeholder*="search"], input#search-input');
         searchInputs.forEach(input => {
             input.addEventListener('keypress', (e) => { 
@@ -1102,22 +997,17 @@
             });
         });
 
-        // Back button
         const backBtn = byId('backToCategoriesBtn');
         if (backBtn) backBtn.addEventListener('click', ()=>{ 
-            // Dacă suntem într-o subcategorie, întoarce-te la lista de subcategorii
             if (State.showingSubcategory) {
                 State.showingSubcategory = null;
                 renderProductsPage();
             } else {
-                // Altfel, întoarce-te complet la categorii
                 State.showingSubcategory = null;
                 const menu = byId('category-menu'); 
                 if (menu) menu.classList.remove('hidden'); 
                 const container = byId('product-list-container'); 
                 if (container) container.classList.add('hidden');
-                
-                // Reset filter to "all"
                 const filterList = byId('filterList');
                 if (filterList) {
                     filterList.querySelectorAll('li').forEach(item => item.classList.remove('active'));
@@ -1127,27 +1017,23 @@
             }
         });
 
-        // Cart open/close
         const cartBtn = byId('cartBtn'); if (cartBtn) cartBtn.addEventListener('click', openCart);
         const closeCartBtns = document.querySelectorAll('#cart-overlay .close-btn'); closeCartBtns.forEach(b=>b.addEventListener('click', closeCart));
 
-        // Re-render when language changes elsewhere (main.js dispatches 'languageChanged')
         window.addEventListener('languageChanged', (e) => {
             try {
                 renderCategories();
-                // If we're viewing the pools Intex category, rebuild the grouped view
                 if (State.currentCategory === 'baseine_intex') {
                     viewProducts('baseine_intex');
                 } else {
                     renderProductsPage();
                 }
-            } catch (err) { /* ignore */ }
+            } catch (err) { }
         });
 
         console.log('Produse script initialized');
     }
 
-    // Expose renderCartItems so other scripts may call it
     window.renderCartItems = renderCartItems;
     window.addToCart = addToCart;
     window.removeFromCart = removeFromCart;
@@ -1161,10 +1047,6 @@
     document.addEventListener('DOMContentLoaded', init);
 })();
 
-// ========================================
-// PRODUCT MODAL FUNCTIONS (Global scope)
-// ========================================
-
 let currentModalProduct = null;
 let modalQty = 1;
 
@@ -1174,7 +1056,6 @@ function openProductModal(product) {
     currentModalProduct = product;
     modalQty = 1;
     
-    // Get translated title and description
     const lang = localStorage.getItem('intex_language') || 'ro';
     const title = (product.title && product.title[lang]) ? product.title[lang] : 
                   (product.title && product.title.ro) ? product.title.ro : 
@@ -1182,13 +1063,11 @@ function openProductModal(product) {
     const desc = (product.description && (product.description[lang] || product.description.ro || product.description.en)) ? 
                  (product.description[lang] || product.description.ro || product.description.en) : 'Fără descriere';
     
-    // Set modal content
     document.getElementById('modal-product-title').textContent = title;
     document.getElementById('modal-product-image').src = product.image || '';
     document.getElementById('modal-product-description').textContent = desc;
     document.getElementById('modal-qty-display').textContent = 1;
     
-    // Set price
     const priceEl = document.getElementById('modal-product-price');
     const oldPriceEl = document.getElementById('modal-product-old-price');
     
@@ -1201,7 +1080,6 @@ function openProductModal(product) {
         priceEl.textContent = (product.price.toFixed(2)) + ' LEI';
     }
     
-    // Show modal
     const modal = document.getElementById('product-modal');
     if (modal) {
         modal.classList.add('active');
@@ -1215,10 +1093,8 @@ function closeProductModal() {
     const modalContent = document.querySelector('.product-modal-content');
     
     if (modal && modalContent) {
-        // Add closing animation
         modalContent.classList.add('closing');
         
-        // Wait for animation to finish, then remove active class
         setTimeout(() => {
             modal.classList.remove('active');
             modalContent.classList.remove('closing');
@@ -1231,7 +1107,6 @@ function closeProductModal() {
     modalQty = 1;
 }
 
-// Modal quantity controls
 document.addEventListener('DOMContentLoaded', () => {
     const qtyMinus = document.getElementById('modal-qty-minus');
     const qtyPlus = document.getElementById('modal-qty-plus');
@@ -1257,7 +1132,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', () => {
             if (currentModalProduct) {
-                // Add product to cart with the selected quantity
                 const productId = currentModalProduct.id || currentModalProduct.title;
                 for (let i = 0; i < modalQty; i++) {
                     window.addToCart ? window.addToCart(productId) : console.log('addToCart not available');
@@ -1267,7 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Close modal on overlay click
     const modal = document.getElementById('product-modal');
     if (modal) {
         modal.addEventListener('click', (e) => {
@@ -1278,6 +1151,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Expose functions globally
 window.openProductModal = openProductModal;
 window.closeProductModal = closeProductModal;

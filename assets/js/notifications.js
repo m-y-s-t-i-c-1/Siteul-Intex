@@ -1,7 +1,3 @@
-/**
- * Notification System - INTEX Moldova (Refactored)
- */
-
 class NotificationManager {
     constructor() {
         this.container = null;
@@ -12,13 +8,10 @@ class NotificationManager {
             defaultLang: 'ro'
         };
 
-        // Listen for language changes
         window.addEventListener('languageChanged', (e) => this.handleLanguageChange(e));
     }
 
-    /**
-     * Lazy initialization of the DOM container
-     */
+
     initContainer() {
         if (this.container) return;
 
@@ -30,7 +23,6 @@ class NotificationManager {
             if (document.body) {
                 document.body.appendChild(container);
             } else {
-                // Retry after a short delay
                 setTimeout(() => this.initContainer(), 100);
                 return;
             }
@@ -38,9 +30,6 @@ class NotificationManager {
         this.container = container;
     }
 
-    /**
-     * Get HTML Icon string based on type
-     */
     getIcon(type) {
         const icons = {
             success: '<i class="fas fa-check-circle"></i>',
@@ -51,19 +40,15 @@ class NotificationManager {
         return icons[type] || icons.info;
     }
 
-    /**
-     * Get default title based on type and current language
-     */
     getDefaultTitle(type) {
         const lang = this.getCurrentLang();
         const tKey = `notif_${type}`;
         
-        // Check window.translations first
+
         if (window.translations && window.translations[lang] && window.translations[lang][tKey]) {
             return window.translations[lang][tKey];
         }
 
-        // Fallback titles
         const titles = {
             success: { ro: 'Succes', en: 'Success', ru: 'Успех' },
             error: { ro: 'Eroare', en: 'Error', ru: 'Ошибка' },
@@ -74,9 +59,6 @@ class NotificationManager {
         return (titles[type] && titles[type][lang]) ? titles[type][lang] : type.toUpperCase();
     }
 
-    /**
-     * Helper to determine current language
-     */
     getCurrentLang() {
         if (window.currentLang) return window.currentLang;
         if (typeof localStorage !== 'undefined' && localStorage.getItem(this.defaults.langKey)) {
@@ -85,19 +67,14 @@ class NotificationManager {
         return this.defaults.defaultLang;
     }
 
-    /**
-     * Translate logic for keys
-     */
     translate(key, params = {}) {
         const lang = this.getCurrentLang();
         let text = key;
 
-        // 1. Check window.translations
         if (window.translations && window.translations[lang] && window.translations[lang][key]) {
             text = window.translations[lang][key];
         } 
 
-        // 2. Replace params {param}
         if (params && typeof params === 'object') {
             Object.keys(params).forEach(k => {
                 text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
@@ -107,9 +84,7 @@ class NotificationManager {
         return text;
     }
 
-    /**
-     * Core functionality to create and show the toast
-     */
+
     show(messagePayload, type = 'info', title = null, duration = null) {
         this.initContainer();
         if (!this.container) {
@@ -121,7 +96,7 @@ class NotificationManager {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         
-        // Handle Message (String vs Translation Key Object)
+
         let displayMessage = '';
         let translationData = null;
 
@@ -135,7 +110,6 @@ class NotificationManager {
         const displayTitle = title || this.getDefaultTitle(type);
         const iconHtml = this.getIcon(type);
 
-        // HTML Structure
         toast.innerHTML = `
             <div class="toast-icon">${iconHtml}</div>
             <div class="toast-content">
@@ -148,7 +122,6 @@ class NotificationManager {
             </div>
         `;
 
-        // Store translation data for language switching
         if (translationData) {
             toast.dataset.i18nKey = translationData.key;
             if (translationData.params) {
@@ -164,7 +137,6 @@ class NotificationManager {
             toast.dataset.i18nType = type;
         }
 
-        // Timer & Progress Bar Logic
         let timeoutId = null;
         let remainingTime = actualDuration;
         let startTime = Date.now();
@@ -176,8 +148,7 @@ class NotificationManager {
             if (actualDuration <= 0) return;
             startTime = Date.now();
             isPaused = false;
-            
-            // Trigger CSS transition
+
             requestAnimationFrame(() => {
                 if (progressBar) {
                     progressBar.style.transform = 'scaleX(0)';
@@ -214,7 +185,6 @@ class NotificationManager {
             startTimer();
         };
 
-        // Event listeners
         const closeBtn = toast.querySelector('.toast-close');
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.remove(toast));
@@ -223,11 +193,9 @@ class NotificationManager {
         toast.addEventListener('mouseenter', pauseTimer);
         toast.addEventListener('mouseleave', resumeTimer);
 
-        // Add to DOM
         this.container.appendChild(toast);
         this.toasts.push(toast);
 
-        // Trigger entry animation
         requestAnimationFrame(() => {
             toast.classList.add('show');
             if (actualDuration > 0) startTimer();
@@ -236,9 +204,7 @@ class NotificationManager {
         return toast;
     }
 
-    /**
-     * Remove toast cleanly
-     */
+
     remove(toast) {
         if (!toast || toast.classList.contains('removing')) return;
 
@@ -253,12 +219,9 @@ class NotificationManager {
         }, 400);
     }
 
-    /**
-     * Update texts dynamically when language changes
-     */
+
     handleLanguageChange(e) {
         this.toasts.forEach(toast => {
-            // Update Message
             if (toast.dataset.i18nKey) {
                 let params = {};
                 if (toast.dataset.i18nParams) {
@@ -274,7 +237,7 @@ class NotificationManager {
                 if (msgEl) msgEl.textContent = newMsg;
             }
 
-            // Update Title
+
             if (toast.dataset.i18nType) {
                 const newTitle = this.getDefaultTitle(toast.dataset.i18nType);
                 const titleEl = toast.querySelector('.toast-title');
@@ -283,9 +246,7 @@ class NotificationManager {
         });
     }
 
-    /**
-     * Security: Escape HTML characters
-     */
+
     escapeHtml(text) {
         if (text === null || text === undefined) return '';
         const map = {
@@ -299,23 +260,12 @@ class NotificationManager {
     }
 }
 
-// ============================================
-// INITIALIZATION
-// ============================================
-
-// Create global instance
 window.notifyManager = new NotificationManager();
 
-// ============================================
-// GLOBAL WRAPPERS (for compatibility)
-// ============================================
-
-// Generic function
 window.showNotification = function(msg, type, title, duration) {
     return window.notifyManager.show(msg, type, title, duration);
 };
 
-// Specific wrappers
 window.showSuccess = function(msg, title, duration) {
     return window.notifyManager.show(msg, 'success', title, duration);
 };
@@ -332,7 +282,6 @@ window.showWarning = function(msg, title, duration) {
     return window.notifyManager.show(msg, 'warning', title, duration);
 };
 
-// i18n Wrappers (accept key and params)
 window.showSuccessI18n = function(key, params, duration) {
     return window.notifyManager.show({ key, params }, 'success', null, duration);
 };
