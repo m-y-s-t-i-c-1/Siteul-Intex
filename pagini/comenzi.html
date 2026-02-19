@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="orders_page_title">Comenzile Mele | INTEX Moldova</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../assets/main.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
+    <link rel="stylesheet" href="../assets/css/orders.css">
+</head>
+<body>
+
+    <!-- Navbar identic cu index.html -->
+    <nav>
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="site-title">INTEX<span>MOLDOVA</span></div>
+
+        <ul class="nav-menu">
+            <li><a href="../index.html" data-i18n="menu_home">Acasă</a></li>
+            <li><a href="produse.html" data-i18n="menu_products">Produse</a></li>
+            <li><a href="../index.html#despre" data-i18n="menu_about">Despre Noi</a></li>
+            <li><a href="FAQ.html" data-i18n="menu_faq">FAQ</a></li>
+            <li><a href="returnare.html" data-i18n="menu_policy">Politica de Retur</a></li>
+            <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
+            <li><a href="#" class="active" data-i18n="menu_orders">Comenzi</a></li>
+        </ul>
+
+        <ul class="nav-menu mobile">
+            <li><a href="../index.html" data-i18n="menu_home">Acasă</a></li>
+            <li><a href="produse.html" data-i18n="menu_products">Produse</a></li>
+            <li><a href="../index.html#despre" data-i18n="menu_about">Despre Noi</a></li>
+            <li><a href="FAQ.html" data-i18n="menu_faq">FAQ</a></li>
+            <li><a href="returnare.html" data-i18n="menu_policy">Politica de Retur</a></li>
+            <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
+            <li><a href="#" class="active" data-i18n="menu_orders">Comenzi</a></li>
+        </ul>
+
+        <div class="nav-controls">
+            <button class="search-btn" id="searchBtn" title="Căutare">
+                <i class="fas fa-search"></i>
+            </button>
+            
+            <div class="lang-switch">
+                <span class="lang-opt active" onclick="setLanguage('ro')">RO</span>
+                <span style="opacity: 0.3">|</span>
+                <span class="lang-opt" onclick="setLanguage('ru')">RU</span>
+                <span style="opacity: 0.3">|</span>
+                <span class="lang-opt" onclick="setLanguage('en')">EN</span>
+            </div>
+
+            <div class="theme-toggle" id="themeBtn">
+                <i class="fas fa-moon"></i>
+            </div>
+
+            <button class="login-btn" id="loginBtn" title="Contul Meu">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Conținut principal -->
+    <main class="orders-section">
+        <div class="orders-container">
+            <h1 data-i18n="orders_title">Comenzile Mele</h1>
+            <p class="orders-subtitle" data-i18n="orders_subtitle">Vizualizați și urmăriți toate comenzile dumneavoastră</p>
+
+            <!-- Loading state -->
+            <div id="orders-loading" class="orders-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span data-i18n="loading_orders">Se încarcă comenzile...</span>
+            </div>
+
+            <!-- Empty state -->
+            <div id="orders-empty" class="orders-empty" style="display: none;">
+                <i class="fas fa-shopping-bag"></i>
+                <h3 data-i18n="no_orders_title">Nu aveți comenzi încă</h3>
+                <p data-i18n="no_orders_text">Descoperiți produsele noastre și plasați prima comandă!</p>
+                <a href="produse.html" class="btn-main" data-i18n="browse_products">Vezi Produse</a>
+            </div>
+
+            <!-- Lista comenzi -->
+            <div id="orders-list" class="orders-list" style="display: none;">
+                <!-- Comenzile vor fi injectate aici de JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer simplu -->
+    <footer class="orders-footer">
+        <div class="footer-bottom">
+            © 2023 Intex Moldova. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="search-overlay">
+        <div class="search-content">
+            <span class="close-btn" onclick="closeSearch()">&times;</span>
+            <input type="text" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="Căutați produse...">
+            <a href="#" class="btn-main" data-i18n="search_button" onclick="performSearch(event)">Căută</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/main.js"></script>
+    <script src="../assets/js/notifications.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/orders.js"></script>
+</body>
+</html>
