@@ -4,13 +4,12 @@
     const CONFIG = {
         STORAGE_KEY: 'intex_orders',
         USER_PREFIX: 'orders_',
-        DEMO_MODE: true,
+        DEMO_MODE: false,
         ITEMS_PER_PAGE: 6,
         DEBOUNCE_DELAY: 300,
         ANIMATION_DURATION: 300
     };
 
-    try { window.Utils = Utils; } catch (e) { }
 
     const ORDER_STATUS = {
         PENDING: { key: 'pending', color: '#92400e', icon: 'fa-clock', text: { ro: 'În așteptare', ru: 'В ожидании', en: 'Pending' } },
@@ -20,6 +19,7 @@
         CANCELLED: { key: 'cancelled', color: '#991b1b', icon: 'fa-times-circle', text: { ro: 'Anulată', ru: 'Отменён', en: 'Cancelled' } },
         REFUNDED: { key: 'refunded', color: '#6b7280', icon: 'fa-undo', text: { ro: 'Rambursată', ru: 'Возвращён', en: 'Refunded' } }
     };
+
     const TranslationManager = {
         getCurrentLang() {
             return localStorage.getItem('intex_language') || 
@@ -58,24 +58,6 @@
         getInlineTranslations() {
             return {
                 ro: {
-                    order_status_pending: 'În așteptare',
-                    order_status_processing: 'În procesare',
-                    order_status_shipped: 'Expediată',
-                    order_status_delivered: 'Livrată',
-                    order_status_cancelled: 'Anulată',
-                    order_status_refunded: 'Rambursată',
-                    order_details: 'Detalii',
-                    track_order: 'Urmărire',
-                    reorder: 'Recomandă',
-                    cancel_order: 'Anulează',
-                    print_order: 'Printează',
-                    place_order: 'Plasează Comanda',
-                    items_count: '{count} produse',
-                    order_total: 'Total comandă',
-                    subtotal: 'Subtotal',
-                    shipping: 'Transport',
-                    tax: 'TVA',
-                    delivery_to: 'Livrare către',
                     payment_method: 'Metodă de plată',
                     order_date: 'Data comenzii',
                     order_timeline: 'Istoric comandă',
@@ -83,6 +65,18 @@
                     product: 'Produs',
                     quantity: 'Cantitate',
                     price: 'Preț',
+                    order_details: 'Detalii',
+                    track_order: 'Urmărește comanda',
+                    reorder: 'Repetă comanda',
+                    cancel_order: 'Anulează comanda',
+                    print_order: 'Tipărește',
+                    place_order: 'Plasează comanda',
+                    items_count: '{count} produse',
+                    order_total: 'Total comandă',
+                    subtotal: 'Subtotal',
+                    shipping: 'Livrare',
+                    tax: 'TVA',
+                    delivery_to: 'Livrare la',
                     no_orders_title: 'Nu aveți comenzi încă',
                     no_orders_text: 'Descoperiți produsele noastre și plasați prima comandă!',
                     browse_products: 'Vezi Produse',
@@ -211,6 +205,7 @@
             return product.title || product.name || 'Product';
         }
     };
+
     const Utils = {
         escapeHtml(str) {
             if (!str) return '';
@@ -265,8 +260,8 @@
             } catch (e) {
                 return false;
             }
-        }
-        ,
+        },
+
         normalizeImagePath(url) {
             if (!url) return url;
             if (/^(https?:)?\/\//.test(url) || url.startsWith('/')) return url;
@@ -279,8 +274,8 @@
             } catch (e) {
             }
             return url;
-        }
-        ,
+        },
+
         resolveProductImage(imgEl, title) {
             if (!imgEl) return;
             try {
@@ -328,6 +323,8 @@
             }
         }
     };
+
+    try { window.Utils = Utils; } catch (e) { }
 
     const ProductManager = {
         products: null,
@@ -500,18 +497,21 @@
             console.warn('[OrdersManager] Timeout waiting for data');
         }
 
-        init() {
+        async init() {
             try {
                 this.cacheDOMElements();
-                
-                if (!this.checkAuth()) {
-                    return;
-                }
+
+                this.checkAuth();
 
                 ProductManager.loadAllProducts();
 
                 this.setupEventListeners();
-                this.loadOrders();
+
+                await this.loadOrders();
+
+                if (!this.orders || this.orders.length === 0) {
+                    this.renderEmptyState();
+                }
 
                 window.addEventListener('languageChanged', () => {
                     this.renderOrders();
@@ -524,9 +524,9 @@
 
         cacheDOMElements() {
             this.dom.loading = document.getElementById('orders-loading');
-            this.dom.empty = document.getElementById('orders-empty');
-            this.dom.list = document.getElementById('orders-list');
-            this.dom.container = document.getElementById('orders-container');
+                this.dom.empty = document.getElementById('orders-empty');
+                this.dom.list = document.getElementById('orders-list');
+                this.dom.container = document.getElementById('orders-container') || document.querySelector('.orders-container');
             this.dom.pagination = document.getElementById('orders-pagination');
         }
 
@@ -588,15 +588,37 @@
                 await this.simulateDelay(600);
 
                 const storedOrders = this.getStoredOrders();
-                
                 if (storedOrders && storedOrders.length > 0) {
-                    this.orders = storedOrders;
+                    if (!CONFIG.DEMO_MODE) {
+                        const filtered = storedOrders.filter(o => !this.isDemoOrder(o));
+                        if (filtered.length !== storedOrders.length) {
+                            this.orders = filtered;
+                            try {
+                                localStorage.setItem('intex_orders', JSON.stringify(filtered));
+                            } catch (e) {}
+                        } else {
+                            this.orders = storedOrders;
+                        }
+                    } else {
+                        this.orders = storedOrders;
+                    }
                 } else if (CONFIG.DEMO_MODE) {
                     this.orders = this.generateDemoOrders();
                     this.saveOrders();
                 } else {
-                    this.orders = [];
+                    // If there are no stored orders, fall back to integrated sample orders
+                    this.orders = this.getIntegratedSampleOrders();
                 }
+
+                // Merge integrated sample orders into the list (do not persist) so samples are visible
+                try {
+                    const integrated = this.getIntegratedSampleOrders() || [];
+                    integrated.forEach(sample => {
+                        if (!this.orders.some(o => String(o.id || '').toUpperCase() === String(sample.id || '').toUpperCase())) {
+                            this.orders.unshift(sample);
+                        }
+                    });
+                } catch (e) {}
 
                 this.renderOrders();
                 
@@ -608,13 +630,58 @@
             }
         }
 
+        isDemoOrder(order) {
+            if (!order) return false;
+            try {
+                if (Array.isArray(order.items) && order.items.some(it => {
+                    const id = String(it.id || '').toUpperCase();
+                    const sku = String(it.sku || '').toUpperCase();
+                    const name = String(it.name || '').toLowerCase();
+                    if (id.startsWith('FALLBACK')) return true;
+                    if (sku.startsWith('FALLBACK')) return true;
+                    if (name.includes('piscină') || name.includes('pool') || name.includes('pomp')) {
+                        return false; 
+                    }
+                    return false;
+                })) return true;
+
+                if (order.id && /ORD-2024-/.test(String(order.id))) return true;
+
+                return false;
+            } catch (e) { return false; }
+        }
+
         getStoredOrders() {
             if (!Utils.storageAvailable()) return null;
             
             try {
-                const key = CONFIG.USER_PREFIX + (this.currentUser?.email || 'guest');
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : null;
+                const userKey = CONFIG.USER_PREFIX + (this.currentUser?.email || 'guest');
+                const userDataRaw = localStorage.getItem(userKey);
+                if (userDataRaw) {
+                    try { return JSON.parse(userDataRaw); } catch (e) { return null; }
+                }
+
+                const legacyRaw = localStorage.getItem('intex_orders');
+                if (legacyRaw) {
+                    try {
+                        const legacy = JSON.parse(legacyRaw) || [];
+                        if (this.currentUser && this.currentUser.email) {
+                            try {
+                                const existing = JSON.parse(localStorage.getItem(userKey) || '[]');
+                                const merged = existing.concat(legacy);
+                                localStorage.setItem(userKey, JSON.stringify(merged));
+                                return merged;
+                            } catch (e) {
+                                return legacy;
+                            }
+                        }
+                        return legacy;
+                    } catch (e) {
+                        return null;
+                    }
+                }
+
+                return null;
             } catch (e) {
                 console.error('[OrdersManager] Storage error:', e);
                 return null;
@@ -635,6 +702,7 @@
         simulateDelay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
+        
         generateDemoOrders() {
             const now = Date.now();
             const day = 86400000;
@@ -762,7 +830,7 @@
                             id: 'FALLBACK-001', 
                             name: 'Piscină INTEX 305x76cm', 
                             price: 899, 
-                            image: 'assets/img/pool1.jpg', 
+                            image: Utils.normalizeImagePath('assets/img/intex.jpg'), 
                             qty: 1, 
                             sku: 'FALLBACK-001' 
                         },
@@ -770,7 +838,7 @@
                             id: 'FALLBACK-002', 
                             name: 'Pompă filtrare', 
                             price: 351, 
-                            image: 'assets/img/pump1.jpg', 
+                            image: Utils.normalizeImagePath('assets/img/intex.jpg'), 
                             qty: 1, 
                             sku: 'FALLBACK-002' 
                         }
@@ -789,6 +857,95 @@
                     ]
                 }
             ];
+        }
+
+        // Integrated sample orders (code-level, not persisted in localStorage)
+        getIntegratedSampleOrders() {
+            const now = Date.now();
+            const day = 86400000;
+
+            const shipped = {
+                id: 'INT-SHIPPED-001',
+                date: new Date(now - day * 3).toISOString(),
+                status: 'shipped',
+                total: 1_173.93,
+                subtotal: 1100.00,
+                shippingCost: 73.93,
+                tax: 0,
+                items: [
+                    { id: 'P001', name: 'SET BARCĂ GONFLABILĂ EX', price: 399.00, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P001' },
+                    { id: 'P002', name: 'SET BARCĂ GONFLABILĂ EX', price: 399.00, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P002' },
+                    { id: 'P003', name: 'Accesorii', price: 375.93, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P003' }
+                ],
+                shipping: { name: 'Client Demo', address: 'sat. mingir', phone: '069000000', city: 'Chișinău', postalCode: '2000' },
+                payment: 'Cash on delivery',
+                timeline: [
+                    { status: 'ordered', date: new Date(now - day * 7).toISOString(), note: 'Comandă plasată' },
+                    { status: 'processing', date: new Date(now - day * 5).toISOString(), note: 'În procesare' },
+                    { status: 'shipped', date: new Date(now - day * 3).toISOString(), note: 'În curs de livrare' }
+                ]
+            };
+
+            const delivered = {
+                id: 'INT-DELIVERED-001',
+                date: new Date(now - day * 12).toISOString(),
+                status: 'delivered',
+                total: 899.00,
+                subtotal: 899.00,
+                shippingCost: 0,
+                tax: 0,
+                items: [
+                    { id: 'P010', name: 'Piscină INTEX 305x76cm', price: 899.00, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P010' }
+                ],
+                shipping: { name: 'Client Demo', address: 'Str. Exemplu 10', phone: '069111111', city: 'Chișinău', postalCode: '2000' },
+                payment: 'Card',
+                timeline: [
+                    { status: 'ordered', date: new Date(now - day * 18).toISOString(), note: 'Comandă plasată' },
+                    { status: 'processing', date: new Date(now - day * 16).toISOString(), note: 'În procesare' },
+                    { status: 'shipped', date: new Date(now - day * 14).toISOString(), note: 'Expediată' },
+                    { status: 'delivered', date: new Date(now - day * 12).toISOString(), note: 'Livrată' }
+                ]
+            };
+
+            const pending = {
+                id: 'INT-PENDING-001',
+                date: new Date(now - day * 1).toISOString(),
+                status: 'pending',
+                total: 249.00,
+                subtotal: 249.00,
+                shippingCost: 0,
+                tax: 0,
+                items: [
+                    { id: 'P020', name: 'Set vâsle', price: 249.00, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P020' }
+                ],
+                shipping: { name: 'Client Demo', address: 'Str. Exemplu 2', phone: '069444444', city: 'Chișinău', postalCode: '2000' },
+                payment: 'Card',
+                timeline: [
+                    { status: 'ordered', date: new Date(now - day * 2).toISOString(), note: 'Comandă plasată' }
+                ]
+            };
+
+            const cancelled = {
+                id: 'INT-CANCELLED-001',
+                date: new Date(now - day * 6).toISOString(),
+                status: 'cancelled',
+                total: 129.00,
+                subtotal: 129.00,
+                shippingCost: 0,
+                tax: 0,
+                items: [
+                    { id: 'P030', name: 'Accesoriu mic', price: 129.00, image: Utils.normalizeImagePath('assets/img/intex.jpg'), qty: 1, sku: 'P030' }
+                ],
+                shipping: { name: 'Client Demo', address: 'Str. Exemplu 6', phone: '069555555', city: 'Chișinău', postalCode: '2000' },
+                payment: 'Card',
+                timeline: [
+                    { status: 'ordered', date: new Date(now - day * 12).toISOString(), note: 'Comandă plasată' },
+                    { status: 'processing', date: new Date(now - day * 10).toISOString(), note: 'În procesare' },
+                    { status: 'cancelled', date: new Date(now - day * 6).toISOString(), note: 'Comandă anulată' }
+                ]
+            };
+
+            return [pending, shipped, delivered, cancelled];
         }
 
         showLoading(show) {
@@ -843,7 +1000,7 @@
                         <i class="fas fa-box-open" style="font-size: 4rem; color: #38bdf8; margin-bottom: 1.5rem;"></i>
                         <h3 style="color: #fff; margin-bottom: 0.5rem;">${t('no_orders_title')}</h3>
                         <p style="color: #94a3b8; margin-bottom: 1.5rem;">${t('no_orders_text')}</p>
-                        <a href="../index.html#produse" class="btn-main" style="background: #38bdf8; color: #0f172a; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; font-weight: 600;">
+                        <a href="/pagini/produse.html" class="btn-main" style="background: #38bdf8; color: #0f172a; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; font-weight: 600;">
                             <i class="fas fa-shopping-bag"></i> ${t('browse_products')}
                         </a>
                     </div>
@@ -864,9 +1021,13 @@
             const start = (this.currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
             const end = start + CONFIG.ITEMS_PER_PAGE;
             const pageOrders = orders.slice(start, end);
+            if (!pageOrders || pageOrders.length === 0) {
+                this.renderEmptyState();
+                return;
+            }
 
             const html = pageOrders.map(order => this.createOrderCard(order)).join('');
-            
+
             this.dom.list.innerHTML = html;
             this.dom.list.style.display = 'grid';
             
@@ -931,8 +1092,10 @@
                 `<div style="color: #64748b; font-size: 0.85rem;">+${moreNamesCount} ${t('items_count', {count: moreNamesCount}).replace(moreNamesCount, '').trim()}</div>` : '';
 
             const canCancel = ['pending', 'processing'].includes(order.status);
-            const canReorder = ['delivered', 'cancelled'].includes(order.status);
-            const canTrack = ['shipped', 'delivered'].includes(order.status);
+            // allow reorder for delivered/cancelled (existing) and also for shipped and pending as requested
+            const canReorder = ['delivered', 'cancelled', 'shipped', 'pending'].includes(order.status);
+            // tracking only for orders currently shipped
+            const canTrack = ['shipped'].includes(order.status);
 
             return `
                 <article class="order-card" data-order-id="${Utils.escapeHtml(order.id)}" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;">
@@ -1275,34 +1438,73 @@
                 console.error('[OrdersManager] Order not found for reorder:', orderId);
                 return;
             }
-
-            if (!confirm(t('confirm_reorder'))) {
-                return;
-            }
-
+            // Show styled confirmation modal for reordering
             try {
-                const newOrder = await this.createNewOrderFromExisting(order);
-                
-                if (newOrder) {
-                    this.orders.unshift(newOrder);
-                    this.saveOrders();
-                    
-                    this.renderOrders();
-                    
-                    this.showToast(t('order_placed_success'), 'success');
-                    
-                    setTimeout(() => {
-                        const newOrderCard = document.querySelector(`[data-order-id="${newOrder.id}"]`);
-                        if (newOrderCard) {
-                            newOrderCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            newOrderCard.style.animation = 'pulse 2s';
+                const existing = document.querySelector('.order-reorder-modal');
+                if (existing) existing.remove();
+
+                const modalHtml = `
+                    <div class="order-reorder-modal" style="position: fixed; inset: 0; background: rgba(2,6,23,0.75); display:flex; align-items:center; justify-content:center; z-index:10000;">
+                        <div style="background: #0f172a; color: #e6eef6; width: 100%; max-width: 520px; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.6); position: relative;">
+                            <button class="close-reorder-modal" style="position:absolute; right:12px; top:12px; background:none; border:none; color:#94a3b8; font-size:1.25rem; cursor:pointer;">&times;</button>
+                            <h3 style="margin:0 0 0.5rem 0; color:#fff;">${t('confirm_reorder')}</h3>
+                            <p style="color:#94a3b8; margin-bottom:1rem;">${t('confirm_reorder')}</p>
+                            <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                                <button class="btn-reorder-close" style="background: transparent; border:1px solid rgba(148,163,184,0.12); color:#94a3b8; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer;">${t('close')}</button>
+                                <button class="btn-reorder-confirm" style="background:#16a34a; color:#fff; border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer; font-weight:700;">${t('place_order')}</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                const modal = document.querySelector('.order-reorder-modal:last-child');
+                if (!modal) return;
+
+                const removeModal = () => { try { modal.remove(); } catch (e) {} };
+                modal.querySelector('.close-reorder-modal')?.addEventListener('click', removeModal);
+                modal.querySelector('.btn-reorder-close')?.addEventListener('click', removeModal);
+
+                modal.querySelector('.btn-reorder-confirm')?.addEventListener('click', async () => {
+                    try {
+                        const newOrder = await this.createNewOrderFromExisting(order);
+                        if (newOrder) {
+                            this.orders.unshift(newOrder);
+                            this.saveOrders();
+                            this.renderOrders();
+                            this.showToast(t('order_placed_success'), 'success');
+
+                            setTimeout(() => {
+                                const newOrderCard = document.querySelector(`[data-order-id="${newOrder.id}"]`);
+                                if (newOrderCard) {
+                                    newOrderCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    newOrderCard.style.animation = 'pulse 2s';
+                                }
+                            }, 300);
                         }
-                    }, 300);
+                    } catch (error) {
+                        console.error('[OrdersManager] Reorder error:', error);
+                        this.showToast('Eroare la plasarea comenzii', 'error');
+                    }
+                    removeModal();
+                });
+
+            } catch (e) {
+                console.error('[OrdersManager] reorder modal error', e);
+                // fallback to native confirm
+                if (!confirm(t('confirm_reorder'))) return;
+                try {
+                    const newOrder = await this.createNewOrderFromExisting(order);
+                    if (newOrder) {
+                        this.orders.unshift(newOrder);
+                        this.saveOrders();
+                        this.renderOrders();
+                        this.showToast(t('order_placed_success'), 'success');
+                    }
+                } catch (error) {
+                    console.error('[OrdersManager] Reorder error:', error);
+                    this.showToast('Eroare la plasarea comenzii', 'error');
                 }
-                
-            } catch (error) {
-                console.error('[OrdersManager] Reorder error:', error);
-                this.showToast('Eroare la plasarea comenzii', 'error');
             }
         }
 
@@ -1348,31 +1550,69 @@
 
         async cancelOrder(orderId) {
             const t = (key, params) => TranslationManager.translate(key, params);
-            
-            if (!confirm(t('confirm_cancel'))) {
-                return;
-            }
 
             const orderIndex = this.orders.findIndex(o => o.id === orderId);
             if (orderIndex === -1) return;
 
             const order = this.orders[orderIndex];
-            
             if (!['pending', 'processing'].includes(order.status)) {
-                alert('Această comandă nu poate fi anulată');
+                // Use styled toast/modal fallback
+                this.showToast('Această comandă nu poate fi anulată', 'error');
                 return;
             }
 
-            order.status = 'cancelled';
-            order.timeline.push({
-                status: 'cancelled',
-                date: new Date().toISOString(),
-                note: 'Comandă anulată de client'
-            });
+            // Build styled confirmation modal
+            try {
+                const existing = document.querySelector('.order-cancel-modal');
+                if (existing) existing.remove();
 
-            this.saveOrders();
-            this.renderOrders();
-            this.showToast(t('order_cancelled'), 'success');
+                const modalHtml = `
+                    <div class="order-cancel-modal" style="position: fixed; inset: 0; background: rgba(2,6,23,0.75); display:flex; align-items:center; justify-content:center; z-index:10000;">
+                        <div style="background: #0f172a; color: #e6eef6; width: 100%; max-width: 520px; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.6); position: relative;">
+                            <button class="close-cancel-modal" style="position:absolute; right:12px; top:12px; background:none; border:none; color:#94a3b8; font-size:1.25rem; cursor:pointer;">&times;</button>
+                            <h3 style="margin:0 0 0.5rem 0; color:#fff;">${t('confirm_cancel')}</h3>
+                            <p style="color:#94a3b8; margin-bottom:1rem;">${t('confirm_cancel')}</p>
+                            <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                                <button class="btn-cancel-close" style="background: transparent; border:1px solid rgba(148,163,184,0.12); color:#94a3b8; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer;">${t('close')}</button>
+                                <button class="btn-cancel-confirm" style="background:#ef4444; color:#fff; border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer; font-weight:700;">${t('cancel_order')}</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                const modal = document.querySelector('.order-cancel-modal:last-child');
+                if (!modal) return;
+
+                const removeModal = () => { try { modal.remove(); } catch (e) {} };
+                modal.querySelector('.close-cancel-modal')?.addEventListener('click', removeModal);
+                modal.querySelector('.btn-cancel-close')?.addEventListener('click', removeModal);
+
+                modal.querySelector('.btn-cancel-confirm')?.addEventListener('click', () => {
+                    try {
+                        order.status = 'cancelled';
+                        order.timeline.push({ status: 'cancelled', date: new Date().toISOString(), note: 'Comandă anulată de client' });
+                        this.saveOrders();
+                        this.renderOrders();
+                        this.showToast(t('order_cancelled'), 'success');
+                    } catch (e) {
+                        console.error(e);
+                        this.showToast('Eroare la anulare', 'error');
+                    }
+                    removeModal();
+                });
+
+            } catch (e) {
+                console.error('[OrdersManager] cancel modal error', e);
+                // fallback to native confirm
+                if (confirm(t('confirm_cancel'))) {
+                    order.status = 'cancelled';
+                    order.timeline.push({ status: 'cancelled', date: new Date().toISOString(), note: 'Comandă anulată de client' });
+                    this.saveOrders();
+                    this.renderOrders();
+                    this.showToast(t('order_cancelled'), 'success');
+                }
+            }
         }
 
         trackOrder(orderId) {
@@ -1477,6 +1717,8 @@
         goToPage: (page) => ordersManagerInstance?.goToPage(page),
         refresh: () => ordersManagerInstance?.loadOrders()
     };
+
+    
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initOrdersManager);

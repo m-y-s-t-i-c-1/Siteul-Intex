@@ -134,12 +134,83 @@ function submitOrder() {
         cart: JSON.parse(localStorage['intex_cart'] || '[]'),
         timestamp: new Date().toISOString()
     };
-    
-    const orders = JSON.parse(localStorage['intex_orders'] || '[]');
-    orders.push(formData);
-    localStorage['intex_orders'] = JSON.stringify(orders);
-    
+    const allProducts = getAllProducts();
+    const cartItems = formData.cart || [];
+    let subtotal = 0;
+    const items = cartItems.map(ci => {
+        const prod = allProducts.find(p => p.id === ci.id || String(p.id) === String(ci.id));
+        const price = (prod && prod.price) ? Number(prod.price) : (ci.price ? Number(ci.price) : 0);
+        const name = prod ? (typeof prod.title === 'object' ? (prod.title.ro || prod.title.en || Object.values(prod.title)[0]) : prod.title) : (ci.name || 'Produs');
+        const image = prod ? (prod.image || prod.img || '/assets/img/intex.jpg') : (ci.image || '/assets/img/intex.jpg');
+        const qty = Number(ci.qty || 1);
+        subtotal += price * qty;
+        return {
+            id: ci.id,
+            sku: ci.sku || ci.id,
+            name: name,
+            price: price,
+            image: image,
+            qty: qty
+        };
+    });
+
+    const shippingCost = getShippingCost();
+    const tax = Math.round(subtotal * 0.09 * 100) / 100;
+    const total = Math.round((subtotal + shippingCost + tax) * 100) / 100;
+
+    const orderObj = {
+        id: 'ORD-' + Date.now().toString().slice(-8),
+        date: new Date().toISOString(),
+        status: 'pending',
+        total: total,
+        subtotal: subtotal,
+        shippingCost: shippingCost,
+        tax: tax,
+        items: items,
+        shipping: {
+            name: formData.name,
+            address: formData.address,
+            phone: formData.phone,
+            city: formData.city,
+            postalCode: formData.postal
+        },
+        payment: formData.payment,
+        notes: formData.notes,
+        timeline: [ { status: 'ordered', date: new Date().toISOString(), note: 'Comandă plasată' } ]
+    };
+
+    try {
+        const legacy = JSON.parse(localStorage['intex_orders'] || '[]');
+        legacy.push(orderObj);
+        localStorage['intex_orders'] = JSON.stringify(legacy);
+    } catch (e) { localStorage['intex_orders'] = JSON.stringify([orderObj]); }
+
+    try {
+        let userEmail = null;
+        if (window.authManager && typeof window.authManager.getCurrentUser === 'function') {
+            const u = window.authManager.getCurrentUser(); if (u && u.email) userEmail = u.email;
+        }
+        if (!userEmail) {
+            const authRaw = localStorage.getItem('intex_auth');
+            if (authRaw) {
+                try { const parsed = JSON.parse(authRaw); if (parsed && parsed.email) userEmail = parsed.email; } catch (e) {}
+            }
+        }
+
+        if (userEmail) {
+            const key = 'orders_' + userEmail;
+            const existing = JSON.parse(localStorage.getItem(key) || '[]');
+            existing.push(orderObj);
+            localStorage.setItem(key, JSON.stringify(existing));
+        }
+    } catch (e) { console.warn('Order save per-user failed', e); }
+
     localStorage['intex_cart'] = JSON.stringify([]);
+    try {
+        if (window.IntexOrders && typeof window.IntexOrders.refresh === 'function') {
+            window.IntexOrders.refresh();
+        }
+    } catch (e) {}
     
     if (window.showSuccessI18n) {
         window.showSuccessI18n('order_placed_toast');
@@ -178,18 +249,18 @@ function submitOrder() {
 
         modal.querySelector('.order-confirm-close').addEventListener('click', () => {
             modal.remove(); document.body.style.overflow = '';
-            window.location.href = './produse.html';
+            window.location.href = '/pagini/comenzi.html';
         });
         modal.querySelector('#oc-continue').addEventListener('click', () => {
             modal.remove(); document.body.style.overflow = '';
-            window.location.href = './produse.html';
+            window.location.href = '/pagini/produse.html';
         });
         modal.querySelector('#oc-view-orders').addEventListener('click', () => {
             modal.remove(); document.body.style.overflow = '';
-            window.location.href = './produse.html';
+            window.location.href = '/pagini/comenzi.html';
         });
     } catch (e) {
-        window.location.href = './produse.html';
+        window.location.href = '/pagini/produse.html';
     }
 }
 

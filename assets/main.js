@@ -6,6 +6,7 @@ const translations = {
         menu_products: "Produse",
         menu_about: "Despre Noi",
         menu_faq: "FAQ",
+        menu_orders: "Comenzi",
         menu_policy: "Politica de Retur",
         menu_contact: "Contacte",
         hero_title: "Vara ta începe cu Intex",
@@ -233,6 +234,7 @@ const translations = {
         menu_products: "Продукты",
         menu_about: "О Нас",
         menu_faq: "FAQ",
+        menu_orders: "Заказы",
         menu_policy: "Политика Возврата",
         menu_contact: "Контакты",
         hero_title: "Ваше лето начинается с Intex",
@@ -460,6 +462,7 @@ const translations = {
         menu_products: "Products",
         menu_about: "About Us",
         menu_faq: "FAQ",
+        menu_orders: "Orders",
         menu_policy: "Return Policy",
         menu_contact: "Contact",
         hero_title: "Your summer starts with Intex",
@@ -981,9 +984,6 @@ function showUserMenu(user) {
                 </div>
             </div>
             <div class="user-menu-actions">
-                <a href="pagini/comenzi.html" class="btn-order-action btn-order-secondary" style="text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <i class="fas fa-box"></i> ${getTranslation('my_orders')}
-                </a>
                 <button class="btn-main user-menu-logout">${getTranslation('logout')}</button>
             </div>
         </div>

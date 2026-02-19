@@ -10,17 +10,17 @@ function getBasePath() {
 const BASE_PATH = getBasePath();
 
 function standardizeImagePath(path) {
-    if (!path) return BASE_PATH + 'assets/img/intex.jpg';
-    
-    if (path.startsWith('assets/img/')) {
-        return path;
+    if (!path) return '/assets/img/intex.jpg';
+
+    const cleaned = String(path).replace(/^(?:\.\.\/|\.\/)+/, '');
+
+    if (cleaned.startsWith('/')) return cleaned;
+
+    if (cleaned.startsWith('assets/img/')) {
+        return '/' + cleaned;
     }
-    
-    if (!path.includes('assets/img/')) {
-        return BASE_PATH + 'assets/img/' + path;
-    }
-    
-    return path;
+
+    return '/assets/img/' + cleaned;
 }
 
 const CATEGORIES_DATA = [
@@ -697,7 +697,6 @@ const POOLS_PRODUCTS = {
             image: standardizeImagePath('prism-frame-liner-12533.jpg')
         },
 
-        // Bazine Gonflabile EASY SET
         {
             sub: "easy_set",
             title: {
@@ -739,7 +738,6 @@ const POOLS_PRODUCTS = {
             image: standardizeImagePath('repair-kit.jpg')
         },
 
-        // Filtre pentru Bazine
         {
             sub: "filters",
             title: {
@@ -907,7 +905,6 @@ const POOLS_PRODUCTS = {
             image: standardizeImagePath('filter-sand.jpg')
         },
 
-        // Bazine Cadru
         {
             sub: "frame_pools",
             title: {
@@ -1685,7 +1682,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('Categoria barci 11.jpg')
     },
 
-    // categoria de terenuri de joacă
     {
         id: 'j1',
         category: 'joaca',
@@ -1742,7 +1738,6 @@ const PRODUCTS_DATA = [
         image: standardizeImagePath('terenuri5.png')
     },
 
-    // Transport copii - TOATE PRODUSELE ORIGINALE
     {
         id: 't1',
         category: 'transport',
