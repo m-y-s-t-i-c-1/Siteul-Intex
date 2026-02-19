@@ -532,6 +532,63 @@ class AuthManager {
         const users = this.getAllUsers();
         return users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
     }
+
+    /**
+     * Check if user is authenticated and redirect if not
+     * Use this on protected pages like orders page
+     * @param {string} redirectUrl - URL to redirect if not logged in (default: '../index.html')
+     * @param {boolean} showAlert - Whether to show alert message (default: true)
+     * @returns {object|null} - Current user if authenticated, null otherwise
+     */
+    requireAuth(redirectUrl = '../index.html', showAlert = true) {
+        const currentUser = this.getCurrentUser();
+        
+        if (!currentUser) {
+            console.warn('[AUTH] Access denied - User not authenticated');
+            
+            if (showAlert) {
+                const message = this.translate('auth_required', 'Trebuie să fiți autentificat pentru a accesa această pagină');
+                alert(message);
+            }
+            
+            // Save current URL to redirect back after login
+            try {
+                sessionStorage.setItem('auth_redirect_url', window.location.href);
+            } catch (e) {
+                console.warn('[AUTH] Could not save redirect URL');
+            }
+            
+            // Redirect to login page
+            window.location.href = redirectUrl;
+            return null;
+        }
+        
+        console.log('[AUTH] Access granted for user:', currentUser.email);
+        return currentUser;
+    }
+
+    /**
+     * Check authentication status without redirect
+     * Use this to conditionally show/hide content
+     * @returns {object|null} - Current user if authenticated, null otherwise
+     */
+    checkAuth() {
+        return this.getCurrentUser();
+    }
+
+    /**
+     * Get redirect URL after login (if saved)
+     * @returns {string|null}
+     */
+    getRedirectUrl() {
+        try {
+            const url = sessionStorage.getItem('auth_redirect_url');
+            sessionStorage.removeItem('auth_redirect_url');
+            return url;
+        } catch (e) {
+            return null;
+        }
+    }
 }
 
 // Create global auth manager instance
@@ -543,3 +600,32 @@ window.authLogin = (email, password) => window.authManager.login(email, password
 window.authLogout = () => window.authManager.logout();
 window.authGetCurrentUser = () => window.authManager.getCurrentUser();
 window.authIsLoggedIn = () => window.authManager.isLoggedIn();
+window.authRequireAuth = (redirectUrl, showAlert) => window.authManager.requireAuth(redirectUrl, showAlert);
+window.authCheck = () => window.authManager.checkAuth();
+window.authGetRedirectUrl = () => window.authManager.getRedirectUrl();
+
+// Auto-check for protected pages on load
+(function() {
+    // List of protected pages that require authentication
+    const protectedPages = ['comenzi.html', 'orders.html', 'checkout.html'];
+    
+    // Check if current page is protected
+    const currentPage = window.location.pathname.split('/').pop();
+    const isProtectedPage = protectedPages.some(page => 
+        currentPage.toLowerCase() === page.toLowerCase() ||
+        window.location.pathname.includes('/pagini/comenzi')
+    );
+    
+    if (isProtectedPage) {
+        console.log('[AUTH] Protected page detected:', currentPage);
+        
+        // Wait for DOM to be ready, then check auth
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                window.authManager.requireAuth('../index.html', true);
+            });
+        } else {
+            window.authManager.requireAuth('../index.html', true);
+        }
+    }
+})();

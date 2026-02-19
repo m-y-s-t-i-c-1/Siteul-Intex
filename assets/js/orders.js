@@ -11,26 +11,246 @@
         DEMO_MODE: true,
         ITEMS_PER_PAGE: 6,
         DEBOUNCE_DELAY: 300,
-        ANIMATION_DURATION: 300,
-        MAX_RETRIES: 3,
-        RETRY_DELAY: 1000
+        ANIMATION_DURATION: 300
     };
 
+    // Statusuri cu chei de traducere
     const ORDER_STATUS = {
-        PENDING: { key: 'pending', color: '#92400e', icon: 'fa-clock' },
-        PROCESSING: { key: 'processing', color: '#1e40af', icon: 'fa-cog fa-spin' },
-        SHIPPED: { key: 'shipped', color: '#3730a3', icon: 'fa-truck' },
-        DELIVERED: { key: 'delivered', color: '#065f46', icon: 'fa-check-circle' },
-        CANCELLED: { key: 'cancelled', color: '#991b1b', icon: 'fa-times-circle' },
-        REFUNDED: { key: 'refunded', color: '#6b7280', icon: 'fa-undo' }
+        PENDING: { key: 'pending', color: '#92400e', icon: 'fa-clock', text: { ro: 'În așteptare', ru: 'В ожидании', en: 'Pending' } },
+        PROCESSING: { key: 'processing', color: '#1e40af', icon: 'fa-cog fa-spin', text: { ro: 'În procesare', ru: 'В обработке', en: 'Processing' } },
+        SHIPPED: { key: 'shipped', color: '#3730a3', icon: 'fa-truck', text: { ro: 'Expediată', ru: 'Отправлен', en: 'Shipped' } },
+        DELIVERED: { key: 'delivered', color: '#065f46', icon: 'fa-check-circle', text: { ro: 'Livrată', ru: 'Доставлен', en: 'Delivered' } },
+        CANCELLED: { key: 'cancelled', color: '#991b1b', icon: 'fa-times-circle', text: { ro: 'Anulată', ru: 'Отменён', en: 'Cancelled' } },
+        REFUNDED: { key: 'refunded', color: '#6b7280', icon: 'fa-undo', text: { ro: 'Rambursată', ru: 'Возвращён', en: 'Refunded' } }
     };
 
     // ============================================
-    // SECȚIUNEA 2: UTILITĂȚI ȘI HELPERE
+    // SECȚIUNEA 2: TRANSLATION SYSTEM - FOARTE ROBUST
+    // ============================================
+
+    const TranslationManager = {
+        // Obține limba curentă
+        getCurrentLang() {
+            // Încearcă din mai multe surse
+            return localStorage.getItem('intex_language') || 
+                   localStorage.getItem('lang') || 
+                   document.documentElement.lang || 
+                   'ro';
+        },
+
+        // Traduce o cheie
+        translate(key, params = {}) {
+            const lang = this.getCurrentLang();
+            
+            // Încearcă din window.translations (din main.js)
+            if (window.translations && window.translations[lang] && window.translations[lang][key]) {
+                let text = window.translations[lang][key];
+                // Înlocuiește parametrii
+                Object.keys(params).forEach(k => {
+                    text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
+                });
+                return text;
+            }
+
+            // Încearcă din translations inline definite mai jos
+            const inlineTranslations = this.getInlineTranslations();
+            if (inlineTranslations[lang] && inlineTranslations[lang][key]) {
+                let text = inlineTranslations[lang][key];
+                Object.keys(params).forEach(k => {
+                    text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
+                });
+                return text;
+            }
+
+            // Fallback la română sau cheie
+            if (inlineTranslations['ro'] && inlineTranslations['ro'][key]) {
+                return inlineTranslations['ro'][key];
+            }
+
+            return key; // Ultim fallback - returnează cheia
+        },
+
+        // Traduceri complete inline (backup dacă main.js nu e încărcat)
+        getInlineTranslations() {
+            return {
+                ro: {
+                    // Statusuri
+                    order_status_pending: 'În așteptare',
+                    order_status_processing: 'În procesare',
+                    order_status_shipped: 'Expediată',
+                    order_status_delivered: 'Livrată',
+                    order_status_cancelled: 'Anulată',
+                    order_status_refunded: 'Rambursată',
+                    
+                    // Butoane și acțiuni
+                    order_details: 'Detalii',
+                    track_order: 'Urmărire',
+                    reorder: 'Recomandă',
+                    cancel_order: 'Anulează',
+                    print_order: 'Printează',
+                    
+                    // Informații comandă
+                    items_count: '{count} produse',
+                    item_count_singular: '{count} produs',
+                    order_total: 'Total comandă',
+                    subtotal: 'Subtotal',
+                    shipping: 'Transport',
+                    tax: 'TVA',
+                    discount: 'Discount',
+                    delivery_to: 'Livrare către',
+                    payment_method: 'Metodă de plată',
+                    order_date: 'Data comenzii',
+                    order_timeline: 'Istoric comandă',
+                    back_to_orders: 'Înapoi la comenzi',
+                    product: 'Produs',
+                    quantity: 'Cantitate',
+                    price: 'Preț',
+                    
+                    // Stări empty/error
+                    no_orders_title: 'Nu aveți comenzi încă',
+                    no_orders_text: 'Descoperiți produsele noastre și plasați prima comandă!',
+                    browse_products: 'Vezi Produse',
+                    auth_required: 'Trebuie să fiți autentificat',
+                    login_to_view_orders: 'Conectați-vă pentru a vedea istoricul comenzilor',
+                    login_btn: 'Autentificare',
+                    loading_orders: 'Se încarcă comenzile...',
+                    
+                    // Confirmări
+                    confirm_cancel: 'Sigur doriți să anulați această comandă?',
+                    order_cancelled: 'Comanda a fost anulată cu succes',
+                    items_added_to_cart: 'Produsele au fost adăugate în coș',
+                    order_placed_toast: 'Comanda a fost plasată cu succes!',
+                    
+                    // Altele
+                    close: 'Închide'
+                },
+                ru: {
+                    order_status_pending: 'В ожидании',
+                    order_status_processing: 'В обработке',
+                    order_status_shipped: 'Отправлен',
+                    order_status_delivered: 'Доставлен',
+                    order_status_cancelled: 'Отменён',
+                    order_status_refunded: 'Возвращён',
+                    
+                    order_details: 'Детали',
+                    track_order: 'Отслеживание',
+                    reorder: 'Повторить',
+                    cancel_order: 'Отменить',
+                    print_order: 'Печать',
+                    
+                    items_count: '{count} товаров',
+                    item_count_singular: '{count} товар',
+                    order_total: 'Итого',
+                    subtotal: 'Подытог',
+                    shipping: 'Доставка',
+                    tax: 'НДС',
+                    discount: 'Скидка',
+                    delivery_to: 'Доставка по адресу',
+                    payment_method: 'Способ оплаты',
+                    order_date: 'Дата заказа',
+                    order_timeline: 'История заказа',
+                    back_to_orders: 'Назад к заказам',
+                    product: 'Товар',
+                    quantity: 'Количество',
+                    price: 'Цена',
+                    
+                    no_orders_title: 'У вас пока нет заказов',
+                    no_orders_text: 'Откройте для себя наши продукты и сделайте первый заказ!',
+                    browse_products: 'Смотреть товары',
+                    auth_required: 'Требуется авторизация',
+                    login_to_view_orders: 'Войдите, чтобы просмотреть историю заказов',
+                    login_btn: 'Вход',
+                    loading_orders: 'Загрузка заказов...',
+                    
+                    confirm_cancel: 'Вы уверены, что хотите отменить этот заказ?',
+                    order_cancelled: 'Заказ успешно отменён',
+                    items_added_to_cart: 'Товары добавлены в корзину',
+                    order_placed_toast: 'Заказ успешно оформлен!',
+                    
+                    close: 'Закрыть'
+                },
+                en: {
+                    order_status_pending: 'Pending',
+                    order_status_processing: 'Processing',
+                    order_status_shipped: 'Shipped',
+                    order_status_delivered: 'Delivered',
+                    order_status_cancelled: 'Cancelled',
+                    order_status_refunded: 'Refunded',
+                    
+                    order_details: 'Details',
+                    track_order: 'Track',
+                    reorder: 'Reorder',
+                    cancel_order: 'Cancel',
+                    print_order: 'Print',
+                    
+                    items_count: '{count} items',
+                    item_count_singular: '{count} item',
+                    order_total: 'Order Total',
+                    subtotal: 'Subtotal',
+                    shipping: 'Shipping',
+                    tax: 'VAT',
+                    discount: 'Discount',
+                    delivery_to: 'Delivery to',
+                    payment_method: 'Payment Method',
+                    order_date: 'Order Date',
+                    order_timeline: 'Order Timeline',
+                    back_to_orders: 'Back to Orders',
+                    product: 'Product',
+                    quantity: 'Qty',
+                    price: 'Price',
+                    
+                    no_orders_title: 'No orders yet',
+                    no_orders_text: 'Discover our products and place your first order!',
+                    browse_products: 'Browse Products',
+                    auth_required: 'Authentication required',
+                    login_to_view_orders: 'Login to view your order history',
+                    login_btn: 'Login',
+                    loading_orders: 'Loading orders...',
+                    
+                    confirm_cancel: 'Are you sure you want to cancel this order?',
+                    order_cancelled: 'Order cancelled successfully',
+                    items_added_to_cart: 'Items added to cart',
+                    order_placed_toast: 'Order placed successfully!',
+                    
+                    close: 'Close'
+                }
+            };
+        },
+
+        // Obține textul statusului
+        getStatusText(statusKey) {
+            const status = Object.values(ORDER_STATUS).find(s => s.key === statusKey);
+            if (!status) return statusKey;
+            
+            const lang = this.getCurrentLang();
+            return status.text[lang] || status.text['ro'] || statusKey;
+        },
+
+        // Obține titlul produsului tradus
+        getProductTitle(product) {
+            if (!product) return 'Produs necunoscut';
+            
+            const lang = this.getCurrentLang();
+            
+            // Dacă produsul are title ca obiect cu traduceri
+            if (product.title && typeof product.title === 'object') {
+                return product.title[lang] || 
+                       product.title['ro'] || 
+                       product.title['en'] || 
+                       product.title[Object.keys(product.title)[0]] || 
+                       'Produs';
+            }
+            
+            // Dacă e string direct
+            return product.title || product.name || 'Produs';
+        }
+    };
+
+    // ============================================
+    // SECȚIUNEA 3: UTILITĂȚI
     // ============================================
 
     const Utils = {
-        // Escape HTML pentru securitate
         escapeHtml(str) {
             if (!str) return '';
             const div = document.createElement('div');
@@ -38,8 +258,8 @@
             return div.innerHTML;
         },
 
-        // Format preț cu locale
         formatPrice(amount, currency = 'LEI') {
+            if (typeof amount !== 'number') amount = parseFloat(amount) || 0;
             return new Intl.NumberFormat('ro-RO', {
                 style: 'decimal',
                 minimumFractionDigits: 2,
@@ -47,7 +267,6 @@
             }).format(amount) + ' ' + currency;
         },
 
-        // Format dată cu locale
         formatDate(dateString, includeTime = false) {
             const date = new Date(dateString);
             const options = {
@@ -59,7 +278,6 @@
             return date.toLocaleDateString('ro-RO', options);
         },
 
-        // Debounce pentru performanță
         debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -72,29 +290,10 @@
             };
         },
 
-        // Throttle pentru scroll events
-        throttle(func, limit) {
-            let inThrottle;
-            return function(...args) {
-                if (!inThrottle) {
-                    func.apply(this, args);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            };
-        },
-
-        // Generare ID unic
         generateId() {
             return 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
         },
 
-        // Deep clone pentru obiecte
-        deepClone(obj) {
-            return JSON.parse(JSON.stringify(obj));
-        },
-
-        // Verificare suport localStorage
         storageAvailable() {
             try {
                 const storage = window.localStorage;
@@ -109,138 +308,68 @@
     };
 
     // ============================================
-    // SECȚIUNEA 3: TRANSLATION HELPERS
+    // SECȚIUNEA 4: PRODUCT DATA MANAGER
     // ============================================
 
-    const I18n = {
-        get(key, params = {}) {
-            // Folosește sistemul de traduceri din main.js dacă există
-            if (window.getTranslation) {
-                return window.getTranslation(key, params);
-            }
-            
-            // Fallback pentru chei specifice orders
-            const translations = {
-                ro: {
-                    order_cancelled: 'Comanda a fost anulată cu succes',
-                    items_added_to_cart: 'Produsele au fost adăugate în coș',
-                    auth_required: 'Trebuie să fiți autentificat pentru a vedea comenzile',
-                    login_to_view_orders: 'Conectați-vă pentru a vedea istoricul comenzilor',
-                    login_btn: 'Autentificare',
-                    loading_orders: 'Se încarcă comenzile...',
-                    no_orders_title: 'Nu aveți comenzi încă',
-                    no_orders_text: 'Descoperiți produsele noastre și plasați prima comandă!',
-                    browse_products: 'Vezi Produse',
-                    order_details: 'Detalii Comandă',
-                    reorder: 'Recomandă',
-                    cancel_order: 'Anulează',
-                    print_order: 'Printează',
-                    track_order: 'Urmărire',
-                    order_status_pending: 'În așteptare',
-                    order_status_processing: 'În procesare',
-                    order_status_shipped: 'Expediată',
-                    order_status_delivered: 'Livrată',
-                    order_status_cancelled: 'Anulată',
-                    order_status_refunded: 'Rambursată',
-                    confirm_cancel: 'Sigur doriți să anulați această comandă?',
-                    items_count: '{count} produse',
-                    delivery_to: 'Livrare către',
-                    payment_method: 'Metodă de plată',
-                    order_date: 'Data comenzii',
-                    order_total: 'Total comandă',
-                    subtotal: 'Subtotal',
-                    shipping: 'Transport',
-                    tax: 'TVA',
-                    discount: 'Discount',
-                    order_timeline: 'Istoric comandă',
-                    back_to_orders: 'Înapoi la comenzi',
-                    order_placed_toast: 'Comanda a fost plasată cu succes!'
-                },
-                ru: {
-                    order_cancelled: 'Заказ успешно отменён',
-                    items_added_to_cart: 'Товары добавлены в корзину',
-                    auth_required: 'Вы должны быть авторизованы для просмотра заказов',
-                    login_to_view_orders: 'Войдите, чтобы просмотреть историю заказов',
-                    login_btn: 'Вход',
-                    loading_orders: 'Загрузка заказов...',
-                    no_orders_title: 'У вас пока нет заказов',
-                    no_orders_text: 'Откройте для себя наши продукты и сделайте первый заказ!',
-                    browse_products: 'Смотреть товары',
-                    order_details: 'Детали заказа',
-                    reorder: 'Повторить',
-                    cancel_order: 'Отменить',
-                    print_order: 'Печать',
-                    track_order: 'Отслеживание',
-                    order_status_pending: 'В ожидании',
-                    order_status_processing: 'В обработке',
-                    order_status_shipped: 'Отправлен',
-                    order_status_delivered: 'Доставлен',
-                    order_status_cancelled: 'Отменён',
-                    order_status_refunded: 'Возвращён',
-                    confirm_cancel: 'Вы уверены, что хотите отменить этот заказ?',
-                    items_count: '{count} товаров',
-                    delivery_to: 'Доставка по адресу',
-                    payment_method: 'Способ оплаты',
-                    order_date: 'Дата заказа',
-                    order_total: 'Итого заказ',
-                    subtotal: 'Подытог',
-                    shipping: 'Доставка',
-                    tax: 'НДС',
-                    discount: 'Скидка',
-                    order_timeline: 'История заказа',
-                    back_to_orders: 'Назад к заказам',
-                    order_placed_toast: 'Заказ успешно оформлен!'
-                },
-                en: {
-                    order_cancelled: 'Order cancelled successfully',
-                    items_added_to_cart: 'Items added to cart',
-                    auth_required: 'You must be logged in to view orders',
-                    login_to_view_orders: 'Login to view your order history',
-                    login_btn: 'Login',
-                    loading_orders: 'Loading orders...',
-                    no_orders_title: "You don't have any orders yet",
-                    no_orders_text: 'Discover our products and place your first order!',
-                    browse_products: 'Browse Products',
-                    order_details: 'Order Details',
-                    reorder: 'Reorder',
-                    cancel_order: 'Cancel',
-                    print_order: 'Print',
-                    track_order: 'Track',
-                    order_status_pending: 'Pending',
-                    order_status_processing: 'Processing',
-                    order_status_shipped: 'Shipped',
-                    order_status_delivered: 'Delivered',
-                    order_status_cancelled: 'Cancelled',
-                    order_status_refunded: 'Refunded',
-                    confirm_cancel: 'Are you sure you want to cancel this order?',
-                    items_count: '{count} items',
-                    delivery_to: 'Delivery to',
-                    payment_method: 'Payment method',
-                    order_date: 'Order date',
-                    order_total: 'Order total',
-                    subtotal: 'Subtotal',
-                    shipping: 'Shipping',
-                    tax: 'VAT',
-                    discount: 'Discount',
-                    order_timeline: 'Order timeline',
-                    back_to_orders: 'Back to orders',
-                    order_placed_toast: 'Order placed successfully!'
-                }
-            };
+    const ProductManager = {
+        products: null,
 
-            const lang = localStorage.getItem('intex_language') || 'ro';
-            let text = translations[lang]?.[key] || key;
+        loadAllProducts() {
+            if (this.products) return this.products;
+
+            const products = [];
+
+            // Din PRODUCTS_DATA
+            if (window.PRODUCTS_DATA && Array.isArray(window.PRODUCTS_DATA)) {
+                window.PRODUCTS_DATA.forEach(p => {
+                    products.push({
+                        id: p.id,
+                        title: p.title,
+                        price: p.price,
+                        image: p.image,
+                        category: p.category,
+                        subcategory: p.subcategory,
+                        oldPrice: p.oldPrice
+                    });
+                });
+            }
+
+            // Din POOLS_PRODUCTS
+            if (window.POOLS_PRODUCTS && window.POOLS_PRODUCTS.pools) {
+                window.POOLS_PRODUCTS.pools.forEach(p => {
+                    products.push({
+                        id: p.id,
+                        title: p.title,
+                        price: p.price,
+                        image: p.image,
+                        category: p.category || 'baseine_intex',
+                        subcategory: p.subcategory || p.sub,
+                        oldPrice: p.oldPrice
+                    });
+                });
+            }
+
+            this.products = products;
+            console.log('[ProductManager] Loaded', products.length, 'products');
+            return products;
+        },
+
+        findById(id) {
+            const products = this.loadAllProducts();
+            return products.find(p => p.id === id);
+        },
+
+        getRandomProducts(count) {
+            const products = this.loadAllProducts();
+            if (products.length === 0) return [];
             
-            Object.keys(params).forEach(k => {
-                text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
-            });
-            
-            return text;
+            const shuffled = [...products].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, Math.min(count, products.length));
         }
     };
 
     // ============================================
-    // SECȚIUNEA 4: CLASA PRINCIPALĂ
+    // SECȚIUNEA 5: CLASA PRINCIPALĂ
     // ============================================
 
     class OrdersManager {
@@ -256,7 +385,6 @@
                 search: ''
             };
             
-            // Cache DOM elements
             this.dom = {
                 loading: null,
                 empty: null,
@@ -265,12 +393,29 @@
                 pagination: null
             };
 
-            this.init();
+            // Așteaptă ca toate dependințele să fie încărcate
+            this.waitForDependencies().then(() => {
+                this.init();
+            });
         }
 
-        // ============================================
-        // INITIALIZARE
-        // ============================================
+        async waitForDependencies() {
+            let attempts = 0;
+            while (attempts < 100) { // Max 10 secunde
+                // Verifică dacă avem ce avem nevoie
+                const hasData = window.PRODUCTS_DATA || window.POOLS_PRODUCTS;
+                const hasAuth = window.authManager || localStorage.getItem('intex_auth');
+                
+                if (hasData) {
+                    console.log('[OrdersManager] Dependencies loaded');
+                    return;
+                }
+                
+                await new Promise(r => setTimeout(r, 100));
+                attempts++;
+            }
+            console.warn('[OrdersManager] Timeout waiting for dependencies, continuing anyway');
+        }
 
         init() {
             try {
@@ -282,15 +427,22 @@
 
                 this.setupEventListeners();
                 this.loadOrders();
-                
+
                 // Listen pentru schimbări de limbă
                 window.addEventListener('languageChanged', () => {
+                    console.log('[OrdersManager] Language changed, re-rendering');
                     this.renderOrders();
+                });
+
+                // Listen pentru storage changes (login/logout în alte tab-uri)
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'intex_auth' || e.key === 'intex_language') {
+                        location.reload();
+                    }
                 });
 
             } catch (error) {
                 console.error('[OrdersManager] Initialization error:', error);
-                this.showError('init_error');
             }
         }
 
@@ -302,17 +454,13 @@
             this.dom.pagination = document.getElementById('orders-pagination');
         }
 
-        // ============================================
-        // AUTENTIFICARE
-        // ============================================
-
         checkAuth() {
-            // Verificăm authManager din main.js
-            if (window.authManager) {
+            // Verifică authManager
+            if (window.authManager && window.authManager.getCurrentUser) {
                 this.currentUser = window.authManager.getCurrentUser();
             }
 
-            // Fallback: verificăm localStorage direct
+            // Fallback la localStorage
             if (!this.currentUser) {
                 try {
                     const authData = localStorage.getItem('intex_auth');
@@ -333,15 +481,16 @@
         }
 
         handleNotAuthenticated() {
-            // Afișăm mesaj în loc de redirect automat
+            const t = TranslationManager.translate.bind(TranslationManager);
+            
             if (this.dom.empty) {
                 this.dom.empty.innerHTML = `
-                    <div class="orders-empty-state">
-                        <i class="fas fa-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <h3>${I18n.get('auth_required')}</h3>
-                        <p>${I18n.get('login_to_view_orders')}</p>
-                        <button class="btn-main" onclick="window.openLoginModal()">
-                            <i class="fas fa-sign-in-alt"></i> ${I18n.get('login_btn')}
+                    <div class="orders-empty-state" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-lock" style="font-size: 3rem; color: #38bdf8; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #fff; margin-bottom: 0.5rem;">${t('auth_required')}</h3>
+                        <p style="color: #94a3b8; margin-bottom: 1.5rem;">${t('login_to_view_orders')}</p>
+                        <button class="btn-main" onclick="window.openLoginModal()" style="background: #38bdf8; color: #0f172a; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                            <i class="fas fa-sign-in-alt"></i> ${t('login_btn')}
                         </button>
                     </div>
                 `;
@@ -352,13 +501,8 @@
                 this.dom.loading.style.display = 'none';
             }
 
-            // Salvăm URL pentru redirect după login
             sessionStorage.setItem('redirectAfterLogin', window.location.href);
         }
-
-        // ============================================
-        // ÎNCĂRCARE COMENZI
-        // ============================================
 
         async loadOrders() {
             if (this.isLoading) return;
@@ -367,15 +511,13 @@
             this.showLoading(true);
 
             try {
-                // Simulăm delay pentru realism
-                await this.simulateDelay(800);
+                await this.simulateDelay(600);
 
                 const storedOrders = this.getStoredOrders();
                 
                 if (storedOrders && storedOrders.length > 0) {
                     this.orders = storedOrders;
                 } else if (CONFIG.DEMO_MODE) {
-                    // Generăm comenzi demo doar dacă nu există altele
                     this.orders = this.generateDemoOrders();
                     this.saveOrders();
                 } else {
@@ -386,7 +528,6 @@
                 
             } catch (error) {
                 console.error('[OrdersManager] Error loading orders:', error);
-                this.showError('load_error');
             } finally {
                 this.isLoading = false;
                 this.showLoading(false);
@@ -414,13 +555,6 @@
                 localStorage.setItem(key, JSON.stringify(this.orders));
             } catch (e) {
                 console.error('[OrdersManager] Save error:', e);
-                // Fallback: încercăm să salvăm doar ultimele 10 comenzi
-                try {
-                    const trimmedOrders = this.orders.slice(0, 10);
-                    localStorage.setItem(key, JSON.stringify(trimmedOrders));
-                } catch (e2) {
-                    console.error('[OrdersManager] Critical storage error');
-                }
             }
         }
 
@@ -435,34 +569,47 @@
         generateDemoOrders() {
             const now = Date.now();
             const day = 86400000;
+            const t = TranslationManager.translate.bind(TranslationManager);
+
+            // Obține produse reale
+            const products = ProductManager.getRandomProducts(4);
+            
+            if (products.length === 0) {
+                console.warn('[OrdersManager] No products found, using fallback');
+                return this.generateFallbackOrders();
+            }
+
+            const items1 = products.slice(0, 2).map(p => ({
+                id: p.id,
+                name: TranslationManager.getProductTitle(p),
+                price: p.price,
+                image: p.image,
+                qty: 1,
+                sku: p.id
+            }));
+
+            const items2 = products.slice(2, 4).map(p => ({
+                id: p.id,
+                name: TranslationManager.getProductTitle(p),
+                price: p.price,
+                image: p.image,
+                qty: Math.floor(Math.random() * 2) + 1,
+                sku: p.id
+            }));
+
+            const total1 = items1.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const total2 = items2.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
             return [
                 {
                     id: 'ORD-2024-001',
                     date: new Date(now - day * 2).toISOString(),
                     status: 'delivered',
-                    total: 1250.00,
-                    subtotal: 1100.00,
-                    shippingCost: 50.00,
-                    tax: 100.00,
-                    items: [
-                        { 
-                            id: 'PROD-001',
-                            name: 'Piscină INTEX 305x76cm', 
-                            qty: 1, 
-                            price: 899.00, 
-                            image: 'assets/img/pool1.jpg',
-                            sku: 'INTX-30576'
-                        },
-                        { 
-                            id: 'PROD-002',
-                            name: 'Pompă filtrare', 
-                            qty: 1, 
-                            price: 351.00, 
-                            image: 'assets/img/pump1.jpg',
-                            sku: 'PUMP-001'
-                        }
-                    ],
+                    total: total1 + 50,
+                    subtotal: total1,
+                    shippingCost: 50,
+                    tax: Math.round(total1 * 0.09 * 100) / 100,
+                    items: items1,
                     shipping: {
                         name: this.currentUser?.name || 'Client',
                         address: 'Str. Exemplu 123, Chișinău',
@@ -482,28 +629,11 @@
                     id: 'ORD-2024-002',
                     date: new Date(now - day * 5).toISOString(),
                     status: 'processing',
-                    total: 2450.50,
-                    subtotal: 2300.00,
-                    shippingCost: 50.00,
-                    tax: 100.50,
-                    items: [
-                        { 
-                            id: 'PROD-003',
-                            name: 'Piscină cu cadru metalic 457x122cm', 
-                            qty: 1, 
-                            price: 2299.00, 
-                            image: 'assets/img/pool2.jpg',
-                            sku: 'INTX-457122'
-                        },
-                        { 
-                            id: 'PROD-004',
-                            name: 'Scară piscină', 
-                            qty: 1, 
-                            price: 151.50, 
-                            image: 'assets/img/ladder1.jpg',
-                            sku: 'LAD-001'
-                        }
-                    ],
+                    total: total2 + 50,
+                    subtotal: total2,
+                    shippingCost: 50,
+                    tax: Math.round(total2 * 0.09 * 100) / 100,
+                    items: items2,
                     shipping: {
                         name: this.currentUser?.name || 'Client',
                         address: 'Str. Exemplu 123, Chișinău',
@@ -520,8 +650,36 @@
             ];
         }
 
+        generateFallbackOrders() {
+            const t = TranslationManager.translate.bind(TranslationManager);
+            const now = Date.now();
+            const day = 86400000;
+
+            return [
+                {
+                    id: 'ORD-2024-001',
+                    date: new Date(now - day * 2).toISOString(),
+                    status: 'delivered',
+                    total: 1300,
+                    subtotal: 1250,
+                    shippingCost: 50,
+                    tax: 112.50,
+                    items: [
+                        { id: 'PROD-001', name: 'Piscină INTEX 305x76cm', price: 899, image: 'assets/img/no-image.jpg', qty: 1, sku: 'PROD-001' },
+                        { id: 'PROD-002', name: 'Pompă filtrare', price: 351, image: 'assets/img/no-image.jpg', qty: 1, sku: 'PROD-002' }
+                    ],
+                    shipping: { name: 'Client', address: 'Str. Exemplu 123', phone: '069123456', city: 'Chișinău', postalCode: '2000' },
+                    payment: 'Cash on delivery',
+                    timeline: [
+                        { status: 'ordered', date: new Date(now - day * 5).toISOString(), note: 'Comandă plasată' },
+                        { status: 'delivered', date: new Date(now - day * 2).toISOString(), note: 'Livrată' }
+                    ]
+                }
+            ];
+        }
+
         // ============================================
-        // RENDERING ȘI UI
+        // RENDERING
         // ============================================
 
         showLoading(show) {
@@ -532,7 +690,7 @@
                 this.dom.empty.style.display = 'none';
             }
             if (this.dom.list) {
-                this.dom.list.style.display = show ? 'none' : 'flex';
+                this.dom.list.style.display = show ? 'none' : 'grid';
             }
         }
 
@@ -550,32 +708,17 @@
 
         getFilteredOrders() {
             return this.orders.filter(order => {
-                // Filtru status
                 if (this.filters.status !== 'all' && order.status !== this.filters.status) {
                     return false;
                 }
                 
-                // Filtru căutare
                 if (this.filters.search) {
                     const searchLower = this.filters.search.toLowerCase();
                     const matchId = order.id.toLowerCase().includes(searchLower);
                     const matchItems = order.items.some(item => 
-                        item.name.toLowerCase().includes(searchLower)
+                        (item.name || '').toLowerCase().includes(searchLower)
                     );
                     if (!matchId && !matchItems) return false;
-                }
-
-                // Filtru dată
-                if (this.filters.dateFrom) {
-                    const orderDate = new Date(order.date);
-                    const fromDate = new Date(this.filters.dateFrom);
-                    if (orderDate < fromDate) return false;
-                }
-                
-                if (this.filters.dateTo) {
-                    const orderDate = new Date(order.date);
-                    const toDate = new Date(this.filters.dateTo);
-                    if (orderDate > toDate) return false;
                 }
 
                 return true;
@@ -583,14 +726,16 @@
         }
 
         renderEmptyState() {
+            const t = TranslationManager.translate.bind(TranslationManager);
+            
             if (this.dom.empty) {
                 this.dom.empty.innerHTML = `
-                    <div class="orders-empty-state">
-                        <i class="fas fa-box-open" style="font-size: 4rem; color: var(--primary-light); margin-bottom: 1.5rem;"></i>
-                        <h3>${I18n.get('no_orders_title')}</h3>
-                        <p>${I18n.get('no_orders_text')}</p>
-                        <a href="../index.html#produse" class="btn-main" style="margin-top: 1rem; display: inline-block;">
-                            <i class="fas fa-shopping-bag"></i> ${I18n.get('browse_products')}
+                    <div class="orders-empty-state" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-box-open" style="font-size: 4rem; color: #38bdf8; margin-bottom: 1.5rem;"></i>
+                        <h3 style="color: #fff; margin-bottom: 0.5rem;">${t('no_orders_title')}</h3>
+                        <p style="color: #94a3b8; margin-bottom: 1.5rem;">${t('no_orders_text')}</p>
+                        <a href="../index.html#produse" class="btn-main" style="background: #38bdf8; color: #0f172a; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; font-weight: 600;">
+                            <i class="fas fa-shopping-bag"></i> ${t('browse_products')}
                         </a>
                     </div>
                 `;
@@ -620,92 +765,93 @@
                 this.dom.empty.style.display = 'none';
             }
 
-            // Animație de intrare
             this.animateEntrance();
         }
 
         createOrderCard(order) {
-            const statusConfig = ORDER_STATUS[order.status.toUpperCase()] || ORDER_STATUS.PENDING;
+            const t = TranslationManager.translate.bind(TranslationManager);
+            const statusConfig = Object.values(ORDER_STATUS).find(s => s.key === order.status) || ORDER_STATUS.PENDING;
             const date = Utils.formatDate(order.date);
             const itemCount = order.items.reduce((sum, item) => sum + item.qty, 0);
             
-            // Primele 3 imagini cu lazy loading
+            // Imagini produse
             const imagesHtml = order.items.slice(0, 3).map((item, index) => 
-                `<img src="${Utils.escapeHtml(item.image || 'assets/img/placeholder.jpg')}" 
+                `<img src="${Utils.escapeHtml(item.image || 'assets/img/no-image.jpg')}" 
                       alt="${Utils.escapeHtml(item.name)}" 
                       class="order-item-thumb"
-                      loading="${index === 0 ? 'eager' : 'lazy'}">`
+                      style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 8px;"
+                      loading="${index === 0 ? 'eager' : 'lazy'}"
+                      onerror="this.src='assets/img/no-image.jpg'">`
             ).join('');
 
             const moreCount = order.items.length - 3;
             const moreHtml = moreCount > 0 ? 
-                `<div class="order-item-more">+${moreCount}</div>` : '';
+                `<div class="order-item-more" style="width: 60px; height: 60px; background: rgba(56, 189, 248, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-weight: 600;">+${moreCount}</div>` : '';
 
             const canCancel = ['pending', 'processing'].includes(order.status);
             const canReorder = ['delivered', 'cancelled'].includes(order.status);
             const canTrack = ['shipped', 'delivered'].includes(order.status);
 
+            // Folosește TOTDEAUNA TranslationManager pentru texte
             return `
-                <article class="order-card" data-order-id="${Utils.escapeHtml(order.id)}" role="listitem">
-                    <div class="order-header">
+                <article class="order-card" data-order-id="${Utils.escapeHtml(order.id)}" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <div class="order-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
                         <div class="order-meta">
-                            <div class="order-id">#${Utils.escapeHtml(order.id)}</div>
-                            <time class="order-date" datetime="${order.date}">${date}</time>
+                            <div class="order-id" style="color: #38bdf8; font-weight: 700; font-size: 1.1rem;">#${Utils.escapeHtml(order.id)}</div>
+                            <time class="order-date" style="color: #94a3b8; font-size: 0.9rem;" datetime="${order.date}">${date}</time>
                         </div>
-                        <span class="order-status" style="--status-color: ${statusConfig.color}">
+                        <span class="order-status" style="background: ${statusConfig.color}20; color: ${statusConfig.color}; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
                             <i class="fas ${statusConfig.icon}"></i>
-                            ${I18n.get('order_status_' + order.status)}
+                            ${TranslationManager.getStatusText(order.status)}
                         </span>
                     </div>
                     
-                    <div class="order-body">
-                        <div class="order-items-preview" aria-label="${I18n.get('items_count', {count: itemCount})}">
+                    <div class="order-body" style="margin-bottom: 1rem;">
+                        <div class="order-items-preview" style="display: flex; align-items: center; margin-bottom: 1rem;">
                             ${imagesHtml}
                             ${moreHtml}
                         </div>
                         
-                        <div class="order-summary">
-                            <div class="order-summary-row">
-                                <span>${I18n.get('items_count', {count: itemCount})}</span>
-                                <span class="order-total">${Utils.formatPrice(order.total)}</span>
-                            </div>
-                            ${order.shipping ? `
-                                <div class="order-shipping-info">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    ${Utils.escapeHtml(order.shipping.city || 'Chișinău')}
-                                </div>
-                            ` : ''}
+                        <div class="order-summary" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #94a3b8;">${t('items_count', {count: itemCount})}</span>
+                            <span class="order-total" style="color: #38bdf8; font-size: 1.25rem; font-weight: 700;">${Utils.formatPrice(order.total)}</span>
                         </div>
+                        ${order.shipping ? `
+                            <div class="order-shipping-info" style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${Utils.escapeHtml(order.shipping.city || 'Chișinău')}
+                            </div>
+                        ` : ''}
                     </div>
                     
-                    <div class="order-footer">
+                    <div class="order-footer" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         <button class="btn-order-action btn-order-primary" 
                                 onclick="IntexOrders.viewDetails('${Utils.escapeHtml(order.id)}')"
-                                aria-label="${I18n.get('order_details')}">
-                            <i class="fas fa-eye"></i> ${I18n.get('order_details')}
+                                style="flex: 1; min-width: 120px; background: #38bdf8; color: #0f172a; border: none; padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-eye"></i> ${t('order_details')}
                         </button>
                         
                         ${canTrack ? `
                             <button class="btn-order-action btn-order-secondary" 
                                     onclick="IntexOrders.trackOrder('${Utils.escapeHtml(order.id)}')"
-                                    aria-label="${I18n.get('track_order')}">
-                                <i class="fas fa-truck"></i> ${I18n.get('track_order')}
+                                    style="flex: 1; min-width: 120px; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <i class="fas fa-truck"></i> ${t('track_order')}
                             </button>
                         ` : ''}
                         
                         ${canReorder ? `
                             <button class="btn-order-action btn-order-secondary" 
                                     onclick="IntexOrders.reorder('${Utils.escapeHtml(order.id)}')"
-                                    aria-label="${I18n.get('reorder')}">
-                                <i class="fas fa-redo"></i> ${I18n.get('reorder')}
+                                    style="flex: 1; min-width: 120px; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <i class="fas fa-redo"></i> ${t('reorder')}
                             </button>
                         ` : ''}
                         
                         ${canCancel ? `
                             <button class="btn-order-action btn-order-danger" 
                                     onclick="IntexOrders.cancelOrder('${Utils.escapeHtml(order.id)}')"
-                                    aria-label="${I18n.get('cancel_order')}">
-                                <i class="fas fa-times"></i> ${I18n.get('cancel_order')}
+                                    style="flex: 1; min-width: 120px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <i class="fas fa-times"></i> ${t('cancel_order')}
                             </button>
                         ` : ''}
                     </div>
@@ -725,7 +871,8 @@
 
             let html = `
                 <button class="pagination-btn" ${this.currentPage === 1 ? 'disabled' : ''} 
-                        onclick="IntexOrders.goToPage(${this.currentPage - 1})">
+                        onclick="IntexOrders.goToPage(${this.currentPage - 1})"
+                        style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
                     <i class="fas fa-chevron-left"></i>
                 </button>
             `;
@@ -734,22 +881,29 @@
                 if (i === 1 || i === totalPages || (i >= this.currentPage - 1 && i <= this.currentPage + 1)) {
                     html += `
                         <button class="pagination-btn ${i === this.currentPage ? 'active' : ''}" 
-                                onclick="IntexOrders.goToPage(${i})">${i}</button>
+                                onclick="IntexOrders.goToPage(${i})"
+                                style="${i === this.currentPage ? 'background: #38bdf8; color: #0f172a;' : 'background: rgba(56, 189, 248, 0.1); color: #38bdf8;'} border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin: 0 0.25rem;">
+                            ${i}
+                        </button>
                     `;
                 } else if (i === this.currentPage - 2 || i === this.currentPage + 2) {
-                    html += `<span class="pagination-ellipsis">...</span>`;
+                    html += `<span class="pagination-ellipsis" style="color: #64748b; padding: 0.5rem;">...</span>`;
                 }
             }
 
             html += `
                 <button class="pagination-btn" ${this.currentPage === totalPages ? 'disabled' : ''} 
-                        onclick="IntexOrders.goToPage(${this.currentPage + 1})">
+                        onclick="IntexOrders.goToPage(${this.currentPage + 1})"
+                        style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             `;
 
             this.dom.pagination.innerHTML = html;
             this.dom.pagination.style.display = 'flex';
+            this.dom.pagination.style.justifyContent = 'center';
+            this.dom.pagination.style.gap = '0.5rem';
+            this.dom.pagination.style.marginTop = '2rem';
         }
 
         animateEntrance() {
@@ -769,147 +923,154 @@
         }
 
         // ============================================
-        // ACȚIUNI COMENZI
+        // MODAL DETALII
         // ============================================
 
         viewDetails(orderId) {
             const order = this.orders.find(o => o.id === orderId);
-            if (!order) {
-                console.error('[OrdersManager] Order not found:', orderId);
-                return;
-            }
-
+            if (!order) return;
             this.showOrderDetailsModal(order);
         }
 
         showOrderDetailsModal(order) {
-            // Remove existing modal
+            const t = TranslationManager.translate.bind(TranslationManager);
             const existing = document.querySelector('.order-details-modal');
             if (existing) {
                 existing.classList.remove('active');
                 setTimeout(() => existing.remove(), 300);
             }
 
-            const statusConfig = ORDER_STATUS[order.status.toUpperCase()] || ORDER_STATUS.PENDING;
+            const statusConfig = Object.values(ORDER_STATUS).find(s => s.key === order.status) || ORDER_STATUS.PENDING;
             const date = Utils.formatDate(order.date, true);
             
-            // Timeline
             const timelineHtml = order.timeline ? this.renderTimeline(order.timeline) : '';
             
-            // Items
-            const itemsHtml = order.items.map(item => `
-                <div class="order-item-detail">
-                    <img src="${Utils.escapeHtml(item.image || 'assets/img/placeholder.jpg')}" 
-                         alt="${Utils.escapeHtml(item.name)}" loading="lazy">
-                    <div class="order-item-info">
-                        <div class="order-item-name">${Utils.escapeHtml(item.name)}</div>
-                        <div class="order-item-meta">
-                            ${item.sku ? `<span class="sku">SKU: ${Utils.escapeHtml(item.sku)}</span>` : ''}
-                            <span>Qty: ${item.qty} × ${Utils.formatPrice(item.price)}</span>
+            // Items cu date actualizate din ProductManager
+            const itemsHtml = order.items.map(item => {
+                const product = ProductManager.findById(item.id);
+                const productName = product ? TranslationManager.getProductTitle(product) : item.name;
+                const productImage = product?.image || item.image || 'assets/img/no-image.jpg';
+                
+                return `
+                    <div class="order-item-detail" style="display: flex; gap: 1rem; padding: 1rem; background: rgba(15, 23, 42, 0.5); border-radius: 12px; margin-bottom: 0.75rem;">
+                        <img src="${Utils.escapeHtml(productImage)}" 
+                             alt="${Utils.escapeHtml(productName)}" 
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;"
+                             onerror="this.src='assets/img/no-image.jpg'">
+                        <div class="order-item-info" style="flex: 1;">
+                            <div class="order-item-name" style="color: #fff; font-weight: 600; margin-bottom: 0.25rem;">${Utils.escapeHtml(productName)}</div>
+                            <div class="order-item-meta" style="color: #94a3b8; font-size: 0.9rem;">
+                                ${item.sku || item.id ? `<span style="display: block; margin-bottom: 0.25rem;">SKU: ${Utils.escapeHtml(item.sku || item.id)}</span>` : ''}
+                                <span>${t('quantity')}: ${item.qty} × ${Utils.formatPrice(item.price)}</span>
+                            </div>
+                        </div>
+                        <div class="order-item-price" style="color: #38bdf8; font-weight: 700; font-size: 1.1rem; align-self: center;">
+                            ${Utils.formatPrice(item.price * item.qty)}
                         </div>
                     </div>
-                    <div class="order-item-price">${Utils.formatPrice(item.price * item.qty)}</div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             const modal = document.createElement('div');
             modal.className = 'order-details-modal';
-            modal.setAttribute('role', 'dialog');
-            modal.setAttribute('aria-modal', 'true');
-            modal.setAttribute('aria-labelledby', 'order-details-title');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;';
             
             modal.innerHTML = `
-                <div class="order-details-backdrop"></div>
-                <div class="order-details-content" role="document">
-                    <div class="order-details-header">
-                        <h3 id="order-details-title">
-                            <i class="fas fa-file-invoice"></i>
-                            ${I18n.get('order_details')} #${Utils.escapeHtml(order.id)}
+                <div class="order-details-backdrop" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);" onclick="IntexOrders.closeModal()"></div>
+                <div class="order-details-content" style="position: relative; background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+                    <div class="order-details-header" style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
+                        <h3 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-file-invoice" style="color: #38bdf8;"></i>
+                            ${t('order_details')} #${Utils.escapeHtml(order.id)}
                         </h3>
-                        <div class="order-details-actions">
-                            <button class="btn-icon" onclick="IntexOrders.printOrder('${Utils.escapeHtml(order.id)}')" 
-                                    title="${I18n.get('print_order')}" aria-label="${I18n.get('print_order')}">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="IntexOrders.printOrder('${Utils.escapeHtml(order.id)}')" 
+                                    style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); width: 40px; height: 40px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-print"></i>
                             </button>
-                            <button class="btn-icon close-btn" onclick="IntexOrders.closeModal()" 
-                                    title="Close" aria-label="Close">
+                            <button onclick="IntexOrders.closeModal()" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); width: 40px; height: 40px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
                     
-                    <div class="order-details-body">
-                        <div class="order-info-grid">
-                            <div class="info-card">
-                                <div class="info-label">${I18n.get('order_date')}</div>
-                                <div class="info-value">${date}</div>
+                    <div class="order-details-body" style="padding: 1.5rem;">
+                        <div class="order-info-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="info-card" style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 12px;">
+                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.25rem;">${t('order_date')}</div>
+                                <div style="color: #fff; font-weight: 600;">${date}</div>
                             </div>
                             
-                            <div class="info-card">
-                                <div class="info-label">Status</div>
-                                <div class="info-value status-badge" style="--status-color: ${statusConfig.color}">
+                            <div class="info-card" style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 12px;">
+                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.25rem;">Status</div>
+                                <div style="color: ${statusConfig.color}; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
                                     <i class="fas ${statusConfig.icon}"></i>
-                                    ${I18n.get('order_status_' + order.status)}
+                                    ${TranslationManager.getStatusText(order.status)}
                                 </div>
                             </div>
                             
-                            <div class="info-card">
-                                <div class="info-label">${I18n.get('payment_method')}</div>
-                                <div class="info-value">
-                                    <i class="fas fa-credit-card"></i>
+                            <div class="info-card" style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 12px;">
+                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.25rem;">${t('payment_method')}</div>
+                                <div style="color: #fff; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-credit-card" style="color: #38bdf8;"></i>
                                     ${Utils.escapeHtml(order.payment)}
                                 </div>
                             </div>
                         </div>
 
                         ${timelineHtml ? `
-                            <div class="order-timeline-section">
-                                <h4><i class="fas fa-history"></i> ${I18n.get('order_timeline')}</h4>
+                            <div class="order-timeline-section" style="margin-bottom: 1.5rem;">
+                                <h4 style="color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-history" style="color: #38bdf8;"></i> ${t('order_timeline')}
+                                </h4>
                                 ${timelineHtml}
                             </div>
                         ` : ''}
 
-                        <div class="order-shipping-section">
-                            <h4><i class="fas fa-shipping-fast"></i> ${I18n.get('delivery_to')}</h4>
-                            <div class="shipping-details">
-                                <p><strong>${Utils.escapeHtml(order.shipping?.name || '')}</strong></p>
-                                <p>${Utils.escapeHtml(order.shipping?.address || '')}</p>
-                                <p><i class="fas fa-phone"></i> ${Utils.escapeHtml(order.shipping?.phone || '')}</p>
+                        <div class="order-shipping-section" style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                            <h4 style="color: #fff; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-shipping-fast" style="color: #38bdf8;"></i> ${t('delivery_to')}
+                            </h4>
+                            <div style="color: #94a3b8;">
+                                <p style="margin: 0 0 0.25rem 0;"><strong style="color: #fff;">${Utils.escapeHtml(order.shipping?.name || '')}</strong></p>
+                                <p style="margin: 0 0 0.25rem 0;">${Utils.escapeHtml(order.shipping?.address || '')}</p>
+                                <p style="margin: 0;"><i class="fas fa-phone" style="color: #38bdf8; margin-right: 0.5rem;"></i> ${Utils.escapeHtml(order.shipping?.phone || '')}</p>
                             </div>
                         </div>
                         
-                        <div class="order-items-section">
-                            <h4>${I18n.get('items_count', {count: order.items.length})}</h4>
+                        <div class="order-items-section" style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #fff; margin-bottom: 1rem;">${t('items_count', {count: order.items.length})}</h4>
                             <div class="order-items-list">
                                 ${itemsHtml}
                             </div>
                         </div>
                         
-                        <div class="order-totals">
-                            <div class="total-row">
-                                <span>${I18n.get('subtotal')}</span>
+                        <div class="order-totals" style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #94a3b8;">
+                                <span>${t('subtotal')}</span>
                                 <span>${Utils.formatPrice(order.subtotal || order.total * 0.9)}</span>
                             </div>
-                            <div class="total-row">
-                                <span>${I18n.get('shipping')}</span>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #94a3b8;">
+                                <span>${t('shipping')}</span>
                                 <span>${Utils.formatPrice(order.shippingCost || 50)}</span>
                             </div>
                             ${order.tax ? `
-                                <div class="total-row">
-                                    <span>${I18n.get('tax')}</span>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #94a3b8;">
+                                    <span>${t('tax')}</span>
                                     <span>${Utils.formatPrice(order.tax)}</span>
                                 </div>
                             ` : ''}
-                            <div class="total-row grand-total">
-                                <span>${I18n.get('order_total')}</span>
-                                <span>${Utils.formatPrice(order.total)}</span>
+                            <div style="display: flex; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid rgba(56, 189, 248, 0.2); color: #fff; font-size: 1.1rem; font-weight: 700;">
+                                <span>${t('order_total')}</span>
+                                <span style="color: #38bdf8;">${Utils.formatPrice(order.total)}</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="order-details-footer">
-                        <button class="btn-secondary" onclick="IntexOrders.closeModal()">
-                            <i class="fas fa-arrow-left"></i> ${I18n.get('back_to_orders')}
+                    <div class="order-details-footer" style="padding: 1.5rem; border-top: 1px solid rgba(56, 189, 248, 0.2);">
+                        <button onclick="IntexOrders.closeModal()" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-arrow-left"></i> ${t('back_to_orders')}
                         </button>
                     </div>
                 </div>
@@ -917,41 +1078,30 @@
 
             document.body.appendChild(modal);
             
-            // Trigger animation
             requestAnimationFrame(() => {
-                modal.classList.add('active');
+                modal.style.opacity = '0';
+                modal.style.transition = 'opacity 0.3s ease';
+                requestAnimationFrame(() => {
+                    modal.style.opacity = '1';
+                });
             });
-
-            // Event listeners
-            const backdrop = modal.querySelector('.order-details-backdrop');
-            backdrop?.addEventListener('click', () => this.closeModal());
-
-            // Keyboard navigation
-            const handleKeyDown = (e) => {
-                if (e.key === 'Escape') {
-                    this.closeModal();
-                    document.removeEventListener('keydown', handleKeyDown);
-                }
-            };
-            document.addEventListener('keydown', handleKeyDown);
-
-            // Focus trap
-            this.trapFocus(modal);
         }
 
         renderTimeline(timeline) {
             return `
-                <div class="timeline">
+                <div class="timeline" style="position: relative; padding-left: 2rem;">
                     ${timeline.map((event, index) => {
-                        const statusConfig = ORDER_STATUS[event.status.toUpperCase()] || ORDER_STATUS.PENDING;
+                        const statusConfig = Object.values(ORDER_STATUS).find(s => s.key === event.status) || ORDER_STATUS.PENDING;
+                        const isLast = index === timeline.length - 1;
                         return `
-                            <div class="timeline-item ${index === 0 ? 'active' : ''}">
-                                <div class="timeline-marker" style="--status-color: ${statusConfig.color}">
-                                    <i class="fas ${statusConfig.icon}"></i>
+                            <div class="timeline-item" style="position: relative; padding-bottom: ${isLast ? '0' : '1.5rem'};">
+                                <div class="timeline-marker" style="position: absolute; left: -2rem; top: 0; width: 12px; height: 12px; background: ${statusConfig.color}; border-radius: 50%; border: 2px solid #1e293b; box-shadow: 0 0 0 2px ${statusConfig.color};">
+                                    <i class="fas ${statusConfig.icon}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.5rem; color: #fff;"></i>
                                 </div>
+                                ${!isLast ? `<div style="position: absolute; left: -1.55rem; top: 12px; width: 2px; height: calc(100% - 12px); background: rgba(56, 189, 248, 0.3);"></div>` : ''}
                                 <div class="timeline-content">
-                                    <div class="timeline-date">${Utils.formatDate(event.date, true)}</div>
-                                    <div class="timeline-status">${Utils.escapeHtml(event.note)}</div>
+                                    <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.25rem;">${Utils.formatDate(event.date, true)}</div>
+                                    <div style="color: #fff; font-weight: 500;">${Utils.escapeHtml(event.note)}</div>
                                 </div>
                             </div>
                         `;
@@ -963,49 +1113,23 @@
         closeModal() {
             const modal = document.querySelector('.order-details-modal');
             if (modal) {
-                modal.classList.remove('active');
+                modal.style.opacity = '0';
                 setTimeout(() => modal.remove(), 300);
             }
         }
 
-        trapFocus(element) {
-            const focusableElements = element.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-            const firstFocusable = focusableElements[0];
-            const lastFocusable = focusableElements[focusableElements.length - 1];
-
-            element.addEventListener('keydown', (e) => {
-                if (e.key !== 'Tab') return;
-
-                if (e.shiftKey) {
-                    if (document.activeElement === firstFocusable) {
-                        lastFocusable.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastFocusable) {
-                        firstFocusable.focus();
-                        e.preventDefault();
-                    }
-                }
-            });
-
-            firstFocusable?.focus();
-        }
-
         // ============================================
-        // ACȚIUNI SPECIFICE
+        // ACȚIUNI
         // ============================================
 
         async cancelOrder(orderId) {
-            if (!confirm(I18n.get('confirm_cancel'))) return;
+            const t = TranslationManager.translate.bind(TranslationManager);
+            if (!confirm(t('confirm_cancel'))) return;
 
             const order = this.orders.find(o => o.id === orderId);
             if (!order) return;
 
             try {
-                // Simulăm API call
                 await this.simulateDelay(500);
                 
                 order.status = 'cancelled';
@@ -1018,58 +1142,56 @@
 
                 this.saveOrders();
                 this.renderOrders();
-                this.showSuccess('order_cancelled');
-                
-                // Close modal if open
+                this.showNotification('success', t('order_cancelled'));
                 this.closeModal();
                 
             } catch (error) {
                 console.error('[OrdersManager] Cancel error:', error);
-                this.showError('cancel_error');
             }
         }
 
         async reorder(orderId) {
+            const t = TranslationManager.translate.bind(TranslationManager);
             const order = this.orders.find(o => o.id === orderId);
             if (!order) return;
 
             try {
                 if (window.cartManager) {
                     order.items.forEach(item => {
+                        const product = ProductManager.findById(item.id);
+                        
                         window.cartManager.addItem({
-                            id: item.id || Utils.generateId(),
-                            name: item.name,
-                            price: item.price,
-                            image: item.image,
+                            id: item.id,
+                            name: product ? TranslationManager.getProductTitle(product) : item.name,
+                            price: product?.price || item.price,
+                            image: product?.image || item.image,
                             quantity: item.qty,
-                            sku: item.sku
+                            sku: item.sku || item.id
                         });
                     });
                 }
 
-                this.showSuccess('items_added_to_cart');
+                this.showNotification('success', t('items_added_to_cart'));
 
-                // Redirect la coș după 1 secundă
                 setTimeout(() => {
                     window.location.href = 'cos.html';
                 }, 1000);
                 
             } catch (error) {
                 console.error('[OrdersManager] Reorder error:', error);
-                this.showError('reorder_error');
             }
         }
 
         trackOrder(orderId) {
-            // Simulare tracking
+            const t = TranslationManager.translate.bind(TranslationManager);
             const order = this.orders.find(o => o.id === orderId);
             if (!order) return;
 
-            // Aici s-ar deschide un modal cu hartă sau redirect la curier
-            alert(`Tracking pentru comanda ${orderId}\nStatus: ${I18n.get('order_status_' + order.status)}\nVei fi redirectat la pagina curierului...`);
+            alert(`Tracking: ${order.id}\n${t('order_status_' + order.status)}`);
         }
 
         printOrder(orderId) {
+            const t = TranslationManager.translate.bind(TranslationManager);
             const order = this.orders.find(o => o.id === orderId);
             if (!order) return;
 
@@ -1089,12 +1211,17 @@
                 <body>
                     <div class="header">
                         <h1>INTEX Moldova - Comanda #${order.id}</h1>
-                        <p>Data: ${Utils.formatDate(order.date, true)}</p>
-                        <p>Status: ${I18n.get('order_status_' + order.status)}</p>
+                        <p>${t('order_date')}: ${Utils.formatDate(order.date, true)}</p>
+                        <p>Status: ${TranslationManager.getStatusText(order.status)}</p>
                     </div>
                     <table class="items">
                         <thead>
-                            <tr><th>Produs</th><th>Cantitate</th><th>Preț</th><th>Total</th></tr>
+                            <tr>
+                                <th>${t('product')}</th>
+                                <th>${t('quantity')}</th>
+                                <th>${t('price')}</th>
+                                <th>Total</th>
+                            </tr>
                         </thead>
                         <tbody>
                             ${order.items.map(item => `
@@ -1108,7 +1235,7 @@
                         </tbody>
                     </table>
                     <div class="total">
-                        Total: ${Utils.formatPrice(order.total)}
+                        ${t('order_total')}: ${Utils.formatPrice(order.total)}
                     </div>
                 </body>
                 </html>
@@ -1120,21 +1247,67 @@
         goToPage(page) {
             this.currentPage = page;
             this.renderOrders();
-            // Scroll to top of list
             this.dom.list?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // ============================================
-        // ADAUGARE COMANDĂ NOUĂ (din checkout)
+        // UTILITĂȚI
         // ============================================
 
+        showNotification(type, message) {
+            if (window.showNotification) {
+                window.showNotification(type, message);
+            } else if (window.showSuccessI18n && type === 'success') {
+                window.showSuccessI18n(message);
+            } else {
+                alert(message);
+            }
+        }
+
+        setupEventListeners() {
+            const searchInput = document.getElementById('orders-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', 
+                    Utils.debounce((e) => {
+                        this.filters.search = e.target.value;
+                        this.currentPage = 1;
+                        this.renderOrders();
+                    }, CONFIG.DEBOUNCE_DELAY)
+                );
+            }
+
+            document.querySelectorAll('[data-filter-status]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.filters.status = e.target.dataset.filterStatus;
+                    this.currentPage = 1;
+                    this.renderOrders();
+                });
+            });
+        }
+
         addOrder(orderData) {
+            const t = TranslationManager.translate.bind(TranslationManager);
+            
             if (!this.currentUser) {
                 console.error('[OrdersManager] Cannot add order: no user');
                 return null;
             }
 
             try {
+                const processedItems = (orderData.items || []).map(item => {
+                    const product = ProductManager.findById(item.id);
+                    return {
+                        id: item.id,
+                        name: product ? TranslationManager.getProductTitle(product) : item.name,
+                        price: item.price,
+                        image: product?.image || item.image,
+                        qty: item.quantity || item.qty || 1,
+                        sku: item.id
+                    };
+                });
+
                 const newOrder = {
                     id: Utils.generateId(),
                     date: new Date().toISOString(),
@@ -1144,14 +1317,14 @@
                         date: new Date().toISOString(),
                         note: 'Comandă plasată'
                     }],
-                    ...orderData
+                    ...orderData,
+                    items: processedItems
                 };
 
                 this.orders.unshift(newOrder);
                 this.saveOrders();
                 
-                // Notificăm despre comanda nouă
-                this.showSuccess('order_placed_toast');
+                this.showNotification('success', t('order_placed_toast'));
                 
                 return newOrder;
             } catch (error) {
@@ -1159,104 +1332,23 @@
                 return null;
             }
         }
-
-        // ============================================
-        // FILTRE ȘI CAUTARE
-        // ============================================
-
-        setFilter(type, value) {
-            this.filters[type] = value;
-            this.currentPage = 1;
-            this.renderOrders();
-        }
-
-        searchOrders(query) {
-            this.filters.search = query;
-            this.currentPage = 1;
-            this.renderOrders();
-        }
-
-        // ============================================
-        // NOTIFICĂRI
-        // ============================================
-
-        showSuccess(key) {
-            if (window.showSuccessI18n) {
-                window.showSuccessI18n(key);
-            } else if (window.showNotification) {
-                window.showNotification('success', I18n.get(key));
-            } else {
-                console.log('[SUCCESS]', I18n.get(key));
-            }
-        }
-
-        showError(key) {
-            if (window.showErrorI18n) {
-                window.showErrorI18n(key);
-            } else if (window.showNotification) {
-                window.showNotification('error', I18n.get(key));
-            } else {
-                console.error('[ERROR]', I18n.get(key));
-            }
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-
-        setupEventListeners() {
-            // Listen pentru autentificare
-            window.addEventListener('authStateChanged', (e) => {
-                if (e.detail?.user) {
-                    this.currentUser = e.detail.user;
-                    this.loadOrders();
-                } else {
-                    this.currentUser = null;
-                    this.orders = [];
-                    this.handleNotAuthenticated();
-                }
-            });
-
-            // Search input cu debounce
-            const searchInput = document.getElementById('orders-search');
-            if (searchInput) {
-                searchInput.addEventListener('input', 
-                    Utils.debounce((e) => this.searchOrders(e.target.value), CONFIG.DEBOUNCE_DELAY)
-                );
-            }
-
-            // Filter buttons
-            document.querySelectorAll('[data-filter-status]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    this.setFilter('status', e.target.dataset.filterStatus);
-                });
-            });
-        }
     }
 
     // ============================================
-    // INITIALIZARE ȘI EXPORT
+    // EXPORT
     // ============================================
 
-    // Creăm instanța
     let ordersManager;
 
-    function initOrdersManager() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                ordersManager = new OrdersManager();
-            });
-        } else {
+    // Inițializare imediată
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
             ordersManager = new OrdersManager();
-        }
+        });
+    } else {
+        ordersManager = new OrdersManager();
     }
 
-    // Pornim inițializarea
-    initOrdersManager();
-
-    // Export global sub namespace protejat
     window.IntexOrders = {
         get instance() { return ordersManager; },
         viewDetails: (id) => ordersManager?.viewDetails(id),
@@ -1267,12 +1359,15 @@
         closeModal: () => ordersManager?.closeModal(),
         goToPage: (p) => ordersManager?.goToPage(p),
         addOrder: (data) => ordersManager?.addOrder(data),
-        searchOrders: (q) => ordersManager?.searchOrders(q),
+        searchOrders: (q) => {
+            if (ordersManager) {
+                ordersManager.filters.search = q;
+                ordersManager.currentPage = 1;
+                ordersManager.renderOrders();
+            }
+        },
         setFilter: (t, v) => ordersManager?.setFilter(t, v),
         refresh: () => ordersManager?.loadOrders()
     };
-
-    // Backward compatibility
-    window.ordersManager = ordersManager;
 
 })();
