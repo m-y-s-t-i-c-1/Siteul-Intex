@@ -486,7 +486,19 @@ class AuthManager {
             
             if (showAlert) {
                 const message = this.translate('auth_required', 'Trebuie să vă autentificați pentru a accesa pagina Comenzi. Vă rugăm să vă conectați sau să vă înregistrați.');
-                alert(message);
+                try {
+                    if (window.showInfoI18n) {
+                        window.showInfoI18n('auth_required');
+                    } else if (window.showInfo) {
+                        window.showInfo(message);
+                    } else if (window.openLoginModal) {
+                        window.openLoginModal();
+                    } else {
+                        console.info('[AUTH] ' + message);
+                    }
+                } catch (e) {
+                    console.warn('[AUTH] Could not show styled auth message', e);
+                }
             }
             
             try {
@@ -495,7 +507,12 @@ class AuthManager {
                 console.warn('[AUTH] Could not save redirect URL');
             }
             
-            window.location.href = redirectUrl;
+            try {
+                sessionStorage.setItem('auth_redirect_url', window.location.href);
+            } catch (e) {
+                console.warn('[AUTH] Could not save redirect URL');
+            }
+
             return null;
         }
         
