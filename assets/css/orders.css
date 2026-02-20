@@ -85,7 +85,7 @@
 
 .order-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(14, 165, 233, 0.15);
+    box-shadow: var(--box-glow);
 }
 
 .order-header {
@@ -94,7 +94,7 @@
     align-items: center;
     padding: 16px 20px;
     background: linear-gradient(90deg, rgba(14, 165, 233, 0.05), transparent);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--muted-border-color);
 }
 
 .order-id {
@@ -157,14 +157,14 @@
     height: 60px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid rgba(0,0,0,0.05);
+    border: 2px solid var(--muted-border-color);
 }
 
 .order-item-more {
     width: 60px;
     height: 60px;
     border-radius: 10px;
-    background: rgba(0,0,0,0.05);
+    background: var(--muted-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,7 +178,7 @@
     justify-content: space-between;
     align-items: center;
     padding-top: 16px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid var(--muted-border-color);
 }
 
 .order-total-label {
@@ -196,8 +196,8 @@
     display: flex;
     gap: 12px;
     padding: 16px 20px;
-    background: rgba(0,0,0,0.02);
-    border-top: 1px solid rgba(0,0,0,0.05);
+    background: var(--muted-bg);
+    border-top: 1px solid var(--muted-border-color);
 }
 
 .btn-order-action {
@@ -223,11 +223,11 @@
 .btn-order-secondary {
     background: transparent;
     color: var(--text-main);
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid var(--muted-border-color);
 }
 
 .btn-order-secondary:hover {
-    background: rgba(0,0,0,0.05);
+    background: var(--muted-bg);
 }
 
 .order-details-modal {
@@ -258,7 +258,7 @@
 
 .order-details-header {
     padding: 20px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--muted-border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -277,7 +277,7 @@
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--muted-border-color);
 }
 
 .detail-row:last-child {
@@ -309,7 +309,7 @@
     display: flex;
     gap: 12px;
     padding: 12px;
-    background: rgba(0,0,0,0.02);
+    background: var(--muted-bg);
     border-radius: 10px;
     margin-bottom: 8px;
 }
