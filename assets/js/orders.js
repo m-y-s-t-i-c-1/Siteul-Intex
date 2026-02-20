@@ -266,7 +266,6 @@
             if (!url) return (typeof standardizeImagePath === 'function') ? standardizeImagePath('intex.jpg') : './assets/img/intex.jpg';
             if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
             if (/^(?:\.\/|\.\.\/)/.test(url)) return url;
-            // remove leading slashes
             url = url.replace(/^\/+/, '');
             if (typeof standardizeImagePath === 'function') {
                 return standardizeImagePath(url);
