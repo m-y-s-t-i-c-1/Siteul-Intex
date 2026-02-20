@@ -485,7 +485,7 @@ class AuthManager {
             console.warn('[AUTH] Access denied - User not authenticated');
             
             if (showAlert) {
-                const message = this.translate('auth_required', 'Trebuie să fiți autentificat pentru a accesa această pagină');
+                const message = this.translate('auth_required', 'Trebuie să vă autentificați pentru a accesa pagina Comenzi. Vă rugăm să vă conectați sau să vă înregistrați.');
                 alert(message);
             }
             
