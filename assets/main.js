@@ -1099,11 +1099,8 @@ function normalizeAllImagePaths() {
         const srcAttr = img.getAttribute('src');
         if (!srcAttr) return;
         if (/^https?:\/\//i.test(srcAttr) || srcAttr.startsWith('data:')) return;
-        // if already explicitly relative with ./ or ../, leave it alone
         if (/^(?:\.\/|\.\.\/)/.test(srcAttr)) return;
-        // strip leading slashes
         const cleaned = srcAttr.replace(/^\/+/, '');
-        // avoid duplicating base if already present
         if (cleaned.startsWith(base)) return;
         img.src = base + cleaned;
     });
@@ -1126,7 +1123,6 @@ function initialize() {
     setupLanguageSwitchers();
     
     try {
-        // normalize image paths (fixes GitHub Pages absolute path issues)
         try { normalizeAllImagePaths(); } catch (e) {}
         window.dispatchEvent(new CustomEvent('mainJsReady', { detail: { lang: savedLang } }));
     } catch (e) {
