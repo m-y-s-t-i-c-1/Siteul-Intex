@@ -475,7 +475,7 @@ const translations = {
         about_p2: "We believe relaxation means absolute comfort and the freedom to choose. That's why we offer the widest range of products in the region: from complex metal-frame systems for the whole family to compact solutions and cutting-edge accessories. Whatever your space, we have the ideal solution to turn your summer into a continuous holiday.",
         contact_title: "Contact Us",
         addr_label: "Address:",
-        address_text: "ул. Заводская 201/12, Chisinau",
+        address_text: "Uzinelor St. 201/12, Chisinau",
         phone_label: "Phone:",
         phone_text: "069122879",
         email_label: "Email:",

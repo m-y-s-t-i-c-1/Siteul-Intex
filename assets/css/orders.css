@@ -45,7 +45,6 @@
     box-shadow: var(--glass-shadow);
 }
 
-/* Styled empty state used when user is not authenticated */
 .orders-empty-state {
     display: inline-block;
     max-width: 560px;
@@ -86,6 +85,12 @@
 }
 
 .orders-empty-state .btn-main i { margin-right: 8px; }
+
+.orders-empty-icon { display:block; margin: 0 auto 12px; font-size: 3rem; color: var(--accent); }
+.orders-empty-title { color: var(--text-main); font-size:1.25rem; margin-bottom:8px; }
+.orders-empty-text { color: var(--text-muted); margin-bottom:18px; }
+.orders-login-btn { box-shadow: 0 6px 18px rgba(2,132,199,0.12); }
+.orders-login-btn:hover { background: var(--accent); transform: translateY(-1px); }
 
 .orders-empty i {
     font-size: 4rem;

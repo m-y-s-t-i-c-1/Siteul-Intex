@@ -562,12 +562,12 @@
             
             if (this.dom.empty) {
                 this.dom.empty.innerHTML = `
-                    <div class="orders-empty-state" style="text-align: center; padding: 3rem;">
-                        <i class="fas fa-lock" style="font-size: 3rem; color: #38bdf8; margin-bottom: 1rem;"></i>
-                        <h3 style="color: #fff; margin-bottom: 0.5rem;">${t('auth_required')}</h3>
-                        <p style="color: #94a3b8; margin-bottom: 1.5rem;">${t('login_to_view_orders')}</p>
-                        <button class="btn-main" onclick="window.openLoginModal()" style="background: #38bdf8; color: #0f172a; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
-                            <i class="fas fa-sign-in-alt"></i> ${t('login_btn')}
+                    <div class="orders-empty-state">
+                        <i class="fas fa-lock orders-empty-icon" aria-hidden="true"></i>
+                        <h3 class="orders-empty-title">${t('auth_required')}</h3>
+                        <p class="orders-empty-text">${t('login_to_view_orders')}</p>
+                        <button class="btn-main orders-login-btn" onclick="window.openLoginModal()" aria-label="${t('login_btn')}">
+                            <i class="fas fa-sign-in-alt" aria-hidden="true"></i> ${t('login_btn')}
                         </button>
                     </div>
                 `;
