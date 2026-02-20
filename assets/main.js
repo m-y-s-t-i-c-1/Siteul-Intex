@@ -19,7 +19,7 @@ const translations = {
         about_p2: "Credem că relaxarea înseamnă confort absolut și libertatea de a alege. De aceea, îți punem la dispoziție cea mai bogată gamă de produse din regiune: de la sisteme complexe cu cadru metalic pentru întreaga familie, până la soluții compacte și accesorii de ultimă generație. Indiferent de spațiul tău, avem soluția ideală pentru a-ți transforma vara într-o vacanță continuă.",
         contact_title: "Contactează-ne",
         addr_label: "Adresa:",
-        address_text: "ул. Заводская 201/12, Кишинев",
+        address_text: "str. Uzinelor 201/12, Chișinău",
         phone_label: "Telefon:",
         phone_text: "069122879",
         email_label: "Email:",
