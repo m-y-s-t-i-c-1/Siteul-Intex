@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../assets/main.css">
     <link rel="stylesheet" href="../assets/css/produse.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
+    <link rel="stylesheet" href="../assets/css/model3d.css">
 </head>
 
 <body>
@@ -249,7 +250,19 @@
             
             <div class="product-modal-body">
                 <div class="product-modal-image">
-                    <img id="modal-product-image" src="" alt="Produs">
+                    <img id="modal-product-image" src="" alt="Produs" style="width: 100%; height: auto;">
+                    
+                    <!-- Container pentru model 3D - se ascunde/arata cu display -->
+                    <div id="model3d-container" class="model3d-container hidden">
+                        <div class="model3d-viewer" id="model3d-viewer"></div>
+                    </div>
+                    
+                    <!-- Butonul de comutare 2D/3D - MEREU VIZIBIL pe imagine -->
+                    <div class="model3d-controls">
+                        <button class="model3d-btn" id="toggle-2d-3d" title="Comută între imagine 2D și model 3D" style="display: none;">
+                            <i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="product-modal-info">
@@ -279,6 +292,15 @@
         </div>
     </div>
 
+    <!-- Three.js Library pentru modele 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../assets/js/OrbitControls.js"></script>
+    <script src="../assets/js/GLTFLoader.js"></script>
+    
+    <!-- 3D Models Management -->
+    <script src="../assets/js/3d-models.js"></script>
+    <script src="../assets/js/model3d-viewer.js"></script>
+    
     <script src="../assets/js/notifications.js"></script>
     <script src="../assets/main.js"></script>
     <script src="../assets/js/data.js?v=1"></script>
@@ -286,6 +308,9 @@
     <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/produse.js"></script>
+    
+    <!-- 3D Integration (trebuie la final după produse.js) -->
+    <script src="../assets/js/produse-3d-integration.js"></script>
 </body>
 
 </html>
