@@ -78,14 +78,19 @@ const PRODUCT_3D_MODELS = {
     },
     
     // Transport
+    't1': {
+        name:'tricicleta+pentru+copii.glb',
+        title: 'Tricileta pentru copii 3D',
+        description: 'Model 3D al tricicletei pentru copii'
+    },
     't2': {
-        name: 'Trotinetă copii 2489.glb',
-        title: 'Trotinetă 2489 3D',
+        name: 'Trotinetă copii Model 188.glb',
+        title: 'Trotinetă Model 188 3D',
         description: 'Model 3D al trotinetei pentru copii'
     },
     't3': {
-        name: 'Skateboard copii 2206.glb',
-        title: 'Skateboard 2206 3D',
+        name: 'skateboard copii 2026.glb',
+        title: 'Skateboard 2026 3D',
         description: 'Model 3D al skateboardului'
     },
     't4': {
@@ -94,14 +99,44 @@ const PRODUCT_3D_MODELS = {
         description: 'Model 3D al skateboardului 2308'
     },
     't5': {
-        name: 'skateboard copii 2026.glb',
-        title: 'Skateboard 2026 3D',
-        description: 'Model 3D al skateboardului 2026'
+        name: 'skateboard copii 2406.glb',
+        title: 'Skateboard 2406 3D',
+        description: 'Model 3D al skateboardului 2406'
+    },
+    't6': {
+        name: 'Trotinetă copii 2489.glb',
+        title: 'Trotinetă 2489 3D',
+        description: 'Model 3D al trotinetei 2489'
     },
     't7': {
-        name: 'Skateboard cu roți luminoase 3108.glb',
-        title: 'Skateboard Luminos 3108 3D',
+        name: 'Skateboard copii 28p.glb',
+        title: 'Skateboard copii 28p 3D',
         description: 'Model 3D al skateboardului cu roți luminoase'
+    },
+    't8': {
+        name: 'Trotinetă copii 306.glb',
+        title: 'Trotinetă 306 3D',
+        description: 'Model 3D al trotinetei 306'
+    },
+    't9': {
+        name: 'Trotinetă copii 307.glb',
+        title: 'Trotinetă 307 3D',
+        description: 'Model 3D al trotinetei 307'
+    },
+    't10': {
+        name: 'Skateboard cu mâner 3108.glb',
+        title: 'Skateboard 3108 3D',
+        description: 'Model 3D al skateboardului 3108'
+    },
+    't11': {
+        name: 'Skateboard cu roți luminoase 3108.glb',
+        title: 'Skateboard 3108 3D',
+        description: 'Model 3D al skateboardului 3108'
+    },
+    't12': {
+        name: 'Skateboard copii 3108GD.glb',
+        title: 'Skateboard 3108GD 3D',
+        description: 'Model 3D al skateboardului 3108GD'
     }
 };
 
