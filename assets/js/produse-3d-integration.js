@@ -13,8 +13,11 @@ function initialize3DForProduct(product) {
         return;
     }
     
+    // Extract title for pool products mapping
+    const productTitle = product.title ? (product.title.ro || product.title.en || product.title) : '';
+    
     console.log('[3D] Checking if product has 3D model:', product.id);
-    const has3D = hasModel3D(product.id);
+    const has3D = hasModel3D(product.id, productTitle);
     console.log('[3D] hasModel3D result:', has3D);
     
     if (!has3D) {
@@ -75,7 +78,7 @@ function initialize3DForProduct(product) {
             });
             console.log('[3D] Model3DViewer created ✓');
             
-            const modelPath = get3DModelPath(product.id);
+            const modelPath = get3DModelPath(product.id, productTitle);
             console.log('[3D] Model path:', modelPath);
             
             if (modelPath) {
