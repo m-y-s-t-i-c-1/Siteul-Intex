@@ -57,38 +57,25 @@ const PRODUCT_3D_MODELS = {
     't12': { name: 'Skateboard copii 3108GD.glb', title: 'Skateboard 3108GD 3D', description: 'Model 3D al skateboardului 3108GD', subcategory: null },
 };
 
-function get3DModelPath(productId, productTitle) {
-    let model = PRODUCT_3D_MODELS[productId];
-    let filePath = null;
+function getCorrectModelPath(filename) {
+    // Detectează dacă suntem într-un subfolder (ex: /pagini/)
+    const currentPath = window.location.pathname;
+    const isInSubfolder = currentPath.includes('/pagini/') || currentPath.includes('/assets/');
     
-    // Handle pool products - return direct file path
-    if (!model && productId && productId.startsWith('pool_')) {
-        const modelFile = mapPoolToModelFile(productId, productTitle);
-        if (modelFile) {
-            const basePath = (typeof getBasePath === 'function') ? getBasePath() : './';
-            const fullPath = basePath + 'modele_3d/' + encodeURIComponent('bazine intex - bazine cadru') + '/' + encodeURIComponent(modelFile);
-            console.log('[3D] get3DModelPath - pool product found:', {productId, modelFile, fullPath});
-            return fullPath;
-        }
-        console.log('[3D] get3DModelPath - pool product but NO MODEL FILE found for:', productId);
-        return null;
-    }
+    // Dacă suntem în subfolder, adăugăm ../ pentru a ajunge la root
+    const basePath = isInSubfolder ? '../' : './';
     
-    if (!model) {
-        console.log('[3D] get3DModelPath - productId not found in PRODUCT_3D_MODELS:', productId);
-        return null;
-    }
+    // Construiește calea completă către folderul modele_3d
+    const fullPath = basePath + 'modele_3d/' + filename;
     
-    let category = '';
-    if (productId.startsWith('j')) category = 'Terenuri de Joaca';
-    else if (productId.startsWith('kp')) category = 'bazine copii';
-    else if (productId.startsWith('kip')) category = 'bazine intex - bazine cadru';  // Easy Set models
-    else if (productId.startsWith('kc')) category = 'bazine intex - bazine cadru';
-    else if (productId.startsWith('t')) category = 'transport';
+    console.log('[3D] getCorrectModelPath:', {
+        currentPath,
+        isInSubfolder,
+        basePath,
+        filename,
+        fullPath
+    });
     
-    const basePath = (typeof getBasePath === 'function') ? getBasePath() : './';
-    const fullPath = basePath + 'modele_3d/' + encodeURIComponent(category) + '/' + encodeURIComponent(model.name);
-    console.log('[3D] get3DModelPath - direct product found:', {productId, category, name: model.name, fullPath});
     return fullPath;
 }
 
@@ -145,8 +132,36 @@ function getProductsBySubcategory(subcategory) {
     });
 }
 
-function getPoolModel3DPath(productId, productTitle) {
-    return get3DModelPath(productId, productTitle);
+function get3DModelPath(productId, productTitle) {
+    let model = PRODUCT_3D_MODELS[productId];
+    
+    // Handle pool products - return direct file path
+    if (!model && productId && productId.startsWith('pool_')) {
+        const modelFile = mapPoolToModelFile(productId, productTitle);
+        if (modelFile) {
+            const fullPath = getCorrectModelPath(encodeURIComponent('bazine intex - bazine cadru') + '/' + encodeURIComponent(modelFile));
+            console.log('[3D] get3DModelPath - pool product found:', {productId, modelFile, fullPath});
+            return fullPath;
+        }
+        console.log('[3D] get3DModelPath - pool product but NO MODEL FILE found for:', productId);
+        return null;
+    }
+    
+    if (!model) {
+        console.log('[3D] get3DModelPath - productId not found in PRODUCT_3D_MODELS:', productId);
+        return null;
+    }
+    
+    let category = '';
+    if (productId.startsWith('j')) category = 'Terenuri de Joaca';
+    else if (productId.startsWith('kp')) category = 'bazine copii';
+    else if (productId.startsWith('kip')) category = 'bazine intex - bazine cadru';  // Easy Set models
+    else if (productId.startsWith('kc')) category = 'bazine intex - bazine cadru';
+    else if (productId.startsWith('t')) category = 'transport';
+    
+    const fullPath = getCorrectModelPath(encodeURIComponent(category) + '/' + encodeURIComponent(model.name));
+    console.log('[3D] get3DModelPath - direct product found:', {productId, category, name: model.name, fullPath});
+    return fullPath;
 }
 
 /**

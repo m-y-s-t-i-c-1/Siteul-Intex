@@ -15,14 +15,60 @@ class Model3DViewer {
         this.animationId = null;
         
         // Opțiuni configurabile
-        this.width = options.width || containerElement.clientWidth || 400;
-        this.height = options.height || containerElement.clientHeight || 400;
+        this.width = options.width || 400;
+        this.height = options.height || 400;
         this.backgroundColor = options.backgroundColor || 0xf5f5f5;
         this.autoRotate = options.autoRotate !== false; // true by default
         this.zoomLevel = options.zoomLevel || 1;
         this.enableControls = options.enableControls !== false; // true by default
         
-        this.init();
+        // Handle invisible containers - wait for valid dimensions
+        this.waitForContainerReady().then(() => {
+            this.init();
+        });
+    }
+    
+    async waitForContainerReady() {
+        return new Promise((resolve) => {
+            const checkDimensions = () => {
+                const rect = this.container.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    this.width = rect.width;
+                    this.height = rect.height;
+                    resolve();
+                } else {
+                    // Use ResizeObserver if available, fallback to timeout
+                    if (window.ResizeObserver) {
+                        const observer = new ResizeObserver((entries) => {
+                            const entry = entries[0];
+                            if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+                                this.width = entry.contentRect.width;
+                                this.height = entry.contentRect.height;
+                                observer.disconnect();
+                                resolve();
+                            }
+                        });
+                        observer.observe(this.container);
+                    } else {
+                        // Fallback for older browsers
+                        setTimeout(() => {
+                            const rect = this.container.getBoundingClientRect();
+                            if (rect.width > 0 && rect.height > 0) {
+                                this.width = rect.width;
+                                this.height = rect.height;
+                                resolve();
+                            } else {
+                                // Force minimum dimensions if still 0
+                                this.width = 400;
+                                this.height = 400;
+                                resolve();
+                            }
+                        }, 100);
+                    }
+                }
+            };
+            checkDimensions();
+        });
     }
     
     init() {
@@ -97,6 +143,7 @@ class Model3DViewer {
         // Ascunde modelul anterior dacă există
         if (this.modelMesh) {
             this.scene.remove(this.modelMesh);
+            this.disposeModel(this.modelMesh);
             this.modelMesh = null;
         }
         
@@ -117,27 +164,36 @@ class Model3DViewer {
             modelPath,
             (gltf) => {
                 const model = gltf.scene;
+                
+                // Creează un wrapper pentru model
                 const wrapper = new THREE.Group();
                 wrapper.add(model);
                 
-                // Calculează bounding box-ul inițial
+                // Calculează bounding box-ul pentru centrare și scalare automată
                 const bbox = new THREE.Box3().setFromObject(model);
                 const size = bbox.getSize(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 2 / maxDim;
+                const center = bbox.getCenter(new THREE.Vector3());
                 
-                // Aplică scalarea la wrapper
+                // Calculează dimensiunea maximă
+                const maxDim = Math.max(size.x, size.y, size.z);
+                
+                // Scale pentru a încadra în viewport (2 unități vizibile)
+                const scale = maxDim > 0 ? 2 / maxDim : 1;
                 wrapper.scale.multiplyScalar(scale);
                 
-                // Calculează și centrează
-                const center = bbox.getCenter(new THREE.Vector3());
-                model.position.sub(center);
+                // Centrează modelul în origine
+                model.position.sub(center.clone().multiplyScalar(scale));
                 
                 // Adaugă wrapper la scena
                 this.scene.add(wrapper);
                 this.modelMesh = wrapper;
                 
-                console.log('Model 3D încărcat cu succes:', modelPath, 'Scale:', scale.toFixed(3));
+                console.log('Model 3D încărcat cu succes:', modelPath, {
+                    originalSize: size,
+                    scale: scale.toFixed(3),
+                    center: center
+                });
+                
                 if (onComplete) onComplete(wrapper);
             },
             (progress) => {
@@ -191,20 +247,81 @@ class Model3DViewer {
     }
     
     dispose() {
-        // Curățare
+        // Oprește animația
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
+            this.animationId = null;
         }
         
+        // Curățare controale
         if (this.controls) {
             this.controls.dispose();
             this.controls = null;
         }
         
+        // Curățare model și resurse
+        if (this.modelMesh) {
+            this.disposeModel(this.modelMesh);
+            this.scene.remove(this.modelMesh);
+            this.modelMesh = null;
+        }
+        
+        // Curățare renderer
         if (this.renderer) {
             this.renderer.dispose();
-            this.container.removeChild(this.renderer.domElement);
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+            this.renderer = null;
         }
+        
+        // Curățare scenă
+        if (this.scene) {
+            this.scene.clear();
+            this.scene = null;
+        }
+        
+        // Curățare cameră
+        this.camera = null;
+    }
+    
+    disposeModel(object) {
+        if (!object) return;
+        
+        object.traverse((child) => {
+            if (child.isMesh) {
+                // Eliberează geometria
+                if (child.geometry) {
+                    child.geometry.dispose();
+                }
+                
+                // Eliberează materialele
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(material => {
+                            this.disposeMaterial(material);
+                        });
+                    } else {
+                        this.disposeMaterial(child.material);
+                    }
+                }
+            }
+        });
+    }
+    
+    disposeMaterial(material) {
+        if (!material) return;
+        
+        // Eliberează texturile
+        Object.keys(material).forEach(prop => {
+            if (!material[prop]) return;
+            if (material[prop].isTexture) {
+                material[prop].dispose();
+            }
+        });
+        
+        // Eliberează materialul însuși
+        material.dispose();
     }
     
     // Metode de control

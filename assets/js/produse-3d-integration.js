@@ -152,12 +152,15 @@ function setupModel3DControls(productId) {
             newBtn.innerHTML = '<i class="fas fa-image"></i> <span data-i18n="view_2d">Vezi în 2D</span>';
             is3DModelViewVisible = true;
             
-            if (current3DViewerInstance && current3DViewerInstance.renderer) {
-                setTimeout(() => {
+            // Force resize after visibility change
+            setTimeout(() => {
+                if (current3DViewerInstance && current3DViewerInstance.onWindowResize) {
                     current3DViewerInstance.onWindowResize();
-                    window.dispatchEvent(new Event('resize'));
-                }, 100);
-            }
+                    console.log('[3D] Forced resize after 3D activation');
+                }
+                // Also trigger window resize event for any other listeners
+                window.dispatchEvent(new Event('resize'));
+            }, 50);
         }
     });
     
