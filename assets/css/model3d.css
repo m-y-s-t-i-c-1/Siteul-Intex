@@ -6,6 +6,7 @@
     border-radius: 8px;
     width: 100%;
     height: auto;
+    min-height: 400px;
     display: block;
 }
 
@@ -91,6 +92,8 @@
     gap: 6px;
     transition: all 0.3s ease;
     white-space: nowrap;
+    pointer-events: auto;
+    z-index: 1001;
 }
 
 .model3d-btn:hover {

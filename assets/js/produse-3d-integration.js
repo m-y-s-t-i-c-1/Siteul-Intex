@@ -25,6 +25,7 @@ function initialize3DForProduct(product) {
         const toggleBtn = document.getElementById('toggle-2d-3d');
         if (toggleBtn) {
             toggleBtn.style.display = 'none';
+            toggleBtn.classList.remove('visible');
             console.log('[3D] Hid button (no model)');
         }
         return;
@@ -49,7 +50,8 @@ function initialize3DForProduct(product) {
     dispose3DViewer();
     
     // Show button since product has 3D model
-    toggle3DBtn.style.display = 'flex';
+    toggle3DBtn.style.display = '';  // Clear inline style
+    toggle3DBtn.classList.add('visible');
     console.log('[3D] Showed button');
     
     // Wait for image to load and get dimensions
@@ -102,69 +104,75 @@ function initialize3DForProduct(product) {
 function setupModel3DControls(productId) {
     console.log('[3D] setupModel3DControls called for product:', productId);
     
+    // Get DOM elements
     const toggle3DBtn = document.getElementById('toggle-2d-3d');
     const container = document.getElementById('model3d-container');
     const img = document.getElementById('modal-product-image');
+    const controls = document.querySelector('.model3d-controls');
     
-    console.log('[3D] Button element found:', toggle3DBtn !== null);
-    console.log('[3D] Container element found:', container !== null);
-    console.log('[3D] Image element found:', img !== null);
-    
-    if (!toggle3DBtn) {
-        console.error('[3D] CRITICAL: toggle3DBtn not found in DOM!');
+    if (!toggle3DBtn || !container || !controls) {
+        console.error('[3D] Required elements not found');
         return;
     }
     
-    // Remove previous listeners by cloning
-    const newBtn = toggle3DBtn.cloneNode(true);
-    if (toggle3DBtn.parentNode) {
-        toggle3DBtn.parentNode.replaceChild(newBtn, toggle3DBtn);
-        console.log('[3D] Button cloned and replaced');
-    } else {
-        console.warn('[3D] Button has no parent node');
-    }
+    // Remove old button and create fresh one
+    toggle3DBtn.remove();
     
-    // Add diagnostic listener
-    newBtn.addEventListener('click', function(e) {
-        console.log('[3D] ✓ Click event fired!');
+    const freshBtn = document.createElement('button');
+    freshBtn.id = 'toggle-2d-3d';
+    freshBtn.className = 'model3d-btn visible';
+    freshBtn.title = 'Comută între imagine 2D și model 3D';
+    freshBtn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
+    
+    controls.appendChild(freshBtn);
+    console.log('[3D] Fresh button created and attached');
+    
+    // Add fresh listener
+    freshBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        const showing3D = container.classList.contains('visible-3d');
-        console.log('[3D] Currently showing 3D:', showing3D);
+        console.log('[3D] Button clicked');
         
-        if (showing3D) {
+        const btn = document.getElementById('toggle-2d-3d');
+        const cont = document.getElementById('model3d-container');
+        const image = document.getElementById('modal-product-image');
+        
+        if (!btn || !cont) {
+            console.error('[3D] Missing DOM elements on click');
+            return;
+        }
+        
+        const is3DVisible = cont.classList.contains('visible-3d');
+        
+        if (is3DVisible) {
             // Switch to 2D
-            console.log('[3D] Switching to 2D');
-            container.classList.remove('visible-3d');
-            if (img) img.style.display = 'block';
-            newBtn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
+            console.log('[3D] → Switching to 2D');
+            cont.classList.remove('visible-3d');
+            cont.classList.add('hidden');
+            if (image) image.style.display = 'block';
+            btn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
             is3DModelViewVisible = false;
         } else {
             // Switch to 3D
-            console.log('[3D] Switching to 3D');
-            if (!container) {
-                console.error('[3D] Container not found during 3D switch!');
-                return;
-            }
-            container.classList.add('visible-3d');
-            if (img) img.style.display = 'none';
-            newBtn.innerHTML = '<i class="fas fa-image"></i> <span data-i18n="view_2d">Vezi în 2D</span>';
+            console.log('[3D] → Switching to 3D');
+            cont.classList.add('visible-3d');
+            cont.classList.remove('hidden');
+            if (image) image.style.display = 'none';
+            btn.innerHTML = '<i class="fas fa-image"></i> <span data-i18n="view_2d">Vezi în 2D</span>';
             is3DModelViewVisible = true;
             
-            // Force resize after visibility change
+            // Resize viewer
             setTimeout(() => {
                 if (current3DViewerInstance && current3DViewerInstance.onWindowResize) {
                     current3DViewerInstance.onWindowResize();
-                    console.log('[3D] Forced resize after 3D activation');
                 }
-                // Also trigger window resize event for any other listeners
                 window.dispatchEvent(new Event('resize'));
             }, 50);
         }
     });
     
-    console.log('[3D] Event listener attached to button');
+    console.log('[3D] Button ready for clicking');
 }
 
 function dispose3DViewer() {

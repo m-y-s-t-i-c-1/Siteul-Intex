@@ -1085,6 +1085,11 @@ function openProductModal(product) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         document.body.classList.add('modal-open');
+        
+        // Initialize 3D viewer for products that have 3D models
+        if (typeof initialize3DForProduct === 'function') {
+            initialize3DForProduct(product);
+        }
     }
 }
 

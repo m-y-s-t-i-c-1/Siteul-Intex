@@ -1271,4 +1271,51 @@ window.closeLoginModal = closeLoginModal;
 window.switchTab = switchTab;
 window.handleLogin = handleLogin;
 window.handleRegister = handleRegister;
+
+// ===== CUSTOM CURSOR =====
+const cursor = document.getElementById('cursor');
+const cursorFollower = document.getElementById('cursor-follower');
+
+if (cursor && cursorFollower) {
+    document.addEventListener('mousemove', (e) => {
+        if (window.innerWidth > 1200) {
+            // Update main cursor
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Update follower with delay
+            setTimeout(() => {
+                cursorFollower.style.left = (e.clientX - 17.5) + 'px';
+                cursorFollower.style.top = (e.clientY - 17.5) + 'px';
+            }, 40);
+            
+            // 3D parallax effect on hero visual
+            const visual = document.querySelector('.visual-3d');
+            if (visual) {
+                const x = (window.innerWidth / 2 - e.clientX) / 75;
+                const y = (window.innerHeight / 2 - e.clientY) / 75;
+                visual.style.transform = `rotateY(${-20 + x}deg) rotateX(${10 + y}deg)`;
+            }
+        }
+    });
+}
+
+// ===== SCROLL REVEAL ANIMATIONS =====
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.1 });
+
+// Observe all elements with reveal class
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Trigger hero reveal animations on page load
+window.addEventListener('load', () => {
+    document.querySelectorAll('.hero .reveal').forEach(el => {
+        el.classList.add('active');
+    });
+});
 window.updateLoginState = updateLoginState;

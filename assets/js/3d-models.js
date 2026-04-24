@@ -13,17 +13,17 @@ const PRODUCT_3D_MODELS = {
 
     // Bazine Copii - Bazine Gonflabile
     'kp1': { name: 'BAZIN GONFLABIL COPII 168Х46СМ «CURCUBEU».glb', title: 'Bazin Curcubeu 168x46 3D', description: 'Model 3D al bazinului Curcubeu', subcategory: 'bazine gonflabile' },
-    'kp2': { name: 'BAZIN COPII 152x25cm «Snorkeling».glb', title: 'Bazin Snorkeling 3D', description: 'Model 3D al bazinului pentru snorkeling', subcategory: 'bazine gonflabile' },
-    'kp3': { name: 'BAZIN COPII 183Х38СМ «SNAPSET».glb', title: 'Bazin SNAPSET 3D', description: 'Model 3D al bazinului SNAPSET', subcategory: 'bazine gonflabile' },
+    'kp2': { name: 'BAZIN COPII 183Х38СМ «SNAPSET»;  Bazin Copii 152x25cm «Snorkeling».glb', title: 'Bazin Snorkeling 3D', description: 'Model 3D al bazinului pentru snorkeling', subcategory: 'bazine gonflabile' },
+    'kp3': { name: 'BAZIN COPII 183Х38СМ «SNAPSET»;  Bazin Copii 152x25cm «Snorkeling».glb', title: 'Bazin SNAPSET 3D', description: 'Model 3D al bazinului SNAPSET', subcategory: 'bazine gonflabile' },
     'kp4': { name: 'BAZIN GONFLABIL COPII 229Х229Х66СМ «FAMILIAL».glb', title: 'Bazin Familial 229x229 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
     'kp5': { name: 'BAZIN GONFLABIL COPII 262Х175Х56СМ «CADA».glb', title: 'Bazin CADA 262x175 3D', description: 'Model 3D al bazinului CADA', subcategory: 'bazine gonflabile' },
     'kp6': { name: 'BAZIN GONFLABIL COPII 191Х178Х61СМ «AKVARIUM».glb', title: 'Bazin Akvarium 3D', description: 'Model 3D al bazinului Akvarium', subcategory: 'bazine gonflabile' },
     'kp7': { name: 'Inel Gonflabil Intex «Micuța Stea».glb', title: 'Inel Micuța Stea 3D', description: 'Model 3D al inelului gonflabil', subcategory: 'bazine gonflabile' },
-    'kp8': { name: 'BAZIN GONFLABIL COPII 85Х85Х23СМ.glb', title: 'Bazin 85x85 3D', description: 'Model 3D al bazinului mic pentru copii', subcategory: 'bazine gonflabile' },
+    'kp8': { name: 'BAZIN GONFLABIL COPII 85Х85Х23СМ, 57Л, ОТ 1 ДО 3 ЛЕТ.glb', title: 'Bazin 85x85 3D', description: 'Model 3D al bazinului mic pentru copii', subcategory: 'bazine gonflabile' },
     'kp9': { name: 'BAZIN GONFLABIL COPII 168Х46СМ «CURCUBEU».glb', title: 'Bazin Curcubeu 168x46 3D', description: 'Model 3D al bazinului Curcubeu', subcategory: 'bazine gonflabile' },
-    'kp10': { name: 'BAZIN GONFLABIL COPII 102Х89СМ «CIUPERCA MUSCARIA».glb', title: 'Bazin Ciuperca 102x89 3D', description: 'Model 3D al bazinului ciupercă', subcategory: 'bazine gonflabile' },
-    'kp11': { name: 'BAZIN GONFLABIL COPII «FAMILIAL» INTEX, 203X152X48 CM.glb', title: 'Bazin Familial 203x152 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
-    'kp12': { name: 'BAZIN GONFLABIL COPII 229Х147Х46СМ.glb', title: 'Bazin Familial 229x147 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
+    'kp10': { name: 'BAZIN GONFLABIL COPII 102Х89СМ «CIUPERCA MUSCARIA» CU COPERIȘ.glb', title: 'Bazin Ciuperca 102x89 3D', description: 'Model 3D al bazinului ciupercă', subcategory: 'bazine gonflabile' },
+    'kp11': { name: 'BAZIN GONFLABIL COPII «FAMILIAL» INTEX, 203X152X48 CM; BAZIN GONFLABIL COPII 229Х147Х46СМ ОТ 6 ЛЕТ.glb', title: 'Bazin Familial 203x152 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
+    'kp12': { name: 'BAZIN GONFLABIL COPII «FAMILIAL» INTEX, 203X152X48 CM; BAZIN GONFLABIL COPII 229Х147Х46СМ ОТ 6 ЛЕТ.glb', title: 'Bazin Familial 229x147 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
 
     // Bazine Intex - Bazine Gonflabile (cu modele 3D din Easy Set - pe server în folderul bazine cadru)
     'kip1': { name: 'Bazin Easy Set 305x76cm - Piscină Mare pentru Familie; Bazin Easy Set 244x61cm - Piscină Familială; Bazin Easy Set 183x51cm - Piscină Compactă pentru Copii.glb', title: 'Bazin Intex Easy Set 305x76 3D', description: 'Model 3D Easy Set', subcategory: 'bazine intex - bazine gonflabile' },
