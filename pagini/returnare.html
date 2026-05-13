@@ -177,52 +177,83 @@
 
     <section class="contact-section" id="contact">
         <div class="contact-container">
-            <div class="contact-info">
-                <h3 data-i18n="contact_title">Contactează-ne</h3>
-                
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <strong data-i18n="addr_label">Adresa:</strong>
-                        <p>ул. Заводская 201/12, Кишинев</p>
-                    </div>
-                </div>
 
-                <div class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <div>
-                        <strong data-i18n="phone_label">Telefon:</strong>
-                        <p>+373 69 122 879</p>
-                    </div>
+            <!-- Header -->
+            <div class="contact-header">
+                <div class="contact-header-text">
+                    <span class="section-label" data-i18n="contact_label">Contacte</span>
+                    <h2 data-i18n="contact_title">Contacte<br>și Support</h2>
                 </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <strong data-i18n="email_label">Email:</strong>
-                        <p>zovagrup@gmail.com</p>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <strong data-i18n="hours_label">Program:</strong>
-                        <p data-i18n="hours_val">Luni - Vineri: 09:00 - 17:00 (pauza 11:45-12:45)<br>Sâmbătă: 11:00 - 13:00</p>
-                    </div>
-                </div>
+                <p data-i18n="contact_desc">Suntem aici pentru tine. Vizitează showroom-ul nostru sau contactează-ne direct — echipa Intex Moldova îți răspunde cu plăcere.</p>
             </div>
 
+            <!-- Card grid -->
+            <div class="contact-cards">
+
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="addr_label">Showroom și Sediu Central</span>
+                    <span class="contact-card-value">
+                        ul. Zavodskaia 201/12,<br>Chisinau, Moldova
+                    </span>
+                </div>
+
+                <div class="contact-card hours">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="hours_label">Program Showroom</span>
+                    <div class="contact-card-value">
+                        <div class="day-row">
+                            <span data-i18n="days_mf">Luni - Vineri</span>
+                            <span>09:00 - 17:00</span>
+                        </div>
+                        <div class="day-row">
+                            <span data-i18n="days_sat">Sâmbătă</span>
+                            <span>11:00 - 13:00</span>
+                        </div>
+                        <div class="day-row">
+                            <span data-i18n="days_sun">Duminică</span>
+                            <span data-i18n="closed">Închis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="support_label">Suport Tehnic & Service</span>
+                    <span class="contact-card-value">
+                        <a href="tel:069122879">069 122 879</a><br>
+                        <a href="mailto:zovagrup@gmail.com">zovagrup@gmail.com</a>
+                    </span>
+                </div>
+
+                <div class="contact-card cta" onclick="openLoginModal()">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="cta_label">Hai să discutăm!</span>
+                    <span class="contact-card-value" data-i18n="cta_value">Solicită o<br>consultație gratuită</span>
+                </div>
+
+            </div><!-- /.contact-cards -->
+
+            <!-- Harta -->
             <div class="map-container">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s" 
                     width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
-        </div>
+
+        </div><!-- /.contact-container -->
 
         <div class="footer-bottom">
-            © 2023 Intex Moldova. All rights reserved.
+            &copy; 2025 Intex Moldova. Toate drepturile rezervate.
         </div>
     </section>
     
