@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="return_page_title">Termeni și Condiții | INTEX Moldova</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Awwwards Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="../assets/main.css">
     <link rel="stylesheet" href="../assets/css/returnare.css">
     <link rel="stylesheet" href="../assets/css/notifications.css"> 
 </head>
-<body>
+<body class="dark-mode"> <!-- Force dark mode for Awwwards style -->
+
+    <!-- Awwwards Elements -->
+    <div class="noise-overlay"></div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
     <nav>
         <button class="hamburger-btn" id="hamburgerBtn">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </button>
         <div class="site-title">INTEX<span>MOLDOVA</span></div>
         
@@ -27,7 +36,7 @@
             <li><a href="../index.html#despre" data-i18n="menu_about">Despre Noi</a></li>
             <li><a href="../pagini/FAQ.html" data-i18n="menu_faq">FAQ</a></li>
             <li><a href="#" class="active" data-i18n="menu_policy">Politica de Retur</a></li>
-            <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
+            <li><a href="#contact" data-i18n="menu_contact">Contacte</a></li>
             <li><a href="../pagini/comenzi.html" data-i18n="menu_orders">Comenzi</a></li>
         </ul>
 
@@ -38,14 +47,12 @@
             <li><a href="../index.html#despre" data-i18n="menu_about">Despre Noi</a></li>
             <li><a href="../pagini/FAQ.html" data-i18n="menu_faq">FAQ</a></li>
             <li><a href="#" class="active" data-i18n="menu_policy">Politica de Retur</a></li>
-            <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
+            <li><a href="#contact" data-i18n="menu_contact">Contacte</a></li>
             <li><a href="../pagini/comenzi.html" data-i18n="menu_orders">Comenzi</a></li>
         </ul>
 
         <div class="nav-controls">
-            <button class="search-btn" id="searchBtn" title="Căutare">
-                <i class="fas fa-search"></i>
-            </button>
+            <button class="search-btn" id="searchBtn" title="Căutare"><i class="fas fa-search"></i></button>
             
             <div class="lang-switch">
                 <span class="lang-opt active" onclick="setLanguage('ro')">RO</span>
@@ -55,130 +62,204 @@
                 <span class="lang-opt" onclick="setLanguage('en')">EN</span>
             </div>
 
+            <!-- Am restabilit butonul de theme -->
             <div class="theme-toggle" id="themeBtn">
                 <i class="fas fa-moon"></i>
             </div>
 
-            <button class="login-btn" id="loginBtn" title="Contul Meu" onclick="openLoginModal()">
-                <i class="fas fa-user"></i>
-            </button>
+            <button class="login-btn" id="loginBtn" title="Contul Meu" onclick="openLoginModal()"><i class="fas fa-user"></i></button>
         </div>
     </nav>
 
+    <!-- ===== HERO ===== -->
     <header class="page-header policy-header">
         <div class="header-content">
+            <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; padding: 8px 16px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); backdrop-filter: blur(8px);">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #FF4D00; display: inline-block; animation: pulse 2s infinite;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4);">Document Legal · v2.4</span>
+            </div>
+
             <h1 data-i18n="terms_title">Termeni și Condiții de Utilizare</h1>
             <p data-i18n="terms_subtitle">Acest document stabilește termenii de utilizare a site-ului și condițiile de achiziționare a produselor comercializate de Zova Grup SRL.</p>
+            
+            <div class="scroll-hint">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3);">Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
         </div>
     </header>
 
+    <!-- ===== MARQUEE ===== -->
+    <div style="padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); overflow: hidden; background: #050505;">
+        <div class="marquee-track">
+            <span style="display: flex; align-items: center; gap: 32px; padding: 0 16px;">
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Dispoziții Generale</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Securitatea Datelor</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Politica de Retur</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Livrare</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Plăți</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 32px; padding: 0 16px;">
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Dispoziții Generale</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Securitatea Datelor</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Politica de Retur</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Livrare</span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,77,0,0.3);"></span>
+                <span style="font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.08);">Plăți</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== POLICY CONTENT ===== -->
     <section class="policy-section">
         <div class="policy-container">
             
-            <h2 data-i18n="terms_intro_title">INTRODUCERE. TERMENI ȘI CONDIȚII DE UTILIZARE</h2>
-            <p data-i18n="terms_intro_p1">Site-ul web <strong>www.int.md</strong> este administrat de către societatea comercială <strong>“Zova Grup” SRL</strong>, IDNO: 1014600000358, având sediul în municipiul Chișinău, str. Uzinelor 201/12, MD 2023, (+373) 69122879. Adresa de email: zovagrup@gmail.com</p>
-            <p data-i18n="terms_intro_p2">În acest document sunt stabiliți termenii și condițiile de utilizare a site-ului www.int.md și toate condițiile de achiziționare a produselor comercializate prin intermediul site-ului nostru. Politica de confidențialitate, de retur și orice alte documente constituie cuprinsul acestui document, numit în continuare <strong>“Termeni si Condiții”</strong>. Accesarea și/sau utilizarea site-ului www.int.md de către dumneavoastră constituie <strong>ACCEPTAREA</strong> prezentelor condiții și vă obligă la respectarea acestora.</p>
-            
-            <h2 data-i18n="terms_general_title">1. DISPOZIȚII GENERALE</h2>
-            <p data-i18n="terms_general_p1">1.1. La înregistrarea comenzii în magazinul online, Clientul acceptă Termenii și condițiile de vînzare a produselor (în continuare – Termeni și condiții) prezentate mai jos.</p>
-            <p data-i18n="terms_general_p2">1.2. Acești Termeni și Condiții, precum și informația despre produsele afișate pe site sunt oferte publice, în conformitate cu articolul 1029 din Codul civil al Republicii Moldova și a Legii nr. 284 privind Comerțul Electronic. Cumpărătorul le acceptă prin bifarea alineatului <strong>„Am luat cunoștință și sunt de acord cu termenii și condițiile de vînzare pe site-ul www.int.md și cu prelucrarea datelor cu caracter personal"</strong>. Toate Ofertele afișate pe acest site sunt valabile în limita stocului existent. Toate prețurile expuse sunt prezentate cu TVA inclus, informațiile despre articole și prețuri sunt prezentate sub rezerva erorilor de tipar.</p>
-            <p data-i18n="terms_general_p3">1.3. Relațiile dintre client și vînzător sunt stabilite în baza Legii nr. 105 din 13.03.2003 cu privire la Protecția drepturilor consumatorului și a altor acte normative adoptate în conformitate cu aceasta.</p>
-            <p data-i18n="terms_general_p4">1.5. Prezentele condiţii reprezintă cadrul general potrivit cărora se desfaşoară activitatea de comerţ electronic la distanţă/online, cuprinse într-un sistem de vânzare organizat de "Zova Grup" SRL.</p>
+            <!-- Intro Box -->
+            <div class="policy-intro">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #FF4D00; display: block; margin-bottom: 12px;">INTRODUCERE</span>
+                <h2 data-i18n="terms_intro_title">INTRODUCERE. TERMENI ȘI CONDIȚII DE UTILIZARE</h2>
+                <p data-i18n="terms_intro_p1">Site-ul web <strong>www.int.md</strong> este administrat de către societatea comercială <strong>“Zova Grup” SRL</strong>, IDNO: 1014600000358, având sediul în municipiul Chișinău, str. Uzinelor 201/12, MD 2023, (+373) 69122879. Adresa de email: zovagrup@gmail.com</p>
+                <p data-i18n="terms_intro_p2">În acest document sunt stabiliți termenii și condițiile de utilizare a site-ului www.int.md și toate condițiile de achiziționare a produselor comercializate prin intermediul site-ului nostru. Politica de confidențialitate, de retur și orice alte documente constituie cuprinsul acestui document, numit în continuare <strong>“Termeni si Condiții”</strong>. Accesarea și/sau utilizarea site-ului www.int.md de către dumneavoastră constituie <strong>ACCEPTAREA</strong> prezentelor condiții și vă obligă la respectarea acestora.</p>
+            </div>
 
-            <h2 data-i18n="terms_definitions_title">2. DEFINIȚII/NOȚIUNI</h2>
-            <ul>
-                <li data-i18n="definitions_buyer"><strong>Cumpărător:</strong> orice persoana fizică sau juridică / orice entitate legala, utilizator al www.int.md, care plasează o comandă pe www.int.md / către "Zova Grup" SRL.</li>
-                <li data-i18n="definitions_seller"><strong>Vânzător / Administrator:</strong> "Zova Grup" SRL, cu sediul în municipiul Chișinău, str. Uzinelor 201/12, IDNO: 1014600000358</li>
-                <li data-i18n="definitions_products"><strong>Produse:</strong> orice bun afișat / comandat / achiziționat de pe / la www.int.md / "Zova Grup" SRL.</li>
-                <li data-i18n="definitions_order"><strong>Comandă:</strong> documentul electronic, precum și orice cerere de produse plasată pe www.int.md, prin care Vânzătorul este de acord să livreze produsele, iar Cumpărătorul este de acord să le primească și să efectueze plata acestora.</li>
-                <li data-i18n="definitions_contract"><strong>Contract electronic de vânzare-cumpărare la distanţă:</strong> Comanda confirmată de către Vânzător, în conformitate cu Termenii și Condițiile.</li>
-            </ul>
+            <div class="policy-grid">
+                <article class="policy-card" data-anim="section">
+                    <span class="policy-card-number">01</span>
+                    <h3 data-i18n="terms_general_title">DISPOZIȚII GENERALE</h3>
+                    <p data-i18n="terms_general_p1">1.1. La înregistrarea comenzii în magazinul online, Clientul acceptă Termenii și condițiile de vînzare a produselor (în continuare – Termeni și condiții) prezentate mai jos.</p>
+                    <p data-i18n="terms_general_p2">1.2. Acești Termeni și Condiții, precum și informația despre produsele afișate pe site sunt oferte publice, în conformitate cu articolul 1029 din Codul civil al Republicii Moldova și a Legii nr. 284 privind Comerțul Electronic. Cumpărătorul le acceptă prin bifarea alineatului <strong>„Am luat cunoștință și sunt de acord cu termenii și condițiile de vînzare pe site-ul www.int.md și cu prelucrarea datelor cu caracter personal"</strong>. Toate Ofertele afișate pe acest site sunt valabile în limita stocului existent. Toate prețurile expuse sunt prezentate cu TVA inclus, informațiile despre articole și prețuri sunt prezentate sub rezerva erorilor de tipar.</p>
+                    <p data-i18n="terms_general_p3">1.3. Relațiile dintre client și vînzător sunt stabilite în baza Legii nr. 105 din 13.03.2003 cu privire la Protecția drepturilor consumatorului și a altor acte normative adoptate în conformitate cu aceasta.</p>
+                    <p data-i18n="terms_general_p4">1.5. Prezentele condiţii reprezintă cadrul general potrivit căruia se desfăşoară activitatea de comerţ electronic la distanţă/online, cuprinse într-un sistem de vânzare organizat de "Zova Grup" SRL.</p>
+                </article>
 
-            <h2 data-i18n="terms_data_title">3. SECURITATEA DATELOR CU CARACTER PERSONAL</h2>
-            <p data-i18n="terms_data_p1">“Zova Grup” SRL prelucrează datele cu caracter personal în conformitate cu Legea Nr. 133 din 08.07.2011. Datele utilizate includ: Adresa IP, Numele, Prenumele, Telefonul, Adresa email, Informații despre livrare și detalii bancare (tipul cardului, numele de pe card, valuta tranzacției).</p>
-            <p data-i18n="terms_data_p2"><strong>Scopurile prelucrării datelor:</strong> Contractarea și administrarea relației cu clienții, recrutarea, analiza statisticilor, politica de cookie-uri, publicitate personalizată și determinarea câștigătorului în acțiunile promoționale.</p>
-            <p data-i18n="terms_data_p3"><strong>Accesul sau transmiterea informației</strong> poate fi furnizată către: Angajații companiei, Furnizorii de servicii de plată/bancare, Furnizorii de servicii de cercetări de piață/marketing/telemarketing și Instituții publice la solicitare conform legislației.</p>
-
-            <h2 data-i18n="terms_cookies_title">4. FOLOSIREA COOKIE-URILOR</h2>
-            <p data-i18n="terms_cookies_p1">4.1. Vânzătorul are dreptul de a utiliza metoda „cookies” pentru a colecta anumite informații despre Client și pentru a urmări vizitele pe site-ul nostru, îmbunătățind identificarea utilizatorilor. Cookie-urile sunt depozitate pe hard disc-ul computerului. Dacă nu le eliminați, serverul va fi anunțat de fiecare vizită, permițând colectarea de informații statistice.</p>
-            
-            <h2 data-i18n="terms_purchase_process_title">5. PROCESUL DE ACHIZIȚIE</h2>
-            <p data-i18n="terms_purchase_process_p1">Pentru a face mai ușor de urmărit, am adăugat o secțiune explicită (Nr. 5) pentru procesul de achiziție, înainte de "Cum Cumpărăm?"</p>
-            
-            <h2 data-i18n="terms_purchase_title">6. CUM CUMPĂRĂM?</h2>
-            <p data-i18n="terms_purchase_p1">Pe pagina produsului dorit, selectați cantitatea și tipul. Click pe <strong>‘ADAUGA IN COS’</strong>. Accesați <strong>‘COSUL DE CUMPARATURI’</strong> și continuați cu comanda prin click pe butonul <strong>‘COMANDA’</strong>. Introduceți datele de contact, datele de livrare necesare (adresă, nume, prenume, telefon al Destinatarului) și selectați metoda de plată. Confirmați prin click pe <strong>‘CONTINUA’</strong>.</p>
-
-            <h2 data-i18n="terms_payment_title">7. CUM PLĂTIM?</h2>
-            <p data-i18n="terms_payment_p1">Plata se poate efectua prin următoarele metode:</p>
-            <ol>
-                <li data-i18n="payment_cash"><strong>Plata în numerar la livrare:</strong> Curierul eliberează bonul fiscal după verificarea produselor.</li>
-                <li data-i18n="payment_card"><strong>Plata cu cardul Visa, Mastercard la livrare:</strong> Curierul eliberează bonul fiscal după verificarea produselor.</li>
-                <li data-i18n="payment_bank"><strong>Plata prin transfer bancar (persoane juridice):</strong> După încasarea sumei în cont, se transmite factura fiscală semnată și ștampilată la livrare.</li>
-                <li data-i18n="payment_cash_legal"><strong>Plata în numerar la livrare (persoană juridică):</strong> Curierul eliberează bonul fiscal și factura fiscală la fața locului.</li>
-            </ol>
-            <p data-i18n="payment_online"><strong>Plata Online:</strong> Se poate efectua prin intermediul cardului Visa și MasterCard. Produsele comandate trebuie achitate integral, în caz contrar livrarea nu se va efectua. Tranzacția este securizată (3D-Secure) și site-ul nu păstrează datele cardului.</p>
-
-            <h2 data-i18n="terms_delivery_title">8. LIVRARE</h2>
-            <p data-i18n="terms_delivery_p1">Produsele pot să difere de cele indicate în imagini (imagini cu titlu de prezentare). Produsele și ofertele sunt valabile în limita stocului disponibil. În cazul în care produsul achitat nu este disponibil se va concretiza telefonic înlocuirea acestuia cu alt produs.</p>
-            <ul>
-                <li data-i18n="delivery_locations">Livrarea se efectuează doar în <strong>municipiul Chișinău</strong> (lista localităților poate fi modificată și verificată în rubrica "LIVRARE ȘI ACHITARE").</li>
-                <li><strong data-i18n="delivery_terms">Termen de livrare:</strong>
+                <article class="policy-card" data-anim="section">
+                    <span class="policy-card-number">02</span>
+                    <h3 data-i18n="terms_definitions_title">DEFINIȚII/NOȚIUNI</h3>
                     <ul>
-                        <li data-i18n="delivery_weekdays">Comenzile plasate luni-sâmbătă: Livrare în curs de 48 ore (09:00 - 17:00).</li>
-                        <li data-i18n="delivery_sunday">Comenzile plasate duminică: Livrare în curs de 72 ore (09:00 - 17:00).</li>
+                        <li data-i18n="definitions_buyer"><strong>Cumpărător:</strong> orice persoana fizică sau juridică / orice entitate legala, utilizator al www.int.md, care plasează o comandă pe www.int.md / către "Zova Grup" SRL.</li>
+                        <li data-i18n="definitions_seller"><strong>Vânzător / Administrator:</strong> "Zova Grup" SRL, cu sediul în municipiul Chișinău, str. Uzinelor 201/12, IDNO: 1014600000358</li>
+                        <li data-i18n="definitions_products"><strong>Produse:</strong> orice bun afișat / comandat / achiziționat de pe / la www.int.md / "Zova Grup" SRL.</li>
+                        <li data-i18n="definitions_order"><strong>Comandă:</strong> documentul electronic, precum și orice cerere de produse plasată pe www.int.md, prin care Vânzătorul este de acord să livreze produsele, iar Cumpărătorul este de acord să le primească și să efectueze plata acestora.</li>
+                        <li data-i18n="definitions_contract"><strong>Contract electronic de vânzare-cumpărare la distanţă:</strong> Comanda confirmată de către Vânzător, în conformitate cu Termenii și Condițiile.</li>
                     </ul>
-                </li>
-            </ul>
+                </article>
 
-            <h2 data-i18n="terms_refund_title">9. POLITICA DE RAMBURSĂRI ȘI RETURNĂRI</h2>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">03</span>
+                    <h3 data-i18n="terms_data_title">SECURITATEA DATELOR CU CARACTER PERSONAL</h3>
+                    <p data-i18n="terms_data_p1">“Zova Grup” SRL prelucrează datele cu caracter personal în conformitate cu Legea Nr. 133 din 08.07.2011. Datele utilizate includ: Adresa IP, Numele, Prenumele, Telefonul, Adresa email, Informații despre livrare și detalii bancare (tipul cardului, numele de pe card, valuta tranzacției).</p>
+                    <p data-i18n="terms_data_p2"><strong>Scopurile prelucrării datelor:</strong> Contractarea și administrarea relației cu clienții, recrutarea, analiza statisticilor, politica de cookie-uri, publicitate personalizată și determinarea câștigătorului în acțiunile promoționale.</p>
+                    <p data-i18n="terms_data_p3"><strong>Accesul sau transmiterea informației</strong> poate fi furnizată către: Angajații companiei, Furnizorii de servicii de plată/bancare, Furnizorii de servicii de cercetări de piață/marketing/telemarketing și Instituții publice la solicitare conform legislației.</p>
+                </article>
 
-            <h3 data-i18n="terms_refund_subtitle">Rambursarea plății (Revocarea Operațiunii)</h3>
-            <p data-i18n="terms_refund_p1">Rambursarea se efectuează în următoarele cazuri:</p>
-            <ul>
-                <li data-i18n="refund_cases_fraud">Există o bănuială rezonabilă că a fost comisă o fraudă.</li>
-                <li data-i18n="refund_cases_delivery">Livrarea este imposibilă sau nu a fost efectuată în limitele termenului maxim / nu a fost efectuată în termen de 30 (treizeci) zile din data confirmării Operațiunii de plată.</li>
-            </ul>
-            <p data-i18n="refund_obligation">"Zova Grup" SRL este obligată să inițieze Revocarea Operațiunii de plată/Tranzacției respective, cu excepția situațiilor în care a fost primit de la Cumpărător acordul expres în scris cu privire la prelungirea termenului de livrare. Rambursarea are loc doar la cardul cu care s-a efectuat tranzacția online.</p>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">04</span>
+                    <h3 data-i18n="terms_cookies_title">FOLOSIREA COOKIE-URILOR</h3>
+                    <p data-i18n="terms_cookies_p1">4.1. Vânzătorul are dreptul de a utiliza metoda „cookies” pentru a colecta anumite informații despre Client și pentru a urmări vizitele pe site-ul nostru, îmbunătățind identificarea utilizatorilor. Cookie-urile sunt depozitate pe hard disc-ul computerului. Dacă nu le eliminați, serverul va fi anunțat de fiecare vizită, permițând colectarea de informații statistice.</p>
+                </article>
 
-            <h3 data-i18n="terms_return_subtitle">Returnarea mărfii</h3>
-            <p data-i18n="terms_return_p1">Returnarea mărfii este posibilă în cazul în care clientul a depistat în momentul predării coletului de către curier că marfa nu coincide cu ceea ce clientul a solicitat, doar în cazul în care **nu a preluat marfa**. În alte cazuri, conform legislației în vigoare, inclusiv a Legii nr. 105 din 13.03.2003 cu privire la Protecția consumatorului. Pentru întrebări legate de restituirea mărfii vă adresați la Serviciul Suport Clienți tel. (+373) 69122879.</p>
-            
-            <h4 data-i18n="terms_return_conditions">Condiții de Acceptare a Returului (Anexa la Legea nr. 105)</h4>
-            <p data-i18n="terms_return_p2">Consumatorul este obligat sa suporte costul aferent returnării produselor (costuri suplimentare: transport, livrare, diminuare a valorii produselor care rezultă din manipulări, etc.).</p>
-            <p data-i18n="terms_return_p3">Se accepta returnarea produselor dacă sunt îndeplinite următoarele condiții:</p>
-            <ul>
-                <li data-i18n="return_condition_1">Nu depășesc termenul de 14 de zile de la data primirii;</li>
-                <li data-i18n="return_condition_2">A fost păstrat ambalajul;</li>
-                <li data-i18n="return_condition_3">Marfa a fost cumpărată de la Zova Grup SRL;</li>
-                <li data-i18n="return_condition_4">Nu reprezintă produse care au fost aduse la comandă;</li>
-                <li data-i18n="return_condition_5">Corespund specificațiilor tehnice din comandă;</li>
-                <li data-i18n="return_condition_6">Nu au fost executate după specificațiile consumatorului;</li>
-                <li data-i18n="return_condition_7">Nu au fost deteriorate;</li>
-                <li data-i18n="return_condition_8">Termenul de valabilitate/garanție nu a expirat;</li>
-                <li data-i18n="return_condition_9">Nu prezintă semne vizibile de uzură și deformare;</li>
-                <li data-i18n="return_condition_10">Sunt însoțite de accesoriile ce aparțin produsului;</li>
-                <li data-i18n="return_condition_11">Nu reprezinta produse care au fost realizate în cadrul promoțiilor de lichidare de stoc.</li>
-            </ul>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">05</span>
+                    <h3 data-i18n="terms_purchase_process_title">PROCESUL DE ACHIZIȚIE</h3>
+                    <p data-i18n="terms_purchase_process_p1">Pentru a face mai ușor de urmărit, am adăugat o secțiune explicită (Nr. 5) pentru procesul de achiziție, înainte de "Cum Cumpărăm?"</p>
+                </article>
 
-            <h4 data-i18n="terms_non_returnable">Lista produselor ce nu pot fi înlocuite (Articole de calitate corespunzătoare)</h4>
-            <p data-i18n="terms_non_returnable_p1">Conform Anexei la Legea privind protecţia consumatorilor nr. 105-XV, următoarele produse nealimentare de calitate corespunzătoare **nu pot fi înlocuite** cu un produs similar:</p>
-            <ul>
-                <li data-i18n="non_returnable_items">Articole de bijuterie, Confecţii şi articole din tricot, Articole de igienă individuală, Articole de parfumerie şi cosmetică, Mărfuri textile, Produse chimice de uz casnic, Mobilă de menire socială, Autoturisme, Mărfuri tehnice complexe, Articole pentru profilaxia unor boli, Jucării.</li>
-            </ul>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">06</span>
+                    <h3 data-i18n="terms_purchase_title">CUM CUMPĂRĂM?</h3>
+                    <p data-i18n="terms_purchase_p1">Pe pagina produsului dorit, selectați cantitatea și tipul. Click pe <strong>‘ADAUGA IN COS’</strong>. Accesați <strong>‘COSUL DE CUMPARATURI’</strong> și continuați cu comanda prin click pe butonul <strong>‘COMANDA’</strong>. Introduceți datele de contact, datele de livrare necesare (adresă, nume, prenume, telefon al Destinatarului) și selectați metoda de plată. Confirmați prin click pe <strong>‘CONTINUA’</strong>.</p>
+                </article>
 
-            <h2 data-i18n="terms_complaints_title">10. RECLAMAȚII</h2>
-            <p data-i18n="terms_complaints_p1">În cazul reclamațiilor legate direct de bunurile achiziționate, puteți contacta Serviciul Suport Clienți: tel. (+373) 69122879. Adresa de email: zovagrup@gmail.com, pentru a găsi o soluție de remediere a situației. În caz contrar, puteți să vă adresați la Agenția pentru Protecția Consumatorilor și Supravegherea Pieței: mun. Chișinău, str. Vasile Alecsandri 78, MD-2012. Telefon: (022) 51-51-51, Linia fierbinte: 080028028, www.consumator.gov.md</p>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">07</span>
+                    <h3 data-i18n="terms_payment_title">CUM PLĂTIM?</h3>
+                    <p data-i18n="terms_payment_p1">Plata se poate efectua prin următoarele metode:</p>
+                    <ol>
+                        <li data-i18n="payment_cash"><strong>Plata în numerar la livrare:</strong> Curierul eliberează bonul fiscal după verificarea produselor.</li>
+                        <li data-i18n="payment_card"><strong>Plata cu cardul Visa, Mastercard la livrare:</strong> Curierul eliberează bonul fiscal după verificarea produselor.</li>
+                        <li data-i18n="payment_bank"><strong>Plata prin transfer bancar (persoane juridice):</strong> După încasarea sumei în cont, se transmite factura fiscală semnată și ștampilată la livrare.</li>
+                        <li data-i18n="payment_cash_legal"><strong>Plata în numerar la livrare (persoană juridică):</strong> Curierul eliberează bonul fiscal și factura fiscală la fața locului.</li>
+                    </ol>
+                    <p data-i18n="payment_online"><strong>Plata Online:</strong> Se poate efectua prin intermediul cardului Visa și MasterCard. Produsele comandate trebuie achitate integral, în caz contrar livrarea nu se va efectua. Tranzacția este securizată (3D-Secure) și site-ul nu păstrează datele cardului.</p>
+                </article>
 
-            <h2 data-i18n="terms_final_title">11. DISPOZIȚII FINALE ȘI JURIDICE</h2>
-            <p data-i18n="terms_final_p1">Orice litigiu apărut în timpul accesării site-ului www.int.md (în timpul efectuării comenzii, achitării sau transportării produselor) va fi soluționat pe cale amiabilă în decurs de 30 zile lucrătoare din momentul înștiințării vânzătorului în formă scrisă. În cazul în care conflictul nu poate fi soluționat pe cale amiabilă, competența revine instanțelor de judecată din Republica Moldova. Fiind de acord cu acești termeni și condiții, clientul își asumă în totalitate aceste riscuri.</p>
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">08</span>
+                    <h3 data-i18n="terms_delivery_title">LIVRARE</h3>
+                    <p data-i18n="terms_delivery_p1">Produsele pot să difere de cele indicate în imagini (imagini cu titlu de prezentare). Produsele și ofertele sunt valabile în limita stocului disponibil. În cazul în care produsul achitat nu este disponibil se va concretiza telefonic înlocuirea acestuia cu alt produs.</p>
+                    <ul>
+                        <li data-i18n="delivery_locations">Livrarea se efectuează doar în <strong>municipiul Chișinău</strong> (lista localităților poate fi modificată și verificată în rubrica "LIVRARE ȘI ACHITARE").</li>
+                        <li><strong data-i18n="delivery_terms">Termen de livrare:</strong>
+                            <ul>
+                                <li data-i18n="delivery_weekdays">Comenzile plasate luni-sâmbătă: Livrare în curs de 48 ore (09:00 - 17:00).</li>
+                                <li data-i18n="delivery_sunday">Comenzile plasate duminică: Livrare în curs de 72 ore (09:00 - 17:00).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
 
+                <!-- ACEASTA ESTE SECȚIUNEA COMPLETĂ 9 RESTABILITĂ -->
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">09</span>
+                    <h3 data-i18n="terms_refund_title">POLITICA DE RAMBURSĂRI ȘI RETURNĂRI</h3>
+                    <h4 data-i18n="terms_refund_subtitle">Rambursarea plății (Revocarea Operațiunii)</h4>
+                    <p data-i18n="terms_refund_p1">Rambursarea se efectuează în următoarele cazuri:</p>
+                    <ul>
+                        <li data-i18n="refund_cases_fraud">Există o bănuială rezonabilă că a fost comisă o fraudă.</li>
+                        <li data-i18n="refund_cases_delivery">Livrarea este imposibilă sau nu a fost efectuată în limitele termenului maxim / nu a fost efectuată în termen de 30 (treizeci) zile din data confirmării Operațiunii de plată.</li>
+                    </ul>
+                    <p data-i18n="refund_obligation">"Zova Grup" SRL este obligată să inițieze Revocarea Operațiunii de plată/Tranzacției respective, cu excepția situațiilor în care a fost primit de la Cumpărător acordul expres în scris cu privire la prelungirea termenului de livrare. Rambursarea are loc doar la cardul cu care s-a efectuat tranzacția online.</p>
+                    <h4 data-i18n="terms_return_subtitle">Returnarea mărfii</h4>
+                    <p data-i18n="terms_return_p1">Returnarea mărfii este posibilă în cazul în care clientul a depistat în momentul predării coletului de către curier că marfa nu coincide cu ceea ce clientul a solicitat, doar în cazul în care **nu a preluat marfa**. În alte cazuri, conform legislației în vigoare, inclusiv a Legii nr. 105 din 13.03.2003 cu privire la Protecția consumatorului. Pentru întrebări legate de restituirea mărfii vă adresați la Serviciul Suport Clienți tel. (+373) 69122879.</p>
+                    <h4 data-i18n="terms_return_conditions">Condiții de Acceptare a Returului (Anexa la Legea nr. 105)</h4>
+                    <p data-i18n="terms_return_p2">Consumatorul este obligat sa suporte costul aferent returnării produselor (costuri suplimentare: transport, livrare, diminuare a valorii produselor care rezultă din manipulări, etc.).</p>
+                    <p data-i18n="terms_return_p3">Se accepta returnarea produselor dacă sunt îndeplinite următoarele condiții:</p>
+                    <ul>
+                        <li data-i18n="return_condition_1">Nu depășesc termenul de 14 de zile de la data primirii;</li>
+                        <li data-i18n="return_condition_2">A fost păstrat ambalajul;</li>
+                        <li data-i18n="return_condition_3">Marfa a fost cumpărată de la Zova Grup SRL;</li>
+                        <li data-i18n="return_condition_4">Nu reprezintă produse care au fost aduse la comandă;</li>
+                        <li data-i18n="return_condition_5">Corespund specificațiilor tehnice din comandă;</li>
+                        <li data-i18n="return_condition_6">Nu au fost executate după specificațiile consumatorului;</li>
+                        <li data-i18n="return_condition_7">Nu au fost deteriorate;</li>
+                        <li data-i18n="return_condition_8">Termenul de valabilitate/garanție nu a expirat;</li>
+                        <li data-i18n="return_condition_9">Nu prezintă semne vizibile de uzură și deformare;</li>
+                        <li data-i18n="return_condition_10">Sunt însoțite de accesoriile ce aparțin produsului;</li>
+                        <li data-i18n="return_condition_11">Nu reprezinta produse care au fost realizate în cadrul promoțiilor de lichidare de stoc.</li>
+                    </ul>
+                    <h4 data-i18n="terms_non_returnable">Lista produselor ce nu pot fi înlocuite (Articole de calitate corespunzătoare)</h4>
+                    <p data-i18n="terms_non_returnable_p1">Conform Anexei la Legea privind protecţia consumatorilor nr. 105-XV, următoarele produse nealimentare de calitate corespunzătoare **nu pot fi înlocuite** cu un produs similar:</p>
+                    <ul>
+                        <li data-i18n="non_returnable_items">Articole de bijuterie, Confecţii şi articole din tricot, Articole de igienă individuală, Articole de parfumerie şi cosmetică, Mărfuri textile, Produse chimice de uz casnic, Mobilă de menire socială, Autoturisme, Mărfuri tehnice complexe, Articole pentru profilaxia unor boli, Jucării.</li>
+                    </ul>
+                </article>
+
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">10</span>
+                    <h3 data-i18n="terms_complaints_title">RECLAMAȚII</h3>
+                    <p data-i18n="terms_complaints_p1">În cazul reclamațiilor legate direct de bunurile achiziționate, puteți contacta Serviciul Suport Clienți: tel. (+373) 69122879. Adresa de email: zovagrup@gmail.com, pentru a găsi o soluție de remediere a situației. În caz contrar, puteți să vă adresați la Agenția pentru Protecția Consumatorilor și Supravegherea Pieței: mun. Chișinău, str. Vasile Alecsandri 78, MD-2012. Telefon: (022) 51-51-51, Linia fierbinte: 080028028, www.consumator.gov.md</p>
+                </article>
+
+                <article class="policy-card policy-card-full" data-anim="section">
+                    <span class="policy-card-number">11</span>
+                    <h3 data-i18n="terms_final_title">DISPOZIȚII FINALE ȘI JURIDICE</h3>
+                    <p data-i18n="terms_final_p1">Orice litigiu apărut în timpul accesării site-ului www.int.md (în timpul efectuării comenzii, achitării sau transportării produselor) va fi soluționat pe cale amiabilă în decurs de 30 zile lucrătoare din momentul înștiințării vânzătorului în formă scrisă. În cazul în care conflictul nu poate fi soluționat pe cale amiabilă, competența revine instanțelor de judecată din Republica Moldova. Fiind de acord cu acești termeni și condiții, clientul își asumă în totalitate aceste riscuri.</p>
+                </article>
+            </div>
         </div>
     </section>
 
+    <!-- ===== CONTACT ===== -->
     <section class="contact-section" id="contact">
         <div class="contact-container">
 
-            <!-- Header -->
             <div class="contact-header">
                 <div class="contact-header-text">
                     <span class="section-label" data-i18n="contact_label">Contacte</span>
@@ -187,13 +268,9 @@
                 <p data-i18n="contact_desc">Suntem aici pentru tine. Vizitează showroom-ul nostru sau contactează-ne direct — echipa Intex Moldova îți răspunde cu plăcere.</p>
             </div>
 
-            <!-- Card grid -->
             <div class="contact-cards">
-
                 <div class="contact-card">
-                    <div class="contact-card-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
+                    <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
                     <span class="contact-card-label" data-i18n="addr_label">Showroom și Sediu Central</span>
                     <span class="contact-card-value">
                         ul. Zavodskaia 201/12,<br>Chisinau, Moldova
@@ -201,9 +278,7 @@
                 </div>
 
                 <div class="contact-card hours">
-                    <div class="contact-card-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
+                    <div class="contact-card-icon"><i class="fas fa-clock"></i></div>
                     <span class="contact-card-label" data-i18n="hours_label">Program Showroom</span>
                     <div class="contact-card-value">
                         <div class="day-row">
@@ -222,9 +297,7 @@
                 </div>
 
                 <div class="contact-card">
-                    <div class="contact-card-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
+                    <div class="contact-card-icon"><i class="fas fa-headset"></i></div>
                     <span class="contact-card-label" data-i18n="support_label">Suport Tehnic & Service</span>
                     <span class="contact-card-value">
                         <a href="tel:069122879">069 122 879</a><br>
@@ -233,24 +306,16 @@
                 </div>
 
                 <div class="contact-card cta" onclick="openLoginModal()">
-                    <div class="contact-card-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
+                    <div class="contact-card-icon"><i class="fas fa-comments"></i></div>
                     <span class="contact-card-label" data-i18n="cta_label">Hai să discutăm!</span>
                     <span class="contact-card-value" data-i18n="cta_value">Solicită o<br>consultație gratuită</span>
                 </div>
-
-            </div><!-- /.contact-cards -->
-
-            <!-- Harta -->
-            <div class="map-container">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s" 
-                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
             </div>
 
-        </div><!-- /.contact-container -->
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
 
         <div class="footer-bottom">
             &copy; 2025 Intex Moldova. Toate drepturile rezervate.
@@ -320,6 +385,87 @@
             </div>
         </div>
     </div>
+
+    <!-- Awwwards Premium JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <script>
+        // === LENIS SMOOTH SCROLL ===
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // === SCROLL PROGRESS BAR ===
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('scrollProgress').style.width = progress + '%';
+        });
+
+        // === CUSTOM CURSOR ===
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            cursor.style.left = mouseX - 4 + 'px';
+            cursor.style.top = mouseY - 4 + 'px';
+        });
+
+        function animateFollower() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            follower.style.left = followerX - 20 + 'px';
+            follower.style.top = followerY - 20 + 'px';
+            requestAnimationFrame(animateFollower);
+        }
+        animateFollower();
+
+        const hoverables = document.querySelectorAll('a, button, .contact-card, .policy-card');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => follower.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => follower.classList.remove('hovering'));
+        });
+
+        // === SPOTLIGHT EFFECT ON CARDS ===
+        document.querySelectorAll('.policy-card, .policy-container').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+                card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+            });
+        });
+
+        // === GSAP SCROLL ANIMATIONS ===
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate Policy Cards
+        document.querySelectorAll('.policy-card').forEach((card, i) => {
+            gsap.from(card, {
+                y: 40, opacity: 0, duration: 0.8, delay: i * 0.05, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 85%' }
+            });
+        });
+
+        // Animate Contact Cards
+        document.querySelectorAll('.contact-card').forEach((card, i) => {
+            gsap.from(card, {
+                y: 40, opacity: 0, duration: 0.8, delay: i * 0.08, ease: 'power3.out',
+                scrollTrigger: { trigger: '.contact-cards', start: 'top 80%' }
+            });
+        });
+
+        // Animate Big Numbers Parallax
+        document.querySelectorAll('.policy-card-number').forEach(num => {
+            gsap.to(num, {
+                y: 30, scrollTrigger: { trigger: num.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 }
+            });
+        });
+    </script>
 
     <script src="../assets/main.js"></script>
     <script src="../assets/js/notifications.js"></script>
