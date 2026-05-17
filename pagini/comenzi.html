@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="orders_page_title">Comenzile Mele | INTEX Moldova</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="../assets/main.css">
@@ -16,7 +17,7 @@
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
-    <nav>
+    <nav id="mainNav">
         <button class="hamburger-btn" id="hamburgerBtn">
             <span></span>
             <span></span>
@@ -70,36 +71,38 @@
     <main class="orders-section">
         <div class="orders-container">
             <h1 data-i18n="orders_title">Comenzile Mele</h1>
-            <p class="orders-subtitle" data-i18n="orders_subtitle">Vizualizați și urmăriți toate comenzile dumneavoastră</p>
+            <p class="orders-subtitle" data-i18n="orders_subtitle">Vizualizați și urmăriți statusul comenzilor dumneavoastră în timp real.</p>
 
             <div id="orders-loading" class="orders-loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <span data-i18n="loading_orders">Se încarcă comenzile...</span>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <span data-i18n="loading_orders">Se încarcă detaliile...</span>
             </div>
 
             <div id="orders-empty" class="orders-empty" style="display: none;">
-                <i class="fas fa-shopping-bag"></i>
-                <h3 data-i18n="no_orders_title">Nu aveți comenzi încă</h3>
-                <p data-i18n="no_orders_text">Descoperiți produsele noastre și plasați prima comandă!</p>
+                <i class="fas fa-box-open"></i>
+                <h3 data-i18n="no_orders_title">Nicio comandă activă</h3>
+                <p data-i18n="no_orders_text">Încă nu ai adăugat produse în universul tău. Descoperă selecția noastră și plasează prima ta comandă!</p>
                 <a href="produse.html" class="btn-main" data-i18n="browse_products">Vezi Produse</a>
             </div>
 
             <div id="orders-list" class="orders-list" style="display: none;">
             </div>
+            
+            <div id="orders-pagination"></div>
         </div>
     </main>
 
     <footer class="orders-footer">
         <div class="footer-bottom">
-            © 2023 Intex Moldova. All rights reserved.
+            © 2026 INTEX Moldova. All rights reserved.
         </div>
     </footer>
 
     <div id="search-overlay" class="search-overlay">
         <div class="search-content">
-            <span class="close-btn" onclick="closeSearch()">&times;</span>
+            <button class="close-btn" onclick="closeSearch()">&times;</button>
             <input type="text" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="Căutați produse...">
-            <a href="#" class="btn-main" data-i18n="search_button" onclick="performSearch(event)">Căută</a>
+            <a href="#" class="btn-main" data-i18n="search_button" onclick="performSearch(event)">Caută</a>
         </div>
     </div>
 
