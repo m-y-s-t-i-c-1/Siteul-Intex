@@ -172,6 +172,7 @@ p, ul, ol {
 
 .u-uppercase { text-transform: uppercase; letter-spacing: 4px; }
 .transition-premium { transition: var(--transition-premium); }
+.hidden { display: none !important; }
 :focus-visible { outline: 2px solid var(--focus-outline-color); outline-offset: 3px; }
 
 /* ============================================================

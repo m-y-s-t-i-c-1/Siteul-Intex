@@ -330,11 +330,25 @@
             'inflatable-mattresses': 'fas fa-bed',
             'pumps': 'fas fa-fan'
         };
+
+        const categoryBgs = {
+            'boats': 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800&q=80',
+            'joaca': 'https://images.unsplash.com/photo-1566454544259-f4b94b590c68?w=800&q=80',
+            'transport': 'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=800&q=80',
+            'pools': 'https://images.unsplash.com/photo-1576013465135-c49dd073c9c2?w=800&q=80',
+            'accessories': 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
+            'baseine_intex': 'https://images.unsplash.com/photo-1576013465135-c49dd073c9c2?w=800&q=80',
+            'copii-pools': 'https://images.unsplash.com/photo-1596394723269-e8daf13b40aa?w=800&q=80',
+            'swim-accessories': 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80',
+            'inflatable-mattresses': 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+            'pumps': 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80'
+        };
         
         CATEGORIES_DATA.forEach(cat=>{
             const card = document.createElement('div');
             card.className = 'category-card';
             card.style.cursor = 'pointer';
+
                 const title = getCategoryTitle(cat.id);
                 const lang = getLang();
                 let desc = '';
@@ -345,10 +359,14 @@
                 }
             const iconClass = categoryIcons[cat.id] || 'fas fa-box';
             const viewText = (window.translations && window.translations[lang] && window.translations[lang].cat_view_btn) || 'Vezi produse';
-            card.innerHTML = `<div class="card-icon" style="font-size:3em;margin-bottom:12px;color:#0284c7"><i class="${iconClass}"></i></div>
-                <h4 style="margin:8px 0">${title}</h4>
-                <p style="font-size:0.9em;color:#666">${desc}</p>
-                <button class="btn-main" data-i18n="cat_view_btn" style="margin-top:8px">${viewText}</button>`;
+
+            const bgUrl = categoryBgs[cat.id] || (cat.image || '');
+
+            card.innerHTML = `<div class="card-bg-img" style="background-image:url('${bgUrl}')"></div>
+                <div class="card-icon"><i class="${iconClass}"></i></div>
+                <h4>${title}</h4>
+                <p>${desc}</p>
+                <button class="btn-main" data-i18n="cat_view_btn">${viewText}</button>`;
             card.addEventListener('click', ()=>{ viewProducts(cat.id); });
             menu.appendChild(card);
         });
