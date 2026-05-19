@@ -561,7 +561,7 @@
 
             const productsGrid = grid; 
             productsGrid.classList.add('product-list-grid');
-            productsGrid.style.gap = '16px';
+            
 
             products.slice(start, end).forEach(p => {
                 const card = document.createElement('div');
@@ -583,11 +583,11 @@
                     <div class="img-wrapper">
                         <img src="${img}" alt="${title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
                     </div>
-                    <h5 class="product-title" style="margin:10px 0; height:40px; overflow:hidden;">${title}</h5>
-                    ${desc ? `<p class="product-description" style="margin:5px 0; font-size:0.9em; color:#666; height:30px; overflow:hidden;">${desc}</p>` : ''}
-                    ${isMobile && desc ? `<a class="read-more-link" style="display:block; color:#ff6b35; text-decoration:none; font-size:0.85em; margin:8px 0; cursor:pointer;">Citește mai mult</a>` : ''}
-                    <div class="product-price" style="margin-bottom:15px;">${priceHtml}</div>
-                    <button class="btn-main btn-add-cart" style="width:100%; padding:10px; cursor:pointer;">
+                    <h5 class="product-title">${title}</h5>
+                    ${desc ? `<p class="product-description">${desc}</p>` : ''}
+                    ${isMobile && desc ? `<a class="read-more-link">Citește mai mult</a>` : ''}
+                    <div class="product-price">${priceHtml}</div>
+                    <button class="btn-main btn-add-cart">
                         <i class="fas fa-shopping-cart"></i> ${addText}
                     </button>
                 `;
@@ -675,7 +675,7 @@
         const products = State.currentProducts || [];
         const lang = getLang();
         if (!products.length) {
-            grid.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#666; padding:40px 0">Nu s-au găsit produse</p>`;
+            grid.innerHTML = `<p class="no-products-msg">Nu s-au găsit produse</p>`;
             if (pagination) pagination.innerHTML = '';
             return;
         }
@@ -687,12 +687,11 @@
         
         const productsGrid = grid; 
         productsGrid.classList.add('product-list-grid');
-        productsGrid.style.gap = '16px';
+        
         
             products.slice(start, end).forEach(p => {
             const card = document.createElement('div');
             card.className = 'product-card';
-            card.style.cursor = 'pointer';
                 const title = (p.title && p.title[lang]) ? p.title[lang] : (p.title && p.title.ro) ? p.title.ro : (p.title || 'Produs');
                 const addText = (window.translations && window.translations[lang] && window.translations[lang].add_to_cart) || 'Adaugă în coș';
             const img = p.image || '';
@@ -709,12 +708,12 @@
                 <div class="img-wrapper">
                     <img src="${img}" alt="${title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
-                <h5 class="product-title" style="margin:10px 0; height:40px; overflow:hidden;">${title}</h5>
-                ${descText ? `<p class="product-description" style="margin:5px 0; font-size:0.9em; color:#666; height:30px; overflow:hidden;">${descText}</p>` : ''}
-                ${isMobile && descText ? `<a class="read-more-link" style="display:block; color:#ff6b35; text-decoration:none; font-size:0.85em; margin:8px 0; cursor:pointer;">Citește mai mult</a>` : ''}
-                <div class="product-price" style="margin-bottom:15px;">${priceHtml}</div>
-                    <button class="btn-main btn-add-cart" style="width:100%; padding:10px; cursor:pointer;">
-                        <i class="fas fa-shopping-cart"></i> ${addText}
+                <h5 class="product-title">${title}</h5>
+                ${descText ? `<p class="product-description">${descText}</p>` : ''}
+                ${isMobile && descText ? `<a class="read-more-link">Citește mai mult</a>` : ''}
+                <div class="product-price">${priceHtml}</div>
+                <button class="btn-main btn-add-cart">
+                    <i class="fas fa-shopping-cart"></i> ${addText}
                 </button>
             `;
             
