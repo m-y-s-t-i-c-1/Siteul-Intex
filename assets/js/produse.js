@@ -318,32 +318,6 @@
         if (!menu || typeof CATEGORIES_DATA === 'undefined') return;
         menu.innerHTML = '';
         
-        const categoryIcons = {
-            'boats': 'fas fa-water',
-            'joaca': 'fas fa-gamepad',
-            'transport': 'fas fa-bicycle',
-            'pools': 'fas fa-swimming-pool',
-            'accessories': 'fas fa-toolbox',
-            'baseine_intex': 'fas fa-swimming-pool',
-            'copii-pools': 'fas fa-child',
-            'swim-accessories': 'fas fa-swimmer',
-            'inflatable-mattresses': 'fas fa-bed',
-            'pumps': 'fas fa-fan'
-        };
-
-        const categoryImages = {
-            'boats': './cat_boats.jpg',
-            'joaca': './cat_joaca.jpg',
-            'transport': './cat_transport.jpg',
-            'pools': './cat_pools.jpg',
-            'accessories': './cat_accessories.jpg',
-            'baseine_intex': './cat_pools.jpg',
-            'copii-pools': './cat_copii-pools.jpg',
-            'swim-accessories': './cat_accessories.jpg',
-            'inflatable-mattresses': './cat_mattresses.jpg',
-            'pumps': './cat_pumps.jpg'
-        };
-        
         CATEGORIES_DATA.forEach(cat=>{
             const card = document.createElement('div');
             card.className = 'category-card';
@@ -357,13 +331,13 @@
                 } else {
                     desc = cat.i18n_desc || '';
                 }
-            const iconClass = categoryIcons[cat.id] || 'fas fa-box';
+            
+            // Use actual image from CATEGORIES_DATA instead of icon
+            const imageUrl = cat.image || '../assets/imgForCategory/cat_boats.jpg';
+            const cardImage = `<div class="card-icon card-image-wrapper" style="background-image: url('${imageUrl}');"></div>`;
+            
             const viewText = (window.translations && window.translations[lang] && window.translations[lang].cat_view_btn) || 'Vezi produse';
-
-            const bgUrl = categoryImages[cat.id] || (cat.image || '');
-
-            card.innerHTML = `<div class="card-bg-img" style="background-image:url('${bgUrl}')"></div>
-                <div class="card-icon"><i class="${iconClass}"></i></div>
+            card.innerHTML = `${cardImage}
                 <h4>${title}</h4>
                 <p>${desc}</p>
                 <button class="btn-main" data-i18n="cat_view_btn">${viewText}</button>`;

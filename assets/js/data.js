@@ -23,6 +23,14 @@ function standardizeImagePath(path) {
         return encodeURI(BASE_PATH + cleaned);
     }
 
+    if (cleaned.startsWith('assets/imgForCategory/')) {
+        return encodeURI(BASE_PATH + cleaned);
+    }
+
+    if (cleaned.startsWith('imgForCategory/')) {
+        return encodeURI(BASE_PATH + 'assets/' + cleaned);
+    }
+
     return encodeURI(BASE_PATH + 'assets/img/' + cleaned);
 }
 
@@ -40,7 +48,7 @@ const CATEGORIES_DATA = [
             ru: 'Надувные лодки и аксессуары',
             en: 'Inflatable boats and accessories'
         },
-        image: standardizeImagePath('Categoria barci 1.jpg')
+        image: standardizeImagePath('imgForCategory/cat_boats.jpg')
     },
     {
         id: 'joaca',
@@ -55,7 +63,7 @@ const CATEGORIES_DATA = [
             ru: 'Оборудование для игровых площадок',
             en: 'Playground equipment'
         },
-        image: standardizeImagePath('Categoria terenuri 1.png')
+        image: standardizeImagePath('imgForCategory/cat_joaca.jpg')
     },
     {
         id: 'transport',
@@ -70,7 +78,7 @@ const CATEGORIES_DATA = [
             ru: 'Самокаты, велосипеды, ролики',
             en: 'Scooters, bicycles, rollerblades'
         },
-        image: standardizeImagePath('trensport1.jpg')
+        image: standardizeImagePath('imgForCategory/cat_transport.jpg')
     },
     {
         id: 'baseine_intex',
@@ -85,7 +93,7 @@ const CATEGORIES_DATA = [
             ru: 'Бассейны производителя Intex',
             en: 'Intex manufacturer pools'
         },
-        image: standardizeImagePath('Categoria barci 2.jpg')
+        image: standardizeImagePath('imgForCategory/cat_pools.jpg')
     },
     {
         id: 'copii-pools',
@@ -100,7 +108,7 @@ const CATEGORIES_DATA = [
             ru: 'Детские бассейны',
             en: 'Kids pools'
         },
-        image: standardizeImagePath('Categoria barci 3.jpeg')
+        image: standardizeImagePath('imgForCategory/cat_copii-pools.jpg')
     },
     {
         id: 'swim-accessories',
@@ -115,7 +123,7 @@ const CATEGORIES_DATA = [
             ru: 'Аксессуары для плавания и пляжа',
             en: 'Swimming and beach accessories'
         },
-        image: standardizeImagePath('Categoria barci 4.jpg')
+        image: standardizeImagePath('imgForCategory/cat_accessories.jpg')
     },
     {
         id: 'inflatable-mattresses',
@@ -130,7 +138,7 @@ const CATEGORIES_DATA = [
             ru: 'Надувные матрасы и кровати',
             en: 'Inflatable mattresses and beds'
         },
-        image: standardizeImagePath('Categoria barci 5.jpg')
+        image: standardizeImagePath('imgForCategory/cat_mattresses.jpg')
     },
     {
         id: 'pumps',
@@ -145,7 +153,7 @@ const CATEGORIES_DATA = [
             ru: 'Электрические и ручные насосы',
             en: 'Electric and manual pumps'
         },
-        image: standardizeImagePath('Categoria barci 6.jpg')
+        image: standardizeImagePath('imgForCategory/cat_pumps.jpg')
     }
 ];
 
