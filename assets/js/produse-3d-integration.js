@@ -54,7 +54,7 @@ function initialize3DForProduct(product) {
     toggle3DBtn.classList.add('visible');
     console.log('[3D] Showed button');
     
-    // Wait for image to load and get dimensions
+    // Wait for image to load and get dimensions (increased timeout for better stability)
     setTimeout(() => {
         const imgHeight = imgElement && imgElement.offsetHeight > 0 ? imgElement.offsetHeight : 400;
         const imgWidth = imgElement && imgElement.offsetWidth > 0 ? imgElement.offsetWidth : 400;
@@ -92,13 +92,19 @@ function initialize3DForProduct(product) {
                     },
                     (error) => {
                         console.error('[3D] Load error:', error);
+                        // Setup button even if model fails to load
+                        setupModel3DControls(product.id);
                     }
                 );
+            } else {
+                console.warn('[3D] No model path found for product:', product.id);
+                // Setup button even if no model path
+                setupModel3DControls(product.id);
             }
         } catch (err) {
             console.error('[3D] Init error:', err);
         }
-    }, 200);
+    }, 300);
 }
 
 function setupModel3DControls(productId) {
@@ -110,36 +116,46 @@ function setupModel3DControls(productId) {
     const img = document.getElementById('modal-product-image');
     const controls = document.querySelector('.model3d-controls');
     
+    console.log('[3D] DOM check:', {
+        btnExists: !!toggle3DBtn,
+        containerExists: !!container,
+        imgExists: !!img,
+        controlsExists: !!controls
+    });
+    
     if (!toggle3DBtn || !container || !controls) {
         console.error('[3D] Required elements not found');
         return;
     }
     
     // Remove old button and create fresh one
-    toggle3DBtn.remove();
+    if (toggle3DBtn.parentNode) {
+        toggle3DBtn.remove();
+    }
     
     const freshBtn = document.createElement('button');
     freshBtn.id = 'toggle-2d-3d';
     freshBtn.className = 'model3d-btn visible';
     freshBtn.title = 'Comută între imagine 2D și model 3D';
     freshBtn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
+    freshBtn.style.display = 'block';  // Force visible
     
     controls.appendChild(freshBtn);
-    console.log('[3D] Fresh button created and attached');
+    console.log('[3D] Fresh button created and attached, display:', window.getComputedStyle(freshBtn).display);
     
-    // Add fresh listener
+    // Add fresh listener with proper error handling
     freshBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        console.log('[3D] Button clicked');
+        console.log('[3D] Button clicked!');
         
         const btn = document.getElementById('toggle-2d-3d');
         const cont = document.getElementById('model3d-container');
         const image = document.getElementById('modal-product-image');
         
-        if (!btn || !cont) {
-            console.error('[3D] Missing DOM elements on click');
+        if (!btn || !cont || !image) {
+            console.error('[3D] Missing DOM elements on click', {btnExists: !!btn, contExists: !!cont, imgExists: !!image});
             return;
         }
         
