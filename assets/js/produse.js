@@ -262,11 +262,11 @@
                     </div>
                     <div class="cart-item-controls">
                         <div class="cart-qty-group">
-                            <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, -1)">−</button>
+                            <button class="cart-qty-btn" onclick="window.changeQty('${item.id}', -1)">−</button>
                             <span class="cart-qty-value">${item.qty}</span>
-                            <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, 1)">+</button>
+                            <button class="cart-qty-btn" onclick="window.changeQty('${item.id}', 1)">+</button>
                         </div>
-                        <button class="cart-item-delete" title="Șterge" onclick="window.removeFromCart(${item.id})">
+                        <button class="cart-item-delete" title="Șterge" onclick="window.removeFromCart('${item.id}')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
