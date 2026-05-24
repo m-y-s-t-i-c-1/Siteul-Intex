@@ -228,65 +228,44 @@
         }
         const products = getAllProducts();
         let total = 0;
-        State.cart.forEach(item=>{
-            const p = products.find(x=>x.id==item.id);
+        State.cart.forEach(item => {
+            const p = products.find(x => x.id == item.id);
             if (!p) return;
-            const line = (p.price||0) * (item.qty||1);
+            const line = (p.price || 0) * (item.qty || 1);
             total += line;
-            
+
             let title = p.title;
             if (p.title && typeof p.title === 'object') {
                 const lang = getLang();
                 title = p.title[lang] || p.title.ro || Object.values(p.title)[0] || 'Produs';
             }
-            
+
             const div = document.createElement('div');
             div.className = 'cart-item';
-            
-            const infoDiv = document.createElement('div');
-            infoDiv.innerHTML = `
-                <strong>${title}</strong>
-                <small>${formatPrice(p.price)} x ${item.qty}</small>
+            div.innerHTML = `
+                <div class="cart-item-info">
+                    <img class="cart-item-img" src="${p.image || p.img || ''}" alt="${title}" onerror="this.style.display='none'">
+                    <div class="cart-item-details">
+                        <span class="cart-item-title">${title}</span>
+                        <span class="cart-item-unit-price">${formatPrice(p.price)} / buc</span>
+                    </div>
+                </div>
+                <div class="cart-item-controls">
+                    <div class="cart-qty-group">
+                        <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, -1)">−</button>
+                        <span class="cart-qty-value">${item.qty}</span>
+                        <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, 1)">+</button>
+                    </div>
+                    <span class="cart-item-price">${formatPrice(line)}</span>
+                    <button class="cart-item-delete" title="Șterge" onclick="window.removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             `;
-            
-            const controlsDiv = document.createElement('div');
-            controlsDiv.className = 'cart-item-controls';
-            
-            const minusBtn = document.createElement('button');
-            minusBtn.textContent = '−';
-            minusBtn.onclick = () => window.changeQty(item.id, -1);
-            
-            const qtySpan = document.createElement('span');
-            qtySpan.textContent = item.qty;
-            qtySpan.style.minWidth = '20px';
-            qtySpan.style.textAlign = 'center';
-            
-            const plusBtn = document.createElement('button');
-            plusBtn.textContent = '+';
-            plusBtn.onclick = () => window.changeQty(item.id, 1);
-            
-            const priceSpan = document.createElement('span');
-            priceSpan.className = 'cart-item-price';
-            priceSpan.textContent = formatPrice(line);
-            
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'cart-item-delete';
-            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-            deleteBtn.title = 'Șterge din coș';
-            deleteBtn.onclick = () => window.removeFromCart(item.id);
-            
-            controlsDiv.appendChild(minusBtn);
-            controlsDiv.appendChild(qtySpan);
-            controlsDiv.appendChild(plusBtn);
-            controlsDiv.appendChild(priceSpan);
-            controlsDiv.appendChild(deleteBtn);
-            
-            div.appendChild(infoDiv);
-            div.appendChild(controlsDiv);
             container.appendChild(div);
         });
         if (totalEl) totalEl.innerText = formatPrice(total);
-        try { if (typeof setLanguage === 'function') setLanguage(getLang()); } catch (e) {  }
+        try { if (typeof setLanguage === 'function') setLanguage(getLang()); } catch (e) { }
     }
 
     function getCategoryTitle(cat) {
@@ -321,7 +300,7 @@
         CATEGORIES_DATA.forEach(cat=>{
             const card = document.createElement('div');
             card.className = 'category-card';
-            card.style.cursor = 'pointer';
+            /* cursor handled by CSS .category-card */
 
                 const title = getCategoryTitle(cat.id);
                 const lang = getLang();
@@ -543,8 +522,7 @@
             if (!products.length) {
                 const emptyMsg = document.createElement('p');
                 emptyMsg.textContent = 'Nu s-au găsit produse în această subcategorie.';
-                emptyMsg.style.textAlign = 'center';
-                emptyMsg.style.color = '#666';
+                emptyMsg.className = 'empty-state-msg';
                 grid.appendChild(emptyMsg);
                 if (pagination) pagination.innerHTML = '';
                 return;
@@ -563,9 +541,10 @@
             productsGrid.classList.add('product-list-grid');
             
 
-            products.slice(start, end).forEach(p => {
+            products.slice(start, end).forEach((p, idx) => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                card.style.setProperty('--stagger', (idx * 60) + 'ms');
                 const lang = getLang();
                 const title = (p.title && p.title[lang]) ? p.title[lang] : (p.title && p.title.ro) ? p.title.ro : (p.title || 'Produs');
                 const addText = (window.translations && window.translations[lang] && window.translations[lang].add_to_cart) || 'Adaugă în coș';
@@ -578,18 +557,28 @@
                     </div>` : 
                     `<div class="price-val">${formatPrice(p.price)}</div>`;
                 
-                const isMobile = window.innerWidth < 768;
+                const subLabel = State.showingSubcategory ? State.showingSubcategory.label : '';
+                const ratingVal = p.rating || (3 + Math.floor(Math.random() * 2));
+                const starsHtml = [1,2,3,4,5].map(s => `<i class="fas fa-star${s <= ratingVal ? '' : '-half-alt'}" style="color:${s <= ratingVal ? '#c9a84c' : 'rgba(255,255,255,0.25)'}; font-size:0.7rem;"></i>`).join('');
                 card.innerHTML = `
                     <div class="img-wrapper">
                         <img src="${img}" alt="${title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
                     </div>
-                    <h5 class="product-title">${title}</h5>
-                    ${desc ? `<p class="product-description">${desc}</p>` : ''}
-                    ${isMobile && desc ? `<a class="read-more-link">Citește mai mult</a>` : ''}
-                    <div class="product-price">${priceHtml}</div>
-                    <button class="btn-main btn-add-cart">
-                        <i class="fas fa-shopping-cart"></i> ${addText}
-                    </button>
+                    <div class="card-body">
+                        <h5 class="product-title">${title}</h5>
+                        <div class="card-meta">
+                            ${subLabel ? `<span class="category-label">Categorie</span><span class="category-value">${subLabel}</span>` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <div class="rating-price">
+                                <div class="product-price">${priceHtml}</div>
+                                <div class="stars-row">${starsHtml}</div>
+                            </div>
+                            <button class="btn-main btn-add-cart">
+                                <i class="fas fa-shopping-cart"></i> ${addText}
+                            </button>
+                        </div>
+                    </div>
                 `;
                 
                 const btn = card.querySelector('.btn-add-cart');
@@ -653,9 +642,9 @@
                 const subcatCard = document.createElement('div');
                 subcatCard.className = 'subcategory-card';
                 subcatCard.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="subcategory-inner">
                         <h3>${group.label}</h3>
-                        <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="subcategory-meta">
                             <span class="subcategory-count">${group.items.length} produse</span>
                             <i class="fas fa-chevron-right subcategory-arrow"></i>
                         </div>
@@ -689,9 +678,10 @@
         productsGrid.classList.add('product-list-grid');
         
         
-            products.slice(start, end).forEach(p => {
+            products.slice(start, end).forEach((p, idx) => {
             const card = document.createElement('div');
             card.className = 'product-card';
+            card.style.setProperty('--stagger', (idx * 60) + 'ms');
                 const title = (p.title && p.title[lang]) ? p.title[lang] : (p.title && p.title.ro) ? p.title.ro : (p.title || 'Produs');
                 const addText = (window.translations && window.translations[lang] && window.translations[lang].add_to_cart) || 'Adaugă în coș';
             const img = p.image || '';
@@ -703,18 +693,28 @@
                 </div>` : 
                 `<div class="price-val">${formatPrice(p.price)}</div>`;
             
-            const isMobile = window.innerWidth < 768;
+            const subLabel2 = p.subcategory || p.sub || (p.category ? p.category.replace(/_/g, ' ') : '');
+            const ratingVal2 = p.rating || (3 + Math.floor((p.price || 100) % 3));
+            const starsHtml2 = [1,2,3,4,5].map(s => `<i class="fas fa-star" style="color:${s <= ratingVal2 ? '#c9a84c' : 'rgba(255,255,255,0.2)'}; font-size:0.7rem;"></i>`).join('');
             card.innerHTML = `
                 <div class="img-wrapper">
                     <img src="${img}" alt="${title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
-                <h5 class="product-title">${title}</h5>
-                ${descText ? `<p class="product-description">${descText}</p>` : ''}
-                ${isMobile && descText ? `<a class="read-more-link">Citește mai mult</a>` : ''}
-                <div class="product-price">${priceHtml}</div>
-                <button class="btn-main btn-add-cart">
-                    <i class="fas fa-shopping-cart"></i> ${addText}
-                </button>
+                <div class="card-body">
+                    <h5 class="product-title">${title}</h5>
+                    <div class="card-meta">
+                        ${subLabel2 ? `<span class="category-label">Categorie</span><span class="category-value">${subLabel2}</span>` : ''}
+                    </div>
+                    <div class="card-footer">
+                        <div class="rating-price">
+                            <div class="product-price">${priceHtml}</div>
+                            <div class="stars-row">${starsHtml2}</div>
+                        </div>
+                        <button class="btn-main btn-add-cart">
+                            <i class="fas fa-shopping-cart"></i> ${addText}
+                        </button>
+                    </div>
+                </div>
             `;
             
             const btn = card.querySelector('.btn-add-cart');
@@ -729,12 +729,7 @@
         });
         if (pagination) {
             pagination.innerHTML = '';
-            pagination.style.display = 'flex';
-            pagination.style.justifyContent = 'center';
-            pagination.style.alignItems = 'center';
-            pagination.style.gap = '8px';
-            pagination.style.marginTop = '40px';
-            pagination.style.marginBottom = '40px';
+            /* pagination layout handled by CSS #pagination-container */
             if (totalPages > 1) {
                 if (State.page > 1) {
                     const prev = document.createElement('button');

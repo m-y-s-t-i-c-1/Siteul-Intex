@@ -119,51 +119,83 @@
 
     <section class="contact-section" id="contact">
         <div class="contact-container">
-            <div class="contact-info">
-                <h3 data-i18n="contact_title">Contactează-ne</h3>
 
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <strong data-i18n="addr_label">Adresa:</strong>
-                        <p>ул. Заводская 201/12, Кишинев</p>
-                    </div>
+            <div class="contact-header">
+                <div class="contact-header-text">
+                    <span class="section-label" data-i18n="contact_label">Contact</span>
+                    <h2 data-i18n="contact_title">Contactează-ne</h2>
                 </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <div>
-                        <strong data-i18n="phone_label">Telefon:</strong>
-                        <p>+373 69 122 879</p>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <strong data-i18n="email_label">Email:</strong>
-                        <p>zovagrup@gmail.com</p>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <strong data-i18n="hours_label">Program:</strong>
-                        <p data-i18n="hours_val">Luni - Vineri: 09:00 - 17:00 (pauza 11:45-12:45)<br>Sâmbătă: 11:00 - 13:00</p>
-                    </div>
-                </div>
+                <p data-i18n="contact_subtitle">Suntem aici pentru tine. Scrie-ne sau vino direct la depozit.</p>
             </div>
 
-            <div class="map-container">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s" 
+            <div class="contact-cards">
+
+                <!-- Adresa -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="addr_label">Adresa</span>
+                    <span class="contact-card-value">ул. Заводская 201/12,<br>Кишинев</span>
+                </div>
+
+                <!-- Telefon -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="phone_label">Telefon</span>
+                    <span class="contact-card-value">
+                        <a href="tel:+37369122879">+373 69 122 879</a>
+                    </span>
+                </div>
+
+                <!-- Email -->
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="email_label">Email</span>
+                    <span class="contact-card-value">
+                        <a href="mailto:zovagrup@gmail.com">zovagrup@gmail.com</a>
+                    </span>
+                </div>
+
+                <!-- Program -->
+                <div class="contact-card hours">
+                    <div class="contact-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <span class="contact-card-label" data-i18n="hours_label">Program</span>
+                    <span class="contact-card-value">
+                        <div class="day-row">
+                            <span>Luni – Vineri</span>
+                            <span>09:00 – 17:00</span>
+                        </div>
+                        <div class="day-row">
+                            <span>Pauza</span>
+                            <span>11:45 – 12:45</span>
+                        </div>
+                        <div class="day-row">
+                            <span>Sâmbătă</span>
+                            <span>11:00 – 13:00</span>
+                        </div>
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- Harta -->
+            <div class="map-container" style="margin-top: 28px; height: 340px; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07);">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s"
                     width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
+
         </div>
 
-        <div class="footer-bottom">© 2023 Intex Moldova. All rights reserved.</div>
+        <div class="footer-bottom">© 2025 Intex Moldova. All rights reserved.</div>
     </section>
 
     <div id="search-overlay" class="search-overlay">

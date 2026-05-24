@@ -274,37 +274,58 @@ body::after {
   opacity: 1;
   transform: translate3d(var(--cx), var(--cy), 0);
 }
+
+/* Punct central — cyan solid, întotdeauna vizibil */
 #cursor {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
   border-radius: 50%;
-  background: var(--text-main);
-  mix-blend-mode: difference;
-  transition: opacity 150ms linear, transform 80ms linear;
+  background: #00d4e8;
+  box-shadow: 0 0 8px rgba(0, 212, 232, 0.9), 0 0 16px rgba(0, 212, 232, 0.4);
+  transition: opacity 120ms linear, transform 80ms linear, background 0.2s ease;
 }
+
+/* Inel urmăritor — border cyan cu glow */
 #cursor-follower {
-  width: 32px;
-  height: 32px;
-  margin: -16px 0 0 -16px;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
   border-radius: 50%;
-  border: 1.5px solid var(--text-main);
-  background: transparent;
-  opacity: 0.85;
-  mix-blend-mode: difference;
+  border: 1.5px solid rgba(0, 212, 232, 0.7);
+  background: rgba(0, 212, 232, 0.04);
+  box-shadow: 0 0 12px rgba(0, 212, 232, 0.15), inset 0 0 8px rgba(0, 212, 232, 0.05);
+  opacity: 1;
   transition:
-    transform 150ms var(--ease-out-expo),
-    opacity 150ms var(--ease-out-expo),
-    border-color 0.25s var(--ease-out-expo);
+    transform 160ms var(--ease-out-expo),
+    opacity 160ms var(--ease-out-expo),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
+
+/* Hover — inelul se mărește, punctul se estompează */
 #cursor-follower.hovering {
-  transform: translate3d(var(--cx), var(--cy), 0) scale(1.5);
-  opacity: 0.35;
+  transform: translate3d(var(--cx), var(--cy), 0) scale(1.6);
+  border-color: rgba(0, 212, 232, 0.4);
+  box-shadow: 0 0 20px rgba(0, 212, 232, 0.2), inset 0 0 12px rgba(0, 212, 232, 0.06);
+  opacity: 0.7;
 }
 #cursor.hovering {
-  transform: translate3d(var(--cx), var(--cy), 0) scale(1.2);
-  opacity: 0.9;
+  transform: translate3d(var(--cx), var(--cy), 0) scale(0.5);
+  opacity: 0.6;
 }
+
+/* Light mode — mai discret, dar tot vizibil */
+body:not(.dark-mode) #cursor {
+  background: #0097a7;
+  box-shadow: 0 0 8px rgba(0, 150, 167, 0.7), 0 0 16px rgba(0, 150, 167, 0.25);
+}
+body:not(.dark-mode) #cursor-follower {
+  border-color: rgba(0, 150, 167, 0.6);
+  background: rgba(0, 150, 167, 0.04);
+  box-shadow: 0 0 12px rgba(0, 150, 167, 0.12);
+}
+
 @media (max-width: 1200px), (pointer: coarse) {
   #cursor, #cursor-follower { display: none !important; }
 }
