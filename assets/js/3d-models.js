@@ -2,6 +2,21 @@
  * Gestionează modelele 3D și le mapează la produsele corespunzătoare
  */
 
+// Helper: extrage primul nume de fișier valid (cu .glb) dintr-un șir ce poate conține ';'
+function extractFirstValidFilename(str) {
+    if (!str) return null;
+    // Împarte după punct și virgulă și ia primul segment netrim
+    const parts = str.split(';').map(s => s.trim()).filter(s => s.length > 0);
+    for (const part of parts) {
+        // Verifică dacă are extensia .glb (ignorând majuscule/minuscule)
+        if (part.toLowerCase().endsWith('.glb')) {
+            return part;
+        }
+    }
+    // Dacă niciun segment nu are .glb, returnează primul segment (fallback)
+    return parts[0] || null;
+}
+
 // Mapping produse cu modele 3D
 const PRODUCT_3D_MODELS = {
     // Terenuri de Joacă
@@ -25,10 +40,12 @@ const PRODUCT_3D_MODELS = {
     'kp11': { name: 'BAZIN GONFLABIL COPII «FAMILIAL» INTEX, 203X152X48 CM; BAZIN GONFLABIL COPII 229Х147Х46СМ ОТ 6 ЛЕТ.glb', title: 'Bazin Familial 203x152 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
     'kp12': { name: 'BAZIN GONFLABIL COPII «FAMILIAL» INTEX, 203X152X48 CM; BAZIN GONFLABIL COPII 229Х147Х46СМ ОТ 6 ЛЕТ.glb', title: 'Bazin Familial 229x147 3D', description: 'Model 3D al bazinului familial', subcategory: 'bazine gonflabile' },
 
-    // Bazine Intex - Bazine Gonflabile (cu modele 3D din Easy Set - pe server în folderul bazine cadru)
+    // Bazine Intex - Bazine Gonflabile (Easy Set)
     'kip1': { name: 'Bazin Easy Set 305x76cm - Piscină Mare pentru Familie; Bazin Easy Set 244x61cm - Piscină Familială; Bazin Easy Set 183x51cm - Piscină Compactă pentru Copii.glb', title: 'Bazin Intex Easy Set 305x76 3D', description: 'Model 3D Easy Set', subcategory: 'bazine intex - bazine gonflabile' },
     'kip2': { name: 'Bazin Easy Set 305x76cm - Piscină Mare pentru Familie; Bazin Easy Set 244x61cm - Piscină Familială; Bazin Easy Set 183x51cm - Piscină Compactă pentru Copii.glb', title: 'Bazin Intex Easy Set 244x61 3D', description: 'Model 3D Easy Set', subcategory: 'bazine intex - bazine gonflabile' },
     'kip3': { name: 'Bazin Easy Set 305x76cm - Piscină Mare pentru Familie; Bazin Easy Set 244x61cm - Piscină Familială; Bazin Easy Set 183x51cm - Piscină Compactă pentru Copii.glb', title: 'Bazin Intex Easy Set 183x51 3D', description: 'Model 3D Easy Set', subcategory: 'bazine intex - bazine gonflabile' },
+
+    // Bazine cadru (Prism Frame, Ultra Frame, etc.)
     'kc1': { name: '26726NP BAZIN CADRU ROTUND INTE0X PRISM FRAME POOL 4,57X1,2226720 BAZIN CADRU PRISM FRAME 427X107CM; 26712 Bazin cadru Prism Frame 366x76cm, 6503l, filtru-pompă 2006l_h; 26710 Bazin cadru Intex Prism Frame 36.glb', title: 'Bazin Prism Frame 457x122 3D', description: 'Model 3D Prism Frame Rotund', subcategory: 'bazine cadru' },
     'kc2': { name: 'BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE,+26364+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+732X366X132CM,+26374+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+975X488X132CM.glb', title: 'Bazin Ultra XTR 732x366 3D', description: 'Model 3D Ultra XTR Premium', subcategory: 'bazine cadru' },
     'kc3': { name: 'BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE,+26364+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+732X366X132CM,+26374+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+975X488X132CM.glb', title: 'Bazin Ultra XTR 975x488 3D', description: 'Model 3D Ultra XTR Premium', subcategory: 'bazine cadru' },
@@ -43,7 +60,7 @@ const PRODUCT_3D_MODELS = {
     'kc12': { name: '26726NP BAZIN CADRU ROTUND INTE0X PRISM FRAME POOL 4,57X1,2226720 BAZIN CADRU PRISM FRAME 427X107CM; 26712 Bazin cadru Prism Frame 366x76cm, 6503l, filtru-pompă 2006l_h; 26710 Bazin cadru Intex Prism Frame 36.glb', title: 'Bazin Prism Rectangular 488x244 3D', description: 'Model 3D Prism Frame Dreptunghiular', subcategory: 'bazine cadru' },
 
     // Transport
-    't1': { name: 'tricicleta+pentru+copii.glb', title: 'Tricileta pentru copii 3D', description: 'Model 3D al tricicletei', subcategory: null },
+    't1': { name: 'tricicleta+pentru+copii.glb', title: 'Tricicleta pentru copii 3D', description: 'Model 3D al tricicletei', subcategory: null },
     't2': { name: 'Trotinetă copii Model 188.glb', title: 'Trotinetă Model 188 3D', description: 'Model 3D al trotinetei', subcategory: null },
     't3': { name: 'skateboard deck 3d model.glb', title: 'Skateboard 2026 3D', description: 'Model 3D al skateboardului', subcategory: null },
     't4': { name: 'Skateboard copii 2308.glb', title: 'Skateboard 2308 3D', description: 'Model 3D al skateboardului 2308', subcategory: null },
@@ -57,26 +74,27 @@ const PRODUCT_3D_MODELS = {
     't12': { name: 'Skateboard copii 3108GD.glb', title: 'Skateboard 3108GD 3D', description: 'Model 3D al skateboardului 3108GD', subcategory: null },
 };
 
+// Obține calea corectă către folderul modele_3d (indiferent de adâncimea subfolderului)
 function getCorrectModelPath(filename) {
-    // Detectează dacă suntem într-un subfolder (ex: /pagini/)
     const currentPath = window.location.pathname;
-    const isInSubfolder = currentPath.includes('/pagini/') || currentPath.includes('/assets/');
-    
-    // Dacă suntem în subfolder, adăugăm ../ pentru a ajunge la root
-    const basePath = isInSubfolder ? '../' : './';
-    
-    // Construiește calea completă către folderul modele_3d
+    const pathSegments = currentPath.split('/').filter(seg => seg.length > 0);
+    pathSegments.pop(); // elimină numele fișierului curent
+    const upLevels = pathSegments.length;
+    const basePath = upLevels > 0 ? '../'.repeat(upLevels) : './';
     const fullPath = basePath + 'modele_3d/' + filename;
-    
-    console.log('[3D] getCorrectModelPath:', {
-        currentPath,
-        isInSubfolder,
-        basePath,
-        filename,
-        fullPath
-    });
-    
+    console.log('[3D] getCorrectModelPath:', { currentPath, upLevels, basePath, filename, fullPath });
     return fullPath;
+}
+
+// Funcție care returnează numele fișierului curățat (primul .glb valid)
+function getCleanModelFileName(productId, productTitle) {
+    let model = PRODUCT_3D_MODELS[productId];
+    if (!model && productId && productId.startsWith('pool_')) {
+        const modelFileRaw = mapPoolToModelFile(productId, productTitle);
+        return extractFirstValidFilename(modelFileRaw);
+    }
+    if (!model) return null;
+    return extractFirstValidFilename(model.name);
 }
 
 // Funcții utilitare obligatorii
@@ -86,15 +104,13 @@ function hasModel3D(productId, productTitle) {
         console.log('[3D] hasModel3D: YES - direct product in PRODUCT_3D_MODELS:', productId);
         return true;
     }
-    
     const isPool = productId && productId.startsWith('pool_');
     if (isPool) {
-        const modelFile = mapPoolToModelFile(productId, productTitle);
+        const modelFile = getCleanModelFileName(productId, productTitle);
         const hasPoolModel = !!modelFile;
-        console.log('[3D] hasModel3D pool check:', {productId, modelFile, hasPoolModel});
+        console.log('[3D] hasModel3D pool check:', { productId, modelFile, hasPoolModel });
         return hasPoolModel;
     }
-    
     console.log('[3D] hasModel3D: NO - product not found:', productId);
     return false;
 }
@@ -102,7 +118,7 @@ function hasModel3D(productId, productTitle) {
 function getModel3DInfo(productId, productTitle) {
     if (productId in PRODUCT_3D_MODELS) return PRODUCT_3D_MODELS[productId];
     if (productId && productId.startsWith('pool_')) {
-        const modelFile = mapPoolToModelFile(productId, productTitle);
+        const modelFile = getCleanModelFileName(productId, productTitle);
         if (modelFile) {
             return { name: modelFile, title: productTitle, description: 'Model 3D pool frame cadru', subcategory: 'bazine cadru' };
         }
@@ -133,90 +149,57 @@ function getProductsBySubcategory(subcategory) {
 }
 
 function get3DModelPath(productId, productTitle) {
-    let model = PRODUCT_3D_MODELS[productId];
-    
-    // Handle pool products - return direct file path
-    if (!model && productId && productId.startsWith('pool_')) {
-        const modelFile = mapPoolToModelFile(productId, productTitle);
-        if (modelFile) {
-            // mapPoolToModelFile may return a list or a string containing multiple filenames
-            // separated by ';'. Use the first valid filename if so.
-            let chosenFile = modelFile;
-            if (typeof chosenFile === 'string' && chosenFile.indexOf(';') !== -1) {
-                chosenFile = chosenFile.split(';').map(s=>s.trim()).filter(Boolean)[0] || chosenFile;
-            }
-            const fullPath = getCorrectModelPath(encodeURIComponent('bazine intex - bazine cadru') + '/' + encodeURIComponent(chosenFile));
-            console.log('[3D] get3DModelPath - pool product found:', {productId, modelFile, fullPath});
-            return fullPath;
-        }
-        console.log('[3D] get3DModelPath - pool product but NO MODEL FILE found for:', productId);
+    const cleanFileName = getCleanModelFileName(productId, productTitle);
+    if (!cleanFileName) {
+        console.log('[3D] get3DModelPath - no clean filename for:', productId);
         return null;
     }
-    
-    if (!model) {
-        console.log('[3D] get3DModelPath - productId not found in PRODUCT_3D_MODELS:', productId);
-        return null;
-    }
-    
+
     let category = '';
     if (productId.startsWith('j')) category = 'Terenuri de Joaca';
     else if (productId.startsWith('kp')) category = 'bazine copii';
-    else if (productId.startsWith('kip')) category = 'bazine intex - bazine cadru';  // Easy Set models
+    else if (productId.startsWith('kip')) category = 'bazine intex - bazine cadru';
     else if (productId.startsWith('kc')) category = 'bazine intex - bazine cadru';
     else if (productId.startsWith('t')) category = 'transport';
-    
-    const fullPath = getCorrectModelPath(encodeURIComponent(category) + '/' + encodeURIComponent(model.name));
-    console.log('[3D] get3DModelPath - direct product found:', {productId, category, name: model.name, fullPath});
+    else if (productId.startsWith('pool_')) category = 'bazine intex - bazine cadru';
+
+    const fullPath = getCorrectModelPath(encodeURIComponent(category) + '/' + encodeURIComponent(cleanFileName));
+    console.log('[3D] get3DModelPath:', { productId, category, cleanFileName, fullPath });
     return fullPath;
 }
 
 /**
- * Maps pool products directly to 3 available .glb files on server (Easy Set excluded from frame_pools)
- * Pool products reutilize the same model files for different sizes
- * 
- * Files on server (3 total):
- * 1. Bazin Cadru Ultra Frame 488x122cm... (Ultra Frame variants)
- * 2. BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM... (Premium & large variants)
- * 3. 26726NP BAZIN CADRU ROTUND... (Prism Frame & small variants)
+ * Mapează produsele pool (din categoria frame pools) la unul dintre cele 3 fișiere existente.
+ * Returnează întotdeauna un singur nume de fișier .glb (poate conține ; care va fi procesat ulterior).
  */
-
 function mapPoolToModelFile(productId, productTitle) {
     if (!productId || !productId.startsWith('pool_')) return null;
     if (!productTitle) {
         console.log('[3D] mapPoolToModelFile: No title, using fallback Ultra Frame');
-        return 'Bazin Cadru Ultra Frame 488x122cm, 549x132cm, Ultra XTR Frame 732x132cm.glb'; 
+        return 'Bazin Cadru Ultra Frame 488x122cm, 549x132cm, Ultra XTR Frame 732x132cm.glb';
     }
-    
+
     const title = productTitle.toLowerCase();
     console.log('[3D] mapPoolToModelFile: productId=', productId, 'title=', productTitle);
 
-    // EASY SET products (183x51, 244x61, 305x76) - use Easy Set model
     if (title.includes('easy set')) {
-        console.log('[3D] DETECTED: Easy Set product - using Easy Set model');
         return 'Bazin Easy Set 305x76cm - Piscină Mare pentru Familie; Bazin Easy Set 244x61cm - Piscină Familială; Bazin Easy Set 183x51cm - Piscină Compactă pentru Copii.glb';
     }
 
-    // 1. Ultra Frame variants (488, 549, 732 dimensions) - NOT XTR
     if (title.includes('ultra frame') || 
         (title.includes('ultra') && title.includes('frame') && !title.includes('xtr')) ||
         title.includes('488x122') || title.includes('549x132') || 
         (title.includes('732x132') && !title.includes('premium'))) {
-        console.log('[3D] DETECTED: Ultra Frame product');
         return 'Bazin Cadru Ultra Frame 488x122cm, 549x132cm, Ultra XTR Frame 732x132cm.glb';
     }
 
-    // 2. Ultra XTR Premium variants (549x274, 732x366, 975x488) + large/premium products
     if (title.includes('ultra xtr premium') || title.includes('premium') ||
         title.includes('549x274') || title.includes('26356') ||
         title.includes('732x366') || title.includes('26364') ||
         title.includes('975x488') || title.includes('26374')) {
-        console.log('[3D] DETECTED: Ultra XTR Premium product');
         return 'BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE,+26364+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+732X366X132CM,+26374+BAZIN+CADRU+INTEX+ULTRA+XTR+PREMIUM+POOL+LINE+975X488X132CM.glb';
     }
 
-    // 3. Prism Frame variants - DEFAULT fallback (covers 305x76, 244x61, 183x51, 366x76, 427x107, 457x122, 26710, 26712, 26720, 26726, etc.)
-    // Small pools and Prism Frame models use this instead of Easy Set for frame_pools category
-    console.log('[3D] DETECTED: Prism Frame / Default product - using Prism Frame model');
     return '26726NP BAZIN CADRU ROTUND INTE0X PRISM FRAME POOL 4,57X1,2226720 BAZIN CADRU PRISM FRAME 427X107CM; 26712 Bazin cadru Prism Frame 366x76cm, 6503l, filtru-pompă 2006l_h; 26710 Bazin cadru Intex Prism Frame 36.glb';
 }
 
