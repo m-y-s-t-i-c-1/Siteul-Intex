@@ -1,6 +1,3 @@
-/**
- * 3D Models Integration for Products Page
- */
 let current3DViewerInstance = null;
 let is3DModelViewVisible = false;
 

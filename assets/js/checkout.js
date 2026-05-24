@@ -65,9 +65,14 @@ function displayCheckoutItems() {
         
         const itemEl = document.createElement('div');
         itemEl.className = 'checkout-item';
+        const defaultImg = 'intex.jpg';
+        const imgSrc = product.image || product.img || defaultImg;
         itemEl.innerHTML = `
-            <span class="checkout-item-name">${title}</span>
-            <span class="checkout-item-qty">x${qty}</span>
+            <img class="checkout-item-img" src="${imgSrc}" alt="${title}" onerror="this.style.display='none'">
+            <div class="checkout-item-details">
+                <span class="checkout-item-name">${title}</span>
+                <span class="checkout-item-qty">×${qty}</span>
+            </div>
             <span class="checkout-item-price">${itemTotal.toFixed(2)} LEI</span>
         `;
         container.appendChild(itemEl);
@@ -79,8 +84,9 @@ function displayCheckoutItems() {
 
 function updateTotals(subtotal) {
     const totalEl = document.getElementById('checkout-total');
-    
+    const subtotalEl = document.getElementById('checkout-subtotal');
     if (totalEl) totalEl.textContent = subtotal.toFixed(2) + ' LEI';
+    if (subtotalEl) subtotalEl.textContent = subtotal.toFixed(2) + ' LEI';
 }
 
 function getShippingCost() {
