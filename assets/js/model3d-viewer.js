@@ -23,8 +23,9 @@ class Model3DViewer {
         this.enableControls = options.enableControls !== false; // true by default
         
         // Handle invisible containers - wait for valid dimensions
-        this.waitForContainerReady().then(() => {
+        this._ready = this.waitForContainerReady().then(() => {
             this.init();
+            return this;
         });
     }
     
@@ -140,6 +141,25 @@ class Model3DViewer {
     }
     
     loadModel(modelPath, onComplete = null, onError = null) {
+        // Dacă scena nu este încă inițializată, așteaptă și reîncearcă
+        if (!this.scene) {
+            if (this._ready && typeof this._ready.then === 'function') {
+                this._ready.then(() => this.loadModel(modelPath, onComplete, onError)).catch(err => {
+                    console.error('[3D] Error while waiting for readiness:', err);
+                    if (onError) onError(err);
+                });
+                return;
+            }
+            this.waitForContainerReady().then(() => {
+                try { this.init(); } catch (e) { console.error('[3D] Error initializing viewer:', e); }
+                this.loadModel(modelPath, onComplete, onError);
+            }).catch(err => {
+                console.error('[3D] Error waiting for container:', err);
+                if (onError) onError(err);
+            });
+            return;
+        }
+
         // Ascunde modelul anterior dacă există
         if (this.modelMesh) {
             this.scene.remove(this.modelMesh);
@@ -163,12 +183,38 @@ class Model3DViewer {
         loader.load(
             modelPath,
             (gltf) => {
-                const model = gltf.scene;
-                
-                // Creează un wrapper pentru model
-                const wrapper = new THREE.Group();
-                wrapper.add(model);
-                
+                let model = null;
+                let wrapper = null;
+                try {
+                    if (!gltf) {
+                        throw new Error('GLTFLoader returned empty gltf object');
+                    }
+
+                    model = gltf.scene;
+                    if (!model) {
+                        console.error('[3D] GLTF loaded but scene is null', gltf);
+                        if (onError) onError(new Error('GLTF scene is null'));
+                        return;
+                    }
+
+                    // Creează un wrapper pentru model
+                    wrapper = new THREE.Group();
+                    if (!wrapper) {
+                        throw new Error('Failed to create THREE.Group()');
+                    }
+                    wrapper.add(model);
+                } catch (e) {
+                    console.error('[3D] Error while processing GLTF:', e);
+                    if (onError) onError(e);
+                    return;
+                }
+
+                if (!model || !wrapper) {
+                    console.error('[3D] Model or wrapper missing after GLTF processing');
+                    if (onError) onError(new Error('Model or wrapper missing'));
+                    return;
+                }
+
                 // Calculează bounding box-ul pentru centrare și scalare automată
                 const bbox = new THREE.Box3().setFromObject(model);
                 const size = bbox.getSize(new THREE.Vector3());
@@ -185,6 +231,11 @@ class Model3DViewer {
                 model.position.sub(center.clone().multiplyScalar(scale));
                 
                 // Adaugă wrapper la scena
+                if (!this.scene) {
+                    console.error('[3D] Scene is not initialized; cannot add model');
+                    if (onError) onError(new Error('Scene not initialized'));
+                    return;
+                }
                 this.scene.add(wrapper);
                 this.modelMesh = wrapper;
                 
@@ -241,8 +292,8 @@ class Model3DViewer {
         this.renderer.setSize(this.width, this.height);
         
         // Actualizează controalele dacă există
-        if (this.controls) {
-            this.controls.handleResize();
+        if (this.controls && typeof this.controls.update === 'function') {
+            this.controls.update();
         }
     }
     

@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="../assets/main.css">
     <link rel="stylesheet" href="../assets/css/produse.css">
+    <link rel="stylesheet" href="../assets/css/cart.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
     <link rel="stylesheet" href="../assets/css/model3d.css">
 </head>
@@ -210,17 +211,49 @@
 
     <div id="cart-overlay" class="cart-overlay">
         <div class="cart-content">
-            <span class="close-btn" onclick="closeCart()">×</span>
-            <h2 data-i18n="cart_title">Coșul de Cumpărături</h2>
 
-            <div id="cart-items-container" class="cart-items-container"></div>
-
-            <div class="cart-summary">
-                <p data-i18n="cart_total">Total:</p>
-                <strong id="cart-total">0.00 LEI</strong>
+            <!-- LEFT: Products list -->
+            <div class="cart-left">
+                <div class="cart-left-header">
+                    <span class="cart-left-title" data-i18n="cart_title">Produse</span>
+                    <button class="cart-close-btn" onclick="closeCart()" title="Închide">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="cart-items-container" class="cart-items-container"></div>
             </div>
 
-            <a href="checkout.html" class="btn-main checkout-btn" data-i18n="cart_checkout">Finalizează Comanda</a>
+            <!-- RIGHT: Summary panel -->
+            <div class="cart-right">
+                <div class="cart-right-header">
+                    <div class="cart-right-header-top">
+                        <span class="cart-right-icon"><i class="fas fa-shopping-cart"></i></span>
+                        <span class="cart-right-title" data-i18n="cart_title">Coșul Meu</span>
+                        <span class="cart-right-year">2025</span>
+                    </div>
+                </div>
+
+                <!-- Item totals (populated by JS) -->
+                <div class="cart-lines" id="cart-lines"></div>
+
+                <div class="cart-summary-divider"></div>
+
+                <div class="cart-summary-rows">
+                    <div class="cart-summary-row">
+                        <span data-i18n="cart_subtotal">Subtotal</span>
+                        <span id="cart-subtotal">0.00 LEI</span>
+                    </div>
+                    <div class="cart-summary-row total">
+                        <span data-i18n="cart_total">Total</span>
+                        <span id="cart-total">0.00 LEI</span>
+                    </div>
+                </div>
+
+                <a href="checkout.html" class="cart-checkout-btn" data-i18n="cart_checkout">
+                    Finalizează Comanda
+                </a>
+            </div>
+
         </div>
     </div>
 

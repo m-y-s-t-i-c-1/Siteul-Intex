@@ -139,7 +139,13 @@ function get3DModelPath(productId, productTitle) {
     if (!model && productId && productId.startsWith('pool_')) {
         const modelFile = mapPoolToModelFile(productId, productTitle);
         if (modelFile) {
-            const fullPath = getCorrectModelPath(encodeURIComponent('bazine intex - bazine cadru') + '/' + encodeURIComponent(modelFile));
+            // mapPoolToModelFile may return a list or a string containing multiple filenames
+            // separated by ';'. Use the first valid filename if so.
+            let chosenFile = modelFile;
+            if (typeof chosenFile === 'string' && chosenFile.indexOf(';') !== -1) {
+                chosenFile = chosenFile.split(';').map(s=>s.trim()).filter(Boolean)[0] || chosenFile;
+            }
+            const fullPath = getCorrectModelPath(encodeURIComponent('bazine intex - bazine cadru') + '/' + encodeURIComponent(chosenFile));
             console.log('[3D] get3DModelPath - pool product found:', {productId, modelFile, fullPath});
             return fullPath;
         }

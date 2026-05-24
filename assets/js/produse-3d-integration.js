@@ -128,66 +128,55 @@ function setupModel3DControls(productId) {
         return;
     }
     
-    // Remove old button and create fresh one
-    if (toggle3DBtn.parentNode) {
-        toggle3DBtn.remove();
+    toggle3DBtn.style.display = 'block';
+    toggle3DBtn.classList.add('visible');
+
+    if (!toggle3DBtn._3dClickHandler) {
+        toggle3DBtn._3dClickHandler = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('[3D] Button clicked!');
+
+            const btn = document.getElementById('toggle-2d-3d');
+            const cont = document.getElementById('model3d-container');
+            const image = document.getElementById('modal-product-image');
+
+            if (!btn || !cont || !image) {
+                console.error('[3D] Missing DOM elements on click', {btnExists: !!btn, contExists: !!cont, imgExists: !!image});
+                return;
+            }
+
+            const is3DVisible = cont.classList.contains('visible-3d');
+
+            if (is3DVisible) {
+                console.log('[3D] → Switching to 2D');
+                cont.classList.remove('visible-3d');
+                cont.classList.add('hidden');
+                if (image) image.style.display = 'block';
+                btn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
+                is3DModelViewVisible = false;
+            } else {
+                console.log('[3D] → Switching to 3D');
+                cont.classList.add('visible-3d');
+                cont.classList.remove('hidden');
+                if (image) image.style.display = 'none';
+                btn.innerHTML = '<i class="fas fa-image"></i> <span data-i18n="view_2d">Vezi în 2D</span>';
+                is3DModelViewVisible = true;
+
+                setTimeout(() => {
+                    if (current3DViewerInstance && current3DViewerInstance.onWindowResize) {
+                        current3DViewerInstance.onWindowResize();
+                    }
+                    window.dispatchEvent(new Event('resize'));
+                }, 50);
+            }
+        };
+
+        toggle3DBtn.addEventListener('click', toggle3DBtn._3dClickHandler);
+        console.log('[3D] Toggle click handler attached');
     }
-    
-    const freshBtn = document.createElement('button');
-    freshBtn.id = 'toggle-2d-3d';
-    freshBtn.className = 'model3d-btn visible';
-    freshBtn.title = 'Comută între imagine 2D și model 3D';
-    freshBtn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
-    freshBtn.style.display = 'block';  // Force visible
-    
-    controls.appendChild(freshBtn);
-    console.log('[3D] Fresh button created and attached, display:', window.getComputedStyle(freshBtn).display);
-    
-    // Add fresh listener with proper error handling
-    freshBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        console.log('[3D] Button clicked!');
-        
-        const btn = document.getElementById('toggle-2d-3d');
-        const cont = document.getElementById('model3d-container');
-        const image = document.getElementById('modal-product-image');
-        
-        if (!btn || !cont || !image) {
-            console.error('[3D] Missing DOM elements on click', {btnExists: !!btn, contExists: !!cont, imgExists: !!image});
-            return;
-        }
-        
-        const is3DVisible = cont.classList.contains('visible-3d');
-        
-        if (is3DVisible) {
-            // Switch to 2D
-            console.log('[3D] → Switching to 2D');
-            cont.classList.remove('visible-3d');
-            cont.classList.add('hidden');
-            if (image) image.style.display = 'block';
-            btn.innerHTML = '<i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>';
-            is3DModelViewVisible = false;
-        } else {
-            // Switch to 3D
-            console.log('[3D] → Switching to 3D');
-            cont.classList.add('visible-3d');
-            cont.classList.remove('hidden');
-            if (image) image.style.display = 'none';
-            btn.innerHTML = '<i class="fas fa-image"></i> <span data-i18n="view_2d">Vezi în 2D</span>';
-            is3DModelViewVisible = true;
-            
-            // Resize viewer
-            setTimeout(() => {
-                if (current3DViewerInstance && current3DViewerInstance.onWindowResize) {
-                    current3DViewerInstance.onWindowResize();
-                }
-                window.dispatchEvent(new Event('resize'));
-            }, 50);
-        }
-    });
-    
+
     console.log('[3D] Button ready for clicking');
 }
 
@@ -216,15 +205,6 @@ function cleanup3DOnModalClose() {
     }
     if (img) img.style.display = 'block';
     if (toggle3DBtn) toggle3DBtn.style.display = 'none';
-}
-
-// Extend openProductModal
-const originalOpen = window.openProductModal;
-if (originalOpen) {
-    window.openProductModal = function(product) {
-        originalOpen.call(this, product);
-        setTimeout(() => initialize3DForProduct(product), 150);
-    };
 }
 
 // Extend closeProductModal

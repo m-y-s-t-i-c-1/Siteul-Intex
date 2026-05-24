@@ -219,15 +219,23 @@
     function renderCartItems() {
         const container = byId('cart-items-container');
         const totalEl = byId('cart-total');
+        const subtotalEl = byId('cart-subtotal');
+        const linesEl = byId('cart-lines');
         if (!container) return;
+
         container.innerHTML = '';
+        if (linesEl) linesEl.innerHTML = '';
+
         if (!State.cart.length) {
             container.innerHTML = `<p class="cart-empty" data-i18n="cart_empty">Coșul este gol</p>`;
             if (totalEl) totalEl.innerText = '0.00 LEI';
+            if (subtotalEl) subtotalEl.innerText = '0.00 LEI';
             return;
         }
+
         const products = getAllProducts();
         let total = 0;
+
         State.cart.forEach(item => {
             const p = products.find(x => x.id == item.id);
             if (!p) return;
@@ -240,31 +248,49 @@
                 title = p.title[lang] || p.title.ro || Object.values(p.title)[0] || 'Produs';
             }
 
+            // LEFT panel — product card
             const div = document.createElement('div');
             div.className = 'cart-item';
             div.innerHTML = `
+                <img class="cart-item-img" src="${p.image || p.img || ''}" alt="${title}" onerror="this.style.display='none'">
                 <div class="cart-item-info">
-                    <img class="cart-item-img" src="${p.image || p.img || ''}" alt="${title}" onerror="this.style.display='none'">
                     <div class="cart-item-details">
                         <span class="cart-item-title">${title}</span>
-                        <span class="cart-item-unit-price">${formatPrice(p.price)} / buc</span>
+                        <div class="cart-item-prices">
+                            <span class="cart-item-unit-price">${formatPrice(p.price)}</span>
+                        </div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <div class="cart-qty-group">
+                            <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, -1)">−</button>
+                            <span class="cart-qty-value">${item.qty}</span>
+                            <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="cart-item-delete" title="Șterge" onclick="window.removeFromCart(${item.id})">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="cart-item-controls">
-                    <div class="cart-qty-group">
-                        <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, -1)">−</button>
-                        <span class="cart-qty-value">${item.qty}</span>
-                        <button class="cart-qty-btn" onclick="window.changeQty(${item.id}, 1)">+</button>
-                    </div>
-                    <span class="cart-item-price">${formatPrice(line)}</span>
-                    <button class="cart-item-delete" title="Șterge" onclick="window.removeFromCart(${item.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                <span class="cart-item-price">${formatPrice(line)}</span>
             `;
             container.appendChild(div);
+
+            // RIGHT panel — editorial price line
+            if (linesEl) {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'cart-line-item';
+                // Show just first word(s) of title for compact display
+                const shortTitle = title.split(' ').slice(0, 3).join(' ');
+                lineDiv.innerHTML = `
+                    <span class="cart-line-name">${shortTitle} ×${item.qty}</span>
+                    <span class="cart-line-price">${Math.round(line)}</span>
+                `;
+                linesEl.appendChild(lineDiv);
+            }
         });
+
         if (totalEl) totalEl.innerText = formatPrice(total);
+        if (subtotalEl) subtotalEl.innerText = formatPrice(total);
         try { if (typeof setLanguage === 'function') setLanguage(getLang()); } catch (e) { }
     }
 

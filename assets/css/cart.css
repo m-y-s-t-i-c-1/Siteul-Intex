@@ -1,0 +1,591 @@
+/* =============================================================
+   CART.CSS — Ultra-Luxury Glassmorphic Shopping Cart (Awwwards Level)
+   Design: Cyberpunk-Minimalist, High-Depth, Specular Reflections
+   ============================================================= */
+
+/* ---- Immersive Cinematic Blur Overlay ---- */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 18, 0.62);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  z-index: 2200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ---- Main Awwwards-Tier Glass Container ---- */
+.cart-content {
+  display: grid;
+  grid-template-columns: 1fr 360px; /* Proporție asimetrică premium */
+  width: min(1040px, 96vw);
+  height: 84vh;
+  max-height: 800px;
+  background: rgba(10, 14, 26, 0.42);
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  /* Margini fine transparente care creează refracția sticlei */
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 45px 100px rgba(0, 0, 0, 0.85),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+  animation: cartImmersiveIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cartImmersiveIn {
+  from { opacity: 0; transform: scale(0.95) translateY(50px); filter: blur(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+/* =============================================================
+   LEFT PANEL — Luxury Product Feed
+   ============================================================= */
+.cart-left {
+  background: rgba(13, 19, 35, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  min-height: 0;
+  max-height: 100%;
+}
+
+body:not(.dark-mode) .cart-left {
+  background: rgba(236, 241, 249, 0.65);
+  border-right-color: rgba(0, 0, 0, 0.04);
+}
+
+.cart-left-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 36px 24px;
+  flex-shrink: 0;
+}
+
+.cart-left-title {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff 50%, rgba(255, 255, 255, 0.6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body:not(.dark-mode) .cart-left-title {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: #0a0e1a;
+}
+
+/* Luxury Circular Close Button */
+.cart-close-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+body:not(.dark-mode) .cart-close-btn {
+  border-color: rgba(0, 0, 0, 0.07);
+  background: rgba(0, 0, 0, 0.02);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.cart-close-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  border-color: rgba(0, 242, 254, 0.4);
+  transform: rotate(90deg) scale(1.08);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.2);
+}
+
+/* Luxury Breathing Space Padding */
+.cart-items-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 36px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Generates premium negative space */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
+}
+
+.cart-items-container::-webkit-scrollbar { width: 3px; }
+.cart-items-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+/* ---- Awwwards-Tier Interactive Card Layout ---- */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 22px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body:not(.dark-mode) .cart-item {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(0, 0, 0, 0.03);
+}
+
+.cart-item:hover {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(0, 242, 254, 0.22);
+  transform: translateY(-5px); /* Smooth floating kinetic effect */
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body:not(.dark-mode) .cart-item:hover {
+  background: #ffffff;
+  border-color: rgba(0, 180, 210, 0.18);
+  box-shadow: 0 20px 35px rgba(10, 22, 44, 0.05);
+}
+
+/* Frame-ul Imaginii: Fluid Zoom & Shadow Mapping */
+.cart-item-img {
+  width: 90px; /* Dimensiune extinsă, extrem de vizibilă */
+  height: 90px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(238,243,250,0.98) 100%);
+  flex-shrink: 0;
+  padding: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-item:hover .cart-item-img {
+  transform: scale(1.06) rotate(-1.5deg);
+}
+
+body:not(.dark-mode) .cart-item-img {
+  background: linear-gradient(135deg, #fcfdfe 0%, #e3edf8 holiday 100%);
+}
+
+/* Card Typography & Layout Balancing */
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-item-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.cart-item-title {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+.cart-item:hover .cart-item-title {
+  color: #00f2fe; /* Textul se aprinde fin la hover pe card */
+}
+
+body:not(.dark-mode) .cart-item-title {
+  color: #0a0e1a;
+}
+body:not(.dark-mode) .cart-item:hover .cart-item-title {
+  color: #008fa3;
+}
+
+/* Premium Contrast Inline Prices */
+.cart-item-prices {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.cart-item-unit-price {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.22);
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+
+body:not(.dark-mode) .cart-item-unit-price {
+  color: rgba(0, 0, 0, 0.28);
+}
+
+.cart-item-price {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #00f2fe;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+}
+
+body:not(.dark-mode) .cart-item-price {
+  color: #008fa3;
+  text-shadow: none;
+}
+
+/* ---- Sleek Orbital Pill Quantity Trigger ---- */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.cart-qty-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 30px; /* Structură continuă pastilă fluidă */
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.01);
+  padding: 4px;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+body:not(.dark-mode) .cart-qty-group {
+  border-color: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 0, 0, 0.02);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.cart-qty-btn {
+  background: transparent;
+  border: none;
+  width: 26px;
+  height: 26px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body:not(.dark-mode) .cart-qty-btn {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.cart-qty-btn:hover {
+  background: rgba(0, 242, 254, 0.14);
+  color: #00f2fe;
+  transform: scale(1.05);
+}
+
+.cart-qty-value {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 36px;
+  text-align: center;
+}
+
+body:not(.dark-mode) .cart-qty-value {
+  color: #0a0e1a;
+}
+
+/* Elegant Fine Icon Trash Trigger */
+.cart-item-delete {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+body:not(.dark-mode) .cart-item-delete {
+  color: rgba(0, 0, 0, 0.22);
+}
+
+.cart-item-delete:hover {
+  color: #ff4d6d;
+  background: rgba(255, 77, 109, 0.07);
+  border-color: rgba(255, 77, 109, 0.12);
+  transform: scale(1.05);
+}
+
+.cart-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 0.92rem;
+  padding: 70px 0;
+}
+
+/* =============================================================
+   RIGHT PANEL — High-End Editorial Order Summary
+   ============================================================= */
+.cart-right {
+  background: rgba(6, 8, 14, 0.55);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  padding: 36px 32px;
+  min-height: 0;
+  max-height: 100%;
+}
+
+body:not(.dark-mode) .cart-right {
+  background: rgba(16, 21, 33, 0.99);
+}
+
+.cart-right-header {
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.cart-right-header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-right-icon {
+  font-size: 0.95rem;
+  color: #00f2fe;
+  filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.45));
+}
+
+/* Clean Editorial Text Tracking */
+.cart-right-title {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.15em; /* Lux fashion look alignment */
+  flex: 1;
+}
+
+.cart-right-year {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+/* Premium Spacing Feed Grid */
+.cart-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px; /* Solves empty space with elite composition */
+  margin-bottom: 32px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.04) transparent;
+}
+
+.cart-lines::-webkit-scrollbar { width: 2px; }
+.cart-lines::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.04); }
+
+.cart-line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+}
+
+.cart-line-name {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* High-Tier Sans-Serif Numbers */
+.cart-line-price {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.01em;
+}
+
+/* Luxury Gradient Border Separator */
+.cart-summary-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+  margin-bottom: 26px;
+  flex-shrink: 0;
+}
+
+/* Financial Area Core Structure */
+.cart-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.cart-summary-row.total {
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding-top: 18px;
+  margin-top: 2px;
+}
+
+/* Liquid Neon Text Gradient on Total Value */
+.cart-summary-row.total span:last-child {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.35));
+  font-weight: 800;
+}
+
+body:not(.dark-mode) .cart-summary-row.total span:last-child {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: #008fa3;
+  filter: none;
+}
+
+/* ---- Absolute CTA Button — Cyber-Glow Architecture ---- */
+.cart-checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  color: #02050b;
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-radius: 16px;
+  text-decoration: none;
+  box-shadow: 0 12px 35px rgba(0, 242, 254, 0.22);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  margin-top: auto;
+  position: relative;
+}
+
+.cart-checkout-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 45px rgba(0, 242, 254, 0.48);
+  filter: brightness(1.08);
+}
+
+.cart-checkout-btn:active {
+  transform: translateY(-1px);
+}
+
+/* =============================================================
+   RESPONSIVE SYSTEMS (Mobile Realignment Viewport)
+   ============================================================= */
+@media (max-width: 620px) {
+  .cart-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    max-height: 86vh;
+    overflow-y: auto;
+    border-radius: 26px;
+  }
+
+  .cart-left, .cart-right {
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .cart-items-container {
+    overflow-y: visible;
+    padding: 4px 28px 24px;
+  }
+
+  .cart-right {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 32px 28px;
+  }
+
+  .cart-lines {
+    display: none; /* Deletes grid flow repetition on viewport constraints */
+  }
+
+  .cart-right-header {
+    margin-bottom: 24px;
+  }
+
+  .cart-summary-rows {
+    margin-bottom: 28px;
+  }
+}
