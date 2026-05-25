@@ -1,8 +1,3 @@
-/* =============================================================
-   CART.CSS — Ultra-Luxury Glassmorphic Shopping Cart (Awwwards Level)
-   Design: Cyberpunk-Minimalist, High-Depth, Specular Reflections
-   ============================================================= */
-
 /* ---- Immersive Cinematic Blur Overlay ---- */
 .cart-overlay {
   position: fixed;
@@ -28,7 +23,7 @@
 /* ---- Main Awwwards-Tier Glass Container ---- */
 .cart-content {
   display: grid;
-  grid-template-columns: 1fr 360px; /* Proporție asimetrică premium */
+  grid-template-columns: 1fr 360px; /* Proporție asimetrică*/
   width: min(1040px, 96vw);
   height: 84vh;
   max-height: 800px;
@@ -50,9 +45,7 @@
   to   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }
 
-/* =============================================================
-   LEFT PANEL — Luxury Product Feed
-   ============================================================= */
+/* LEFT PANEL — Luxury Product Feed */
 .cart-left {
   background: rgba(13, 19, 35, 0.2);
   display: flex;
@@ -94,7 +87,7 @@ body:not(.dark-mode) .cart-left-title {
   color: #0a0e1a;
 }
 
-/* Luxury Circular Close Button */
+/*Circular Close Button */
 .cart-close-btn {
   width: 42px;
   height: 42px;
@@ -125,14 +118,14 @@ body:not(.dark-mode) .cart-close-btn {
   box-shadow: 0 0 25px rgba(0, 242, 254, 0.2);
 }
 
-/* Luxury Breathing Space Padding */
+/*Breathing Space Padding */
 .cart-items-container {
   flex: 1;
   overflow-y: auto;
   padding: 4px 36px 36px;
   display: flex;
   flex-direction: column;
-  gap: 18px; /* Generates premium negative space */
+  gap: 18px; /* Generates negative space */
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
 }
@@ -143,7 +136,7 @@ body:not(.dark-mode) .cart-close-btn {
   border-radius: 10px;
 }
 
-/* ---- Awwwards-Tier Interactive Card Layout ---- */
+/*Interactive Card Layout*/
 .cart-item {
   display: flex;
   align-items: center;
@@ -235,7 +228,7 @@ body:not(.dark-mode) .cart-item:hover .cart-item-title {
   color: #008fa3;
 }
 
-/* Premium Contrast Inline Prices */
+/* Contrast Inline Prices */
 .cart-item-prices {
   display: flex;
   flex-direction: column;
@@ -269,7 +262,7 @@ body:not(.dark-mode) .cart-item-price {
   text-shadow: none;
 }
 
-/* ---- Sleek Orbital Pill Quantity Trigger ---- */
+/*Sleek Orbital Pill Quantity Trigger*/
 .cart-item-controls {
   display: flex;
   align-items: center;
@@ -367,9 +360,7 @@ body:not(.dark-mode) .cart-item-delete {
   padding: 70px 0;
 }
 
-/* =============================================================
-   RIGHT PANEL — High-End Editorial Order Summary
-   ============================================================= */
+/* RIGHT PANEL — High-End Editorial Order Summary*/
 .cart-right {
   background: rgba(6, 8, 14, 0.55);
   backdrop-filter: blur(20px);
@@ -408,7 +399,7 @@ body:not(.dark-mode) .cart-right {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
-  letter-spacing: 0.15em; /* Lux fashion look alignment */
+  letter-spacing: 0.15em; /*fashion look alignment */
   flex: 1;
 }
 
@@ -419,7 +410,7 @@ body:not(.dark-mode) .cart-right {
   color: rgba(255, 255, 255, 0.1);
 }
 
-/* Premium Spacing Feed Grid */
+/* Spacing Feed Grid */
 .cart-lines {
   flex: 1;
   display: flex;
@@ -462,7 +453,7 @@ body:not(.dark-mode) .cart-right {
   letter-spacing: -0.01em;
 }
 
-/* Luxury Gradient Border Separator */
+/* Gradient Border Separator */
 .cart-summary-divider {
   height: 1px;
   background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
@@ -515,7 +506,7 @@ body:not(.dark-mode) .cart-summary-row.total span:last-child {
   filter: none;
 }
 
-/* ---- Absolute CTA Button — Cyber-Glow Architecture ---- */
+/*Absolute CTA Button — Cyber-Glow Architecture*/
 .cart-checkout-btn {
   display: flex;
   align-items: center;
@@ -548,9 +539,7 @@ body:not(.dark-mode) .cart-summary-row.total span:last-child {
   transform: translateY(-1px);
 }
 
-/* =============================================================
-   RESPONSIVE SYSTEMS (Mobile Realignment Viewport)
-   ============================================================= */
+/* RESPONSIVE SYSTEMS (Mobile Realignment Viewport)*/
 @media (max-width: 620px) {
   .cart-content {
     grid-template-columns: 1fr;

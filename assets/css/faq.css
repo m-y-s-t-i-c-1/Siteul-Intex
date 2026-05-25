@@ -1,17 +1,13 @@
-/* ============================================================
-   FAQ.CSS — Întrebări Frecvente · INTEX Moldova
-   Consistent cu main.css: Editorial Brutalism × Aquatic Luxury
-   ============================================================ */
 
 @media (min-width: 1201px) {
   .accordion-header,
   .need-help-card a,
-  .faq-category-title { cursor: none; }
+  .faq-category-title { 
+    cursor: none; 
+  }
 }
 
-/* ============================================================
-   PAGE HEADER — FAQ
-   ============================================================ */
+/* PAGE HEADER — FAQ*/
 .page-header.faq-header {
   position: relative;
   padding: 180px 8% 120px;
@@ -114,9 +110,7 @@
   line-height: 1;
 }
 
-/* ============================================================
-   FAQ SECTION — layout wrapper
-   ============================================================ */
+/* FAQ SECTION — layout wrapper*/
 .faq-section {
   max-width: 860px;
   margin: 0 auto;
@@ -147,9 +141,7 @@
   gap: 0;
 }
 
-/* ============================================================
-   CATEGORY TITLES
-   ============================================================ */
+/*CATEGORY TITLES*/
 .faq-category-title {
   font-family: var(--font-display);
   font-size: 0.72rem;
@@ -219,9 +211,7 @@ body.dark-mode .faq-category-title:hover i {
   letter-spacing: 2px;
 }
 
-/* ============================================================
-   HR separator
-   ============================================================ */
+/*HR separator*/
 .faq-container hr {
   border: none;
   height: 1px;
@@ -242,9 +232,7 @@ body.dark-mode .faq-container hr {
   );
 }
 
-/* ============================================================
-   ACCORDION
-   ============================================================ */
+/* ACCORDION*/
 .accordion {
   display: flex;
   flex-direction: column;
@@ -303,7 +291,7 @@ body.dark-mode .accordion-item.active {
   border-radius: 16px 0 0 16px;
 }
 
-/* ── Header buton ── */
+/*Header buton*/
 .accordion-header {
   width: 100%;
   display: flex;
@@ -377,7 +365,7 @@ body.dark-mode .accordion-item.active .accordion-header::after {
     0 4px 12px rgba(0,184,204,0.3);
 }
 
-/* ── Conținut ── */
+/*Continut*/
 .accordion-content {
   max-height: 0;
   overflow: hidden;
@@ -408,9 +396,7 @@ body.dark-mode .accordion-content p {
   font-weight: 600;
 }
 
-/* ============================================================
-   NEED HELP CARD
-   ============================================================ */
+/*NEED HELP CARD*/
 .need-help-card {
   margin-top: 48px;
   padding: 48px 40px;
@@ -545,22 +531,22 @@ body.dark-mode .accordion-content p {
   transform: translateX(5px);
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* RESPONSIVE*/
 @media (max-width: 768px) {
   .faq-section {
     padding: 60px 5% 80px;
   }
-  .faq-section::before { display: none; }
-
+  .faq-section::before { 
+    display: none; 
+  }
   .page-header.faq-header {
     padding: 140px 6% 100px;
     clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
   }
-
-  .faq-category-title { font-size: 0.65rem; margin: 40px 0 16px; }
-
+  .faq-category-title { 
+    font-size: 0.65rem; 
+    margin: 40px 0 16px; 
+  }
   .accordion-header {
     padding: 18px 20px 18px 22px;
     font-size: 0.9rem;
@@ -568,20 +554,25 @@ body.dark-mode .accordion-content p {
   .accordion-content p {
     padding: 12px 22px 20px;
   }
-
-  .need-help-card { padding: 36px 24px; }
-  .need-help-card h3 { font-size: 1.3rem; }
+  .need-help-card { 
+    padding: 36px 24px; 
+  }
+  .need-help-card h3 { 
+    font-size: 1.3rem; 
+  }
 }
 
 @media (max-width: 480px) {
-  .page-header.faq-header { padding: 120px 5% 80px; }
-  .need-help-card .btn-main { width: 100%; justify-content: center; }
+  .page-header.faq-header { 
+    padding: 120px 5% 80px; 
+  }
+  .need-help-card .btn-main { 
+    width: 100%; 
+    justify-content: center; 
+  }
 }
 
-/* ============================================================
-   CONTACT SECTION — copiat exact din main.css
-   forțat cu specificitate înaltă pentru pagini interioare
-   ============================================================ */
+/* CONTACT SECTION */
 .contact-section {
   padding: 140px 8% 0 !important;
   position: relative !important;
@@ -618,6 +609,7 @@ body.dark-mode .accordion-content p {
   user-select: none;
   z-index: 0;
 }
+
 body.dark-mode .contact-section::after {
   -webkit-text-stroke-color: rgba(0,184,204,0.04);
 }
@@ -648,6 +640,7 @@ body.dark-mode .contact-section::after {
   color: var(--text-main) !important;
   position: relative;
 }
+
 .contact-section .contact-info h3::before {
   content: '' !important;
   display: block;
@@ -656,6 +649,7 @@ body.dark-mode .contact-section::after {
   background: var(--accent);
   margin-bottom: 20px;
 }
+
 .contact-section .contact-info h3::after {
   display: none !important;
 }
@@ -671,15 +665,19 @@ body.dark-mode .contact-section::after {
   transition: padding-left 0.35s var(--ease-premium);
   position: relative;
 }
+
 body.dark-mode .contact-section .contact-item {
   border-bottom-color: rgba(255,255,255,0.05) !important;
 }
+
 .contact-section .contact-item:first-of-type {
   border-top: 1px solid rgba(0,0,0,0.06) !important;
 }
+
 body.dark-mode .contact-section .contact-item:first-of-type {
   border-top-color: rgba(255,255,255,0.05) !important;
 }
+
 .contact-section .contact-item:hover {
   padding-left: 8px !important;
 }
@@ -700,17 +698,20 @@ body.dark-mode .contact-section .contact-item:first-of-type {
   padding: 0 !important;
   transition: background 0.35s, color 0.35s, border-color 0.35s, transform 0.35s var(--ease-premium);
 }
+
 body.dark-mode .contact-section .contact-item > i {
   background: rgba(0,184,204,0.07) !important;
   border-color: rgba(0,184,204,0.1) !important;
   color: var(--accent) !important;
 }
+
 .contact-section .contact-item:hover > i {
   background: var(--primary) !important;
   color: #fff !important;
   border-color: transparent !important;
   transform: rotate(-6deg) scale(1.08);
 }
+
 body.dark-mode .contact-section .contact-item:hover > i {
   background: var(--accent) !important;
   color: #070a0e !important;
@@ -725,6 +726,7 @@ body.dark-mode .contact-section .contact-item:hover > i {
   font-weight: 700 !important;
   margin-bottom: 5px !important;
 }
+
 .contact-section .contact-item div p {
   font-size: 0.92rem !important;
   font-weight: 600 !important;
@@ -745,18 +747,22 @@ body.dark-mode .contact-section .contact-item:hover > i {
   margin-top: 0 !important;
   width: 100% !important;
 }
+
 body.dark-mode .contact-section .map-container {
   filter: grayscale(1) invert(0.9) contrast(0.8) hue-rotate(180deg) !important;
   opacity: 0.55 !important;
 }
+
 .contact-section .map-container:hover {
   filter: grayscale(0.1) !important;
   opacity: 1 !important;
 }
+
 body.dark-mode .contact-section .map-container:hover {
   filter: grayscale(1) invert(0.85) contrast(0.8) hue-rotate(180deg) !important;
   opacity: 0.85 !important;
 }
+
 .contact-section .map-container iframe {
   width: 100% !important;
   height: 100% !important;
@@ -775,6 +781,7 @@ body.dark-mode .contact-section .map-container:hover {
   text-transform: uppercase !important;
   font-weight: 600 !important;
 }
+
 body.dark-mode .contact-section .footer-bottom {
   border-top-color: rgba(255,255,255,0.04) !important;
 }
@@ -784,9 +791,15 @@ body.dark-mode .contact-section .footer-bottom {
     grid-template-columns: 1fr !important;
     gap: 40px !important;
   }
-  .contact-section .map-container { height: 300px !important; }
-  .contact-section { padding: 100px 6% 0 !important; }
+  .contact-section .map-container { 
+    height: 300px !important; 
+  }
+  .contact-section { 
+    padding: 100px 6% 0 !important; 
+  }
 }
 @media (max-width: 560px) {
-  .contact-section { padding: 80px 5% 0 !important; }
+  .contact-section { 
+    padding: 80px 5% 0 !important; 
+  }
 }

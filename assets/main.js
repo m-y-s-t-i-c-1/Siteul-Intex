@@ -112,6 +112,16 @@ const translations = {
         removed_from_cards: "{title} a fost eliminat din coș",
         add_to_frim_card: "Produsul a fost adăugat în coș",
         qty_updated: "Cantitate actualizată pentru {title}",
+        toast_added_to_cart: "Produsul a fost adăugat în coș!",
+        toast_added_scooter: "Trotineta a fost adăugată cu succes în coș 🎉",
+        toast_added_intex_mattress: "Saltea Intex adăugată! Pregătește-te de vară! ☀️",
+        toast_added_favorite: "Produsul a fost adăugat la favorite ❤️",
+        toast_error_generic: "Ne pare rău, ceva nu a mers bine. Încearcă din nou.",
+        toast_error_out_of_stock: "Produsul nu mai este în stoc.",
+        toast_error_order_processing: "Eroare la procesarea comenzii. Contactează-ne.",
+        toast_info_cart_updated: "Coșul tău a fost actualizat.",
+        toast_info_estimated_delivery: "Livrarea estimată: 2-4 zile lucrătoare.",
+        toast_info_cart_count: "Ai {count} produse în coș.",
         order_placed_toast: "Comanda a fost plasată cu succes!",
         order_confirm_title: "Comanda a fost plasată!",
         order_confirm_message: "Mulțumim pentru cumpărături. Comanda ta ({orderId}) a fost înregistrată. Vei fi contactat în curând pentru confirmare și detalii de livrare.",
@@ -354,6 +364,16 @@ const translations = {
         removed_from_cards: "{title} удалён из корзины",
         add_to_frim_card: "Товар добавлен в корзину",
         qty_updated: "Количество обновлено для {title}",
+        toast_added_to_cart: "Товар добавлен в корзину!",
+        toast_added_scooter: "Самокат успешно добавлен в корзину 🎉",
+        toast_added_intex_mattress: "Матрас Intex добавлен! Готовьтесь к лету! ☀️",
+        toast_added_favorite: "Товар добавлен в избранное ❤️",
+        toast_error_generic: "К сожалению, что-то пошло не так. Попробуйте снова.",
+        toast_error_out_of_stock: "Товара больше нет в наличии.",
+        toast_error_order_processing: "Ошибка при обработке заказа. Свяжитесь с нами.",
+        toast_info_cart_updated: "Ваша корзина была обновлена.",
+        toast_info_estimated_delivery: "Ориентировочная доставка: 2-4 рабочих дня.",
+        toast_info_cart_count: "У вас {count} товаров в корзине.",
         order_placed_toast: "Заказ успешно оформлен!",
         order_confirm_title: "Заказ оформлен!",
         order_confirm_message: "Спасибо за покупку. Ваш заказ ({orderId}) зарегистрирован. С вами свяжутся в ближайшее время для подтверждения и деталей доставки.",
@@ -627,6 +647,16 @@ const translations = {
         removed_from_cards: "{title} was removed from cart",
         add_to_frim_card: "Product added to cart",
         qty_updated: "Quantity updated for {title}",
+        toast_added_to_cart: "The product has been added to your cart!",
+        toast_added_scooter: "The scooter was successfully added to your cart 🎉",
+        toast_added_intex_mattress: "Intex mattress added! Get ready for summer! ☀️",
+        toast_added_favorite: "The product has been added to favorites ❤️",
+        toast_error_generic: "Sorry, something went wrong. Please try again.",
+        toast_error_out_of_stock: "The product is out of stock.",
+        toast_error_order_processing: "Error processing your order. Contact us.",
+        toast_info_cart_updated: "Your cart has been updated.",
+        toast_info_estimated_delivery: "Estimated delivery: 2-4 business days.",
+        toast_info_cart_count: "You have {count} items in your cart.",
         order_placed_toast: "Order placed successfully!",
         order_confirm_title: "Order Placed!",
         order_confirm_message: "Thank you for your purchase. Your order ({orderId}) has been recorded. We will contact you shortly for confirmation and delivery details.",
@@ -733,6 +763,73 @@ Object.keys(translations).forEach(lang => {
         ...(window.translations[lang] || {}),
         ...translations[lang]
     };
+});
+
+// Global translation manager
+const TranslationManager = {
+    currentLanguage: localStorage.getItem('intex_language') || 'ro',
+    
+    setLanguage: function(lang) {
+        if (!window.translations[lang]) lang = 'ro';
+        this.currentLanguage = lang;
+        localStorage.setItem('intex_language', lang);
+        this.applyTranslations();
+        
+        // Update language buttons
+        document.querySelectorAll('.lang-opt').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+        
+        // Dispatch global event for other pages
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+    },
+    
+    getText: function(key) {
+        if (window.translations[this.currentLanguage] && window.translations[this.currentLanguage][key]) {
+            return window.translations[this.currentLanguage][key];
+        }
+        if (window.translations['ro'] && window.translations['ro'][key]) {
+            return window.translations['ro'][key];
+        }
+        return key;
+    },
+    
+    applyTranslations: function() {
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const text = this.getText(key);
+            element.textContent = text;
+        });
+    }
+};
+
+// Make it global
+window.setLanguage = function(lang) {
+    TranslationManager.setLanguage(lang);
+};
+
+// Initialize translations on page load
+document.addEventListener('DOMContentLoaded', function() {
+    TranslationManager.currentLanguage = localStorage.getItem('intex_language') || 'ro';
+    TranslationManager.applyTranslations();
+    
+    // Update active language button
+    document.querySelectorAll('.lang-opt').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === TranslationManager.currentLanguage);
+    });
+    
+    // Listen for language changes from other pages
+    window.addEventListener('languageChanged', function(e) {
+        TranslationManager.currentLanguage = e.detail.language;
+        TranslationManager.applyTranslations();
+    });
+    
+    // Listen to localStorage changes (cross-tab communication)
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'intex_language') {
+            TranslationManager.setLanguage(e.newValue || 'ro');
+        }
+    });
 });
 
 const DOM = {

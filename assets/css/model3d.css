@@ -1,418 +1,370 @@
 /* ============================================================
-   MODEL3D.CSS — Holographic 3D Viewer Interface
-   Depends on: main.css (design tokens, glass, typography)
-   Awwwards-style: floating hologram with glass controls,
-   internal glow, cinematic 2D↔3D transitions, neon accents
+   model3d.css — Cinematic Dark Theater
+   Background gradient dramatic, efect apă/reflexii, controale glass în stânga jos,
+   hover glow teal, hotspot‑uri pulsante.
    ============================================================ */
 
-/* ===================================================================
-   CURSOR — Extensie page-specific pentru cursorul custom
-   =================================================================== */
-@media (min-width: 1201px) {
-  .model3d-container,
-  .model3d-btn,
-  .model3d-viewer canvas {
-    cursor: none;
-  }
-
-  .model3d-container.visible-3d {
-    cursor: none;
-  }
-}
-
-/* ===================================================================
-   0. Product Modal Image — Containerul părinte
-   =================================================================== */
-.product-modal-image {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-sm);
-  width: 100%;
-  height: auto;
-  min-height: 380px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--footer-bg);
-}
-
-/* ===================================================================
-   1. 3D Container — Fereastră holografică
-   =================================================================== */
 .model3d-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 151, 167, 0.04) 0%,
-    var(--card-bg) 70%
-  );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: var(--radius-sm);
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  min-height: 380px;
-  overflow: hidden;
-
-  /* Iluminare internă — sugerează profunzime 3D */
-  box-shadow: inset 0 0 80px rgba(0, 151, 167, 0.06),
-              inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: opacity 0.4s var(--ease-premium),
-              transform 0.4s var(--ease-premium),
-              box-shadow 0.5s var(--ease-premium);
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 40% 50%, #1a2538 0%, #0b0f1c 70%);
+    border-radius: inherit;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    z-index: 50;
+    overflow: hidden;
 }
 
-/* Stare ascunsă */
+/* Efect iluminare jos (acvatic) */
+.model3d-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(0, 242, 254, 0.08) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Efect de apă / reflexii (valuri orizontale) */
+.model3d-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 242, 254, 0.03) 2px,
+        rgba(0, 242, 254, 0.03) 4px
+    );
+    background-size: 200% 100%;
+    animation: waterRipple 12s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes waterRipple {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 0; }
+}
+
 .model3d-container.hidden {
-  display: none !important;
-  pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
-  transform: scale(0.97);
+    display: none !important;
+    pointer-events: none;
 }
 
-/* Stare vizibilă — animație de activare holografică */
 .model3d-container.visible-3d {
-  display: flex !important;
-  pointer-events: auto;
-  visibility: visible;
-  opacity: 1;
-  transform: scale(1);
-  animation: hologramActivate 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    display: flex !important;
+    pointer-events: auto;
+    animation: hologramActivate 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Animație flicker tech la activare */
 @keyframes hologramActivate {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-    filter: brightness(1.5);
-  }
-  30% {
-    opacity: 0.8;
-    filter: brightness(1.2);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.01);
-    filter: brightness(0.95);
-  }
-  80% {
-    transform: scale(0.995);
-    filter: brightness(1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: brightness(1);
-  }
+    0%   { opacity: 0; filter: brightness(2) blur(4px); }
+    20%  { opacity: 0.7; filter: brightness(1.4) blur(1px); }
+    60%  { opacity: 1; filter: brightness(0.95) blur(0); }
+    80%  { filter: brightness(1.02); }
+    100% { opacity: 1; filter: brightness(1) blur(0); }
 }
 
-/* Bordură neon la hover pe containerul 3D */
-.model3d-container:hover {
-  box-shadow: inset 0 0 80px rgba(0, 151, 167, 0.08),
-              inset 0 1px 0 rgba(255, 255, 255, 0.5),
-              0 0 0 0.5px rgba(0, 151, 167, 0.25);
-}
-
-/* ===================================================================
-   2. 3D Viewer — Canvas-ul Three.js
-   =================================================================== */
 .model3d-viewer {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  min-height: 380px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 3;
 }
 
 .model3d-viewer canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  background: transparent !important;
-  border-radius: var(--radius-sm);
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    background: transparent !important;
+    animation: modelFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both;
 }
 
-/* ===================================================================
-   3. Loading State — Spinner minimalist
-   =================================================================== */
+@keyframes modelFadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
 .model3d-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 55;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 55;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    pointer-events: none;
 }
 
-.model3d-loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(0, 151, 167, 0.15);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin3D 0.8s linear infinite;
+.model3d-spinner {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(0, 242, 254, 0.2);
+    border-top-color: #00f2fe;
+    border-radius: 50%;
+    animation: spin3D 0.75s linear infinite;
 }
 
-.model3d-loading-text {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--text-muted);
+.model3d-loading span {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0, 242, 254, 0.6);
+    font-family: var(--font-display, 'Poppins', sans-serif);
 }
 
-@keyframes spin3D {
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes spin3D { to { transform: rotate(360deg); } }
+
+/* Controale glass în stânga jos */
+.model3d-premium-controls {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    transform: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    background: rgba(10, 20, 30, 0.75);
+    backdrop-filter: blur(16px);
+    border-radius: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
+    z-index: 90;
+    pointer-events: auto;
+    transition: all 0.3s ease;
 }
 
-/* ===================================================================
-   4. Controale 3D — Bară plutitoare de sticlă
-   =================================================================== */
-.model3d-controls {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  background: var(--bg-nav);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 6px;
-  border-radius: var(--radius-pill);
-  border: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  z-index: 100;
-  pointer-events: auto;
+.model3d-premium-controls:hover {
+    background: rgba(10, 20, 30, 0.85);
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* ===================================================================
-   5. Butoane 3D — Glass pills cu glow subtil
-   =================================================================== */
-.model3d-btn {
-  background: transparent;
-  color: var(--text-main);
-  border: 1px solid transparent;
-  padding: 8px 16px;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.35s var(--ease-premium);
-  white-space: nowrap;
-  pointer-events: auto;
-  z-index: 1001;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+.model3d-quantity-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 4px 12px;
+    border-radius: 40px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Hover — mai intens, glow colorat */
-.model3d-btn:hover {
-  background: rgba(0, 151, 167, 0.1);
-  border-color: var(--primary);
-  color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: 0 0 16px rgba(0, 151, 167, 0.2);
-}
-
-/* Activ/Selected — butonul care indică starea curentă */
-.model3d-btn.active {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-  box-shadow: 0 0 20px rgba(0, 151, 167, 0.3);
-}
-
-.model3d-btn:active {
-  transform: translateY(0);
-  transition: transform 0.1s ease;
-}
-
-.model3d-btn i {
-  font-size: 0.95rem;
-}
-
-/* ===================================================================
-   6. Buton Toggle 2D/3D — Stil special, mai prominent
-   =================================================================== */
-#toggle-2d-3d {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: #fff;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 4px 16px rgba(0, 151, 167, 0.25);
-}
-
-#toggle-2d-3d:hover {
-  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--accent-hover) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 151, 167, 0.35);
-}
-
-/* ===================================================================
-   7. Tooltip pentru butoane (opțional, dacă se adaugă)
-   =================================================================== */
-.model3d-tooltip {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  background: var(--card-bg);
-  border: var(--card-border);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: var(--text-main);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.model3d-btn:hover .model3d-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* ===================================================================
-   8. Dark Mode — Vizualizator mai profund, neon subtil
-   =================================================================== */
-body.dark-mode .model3d-container {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 229, 255, 0.04) 0%,
-    var(--card-bg) 70%
-  );
-  box-shadow: inset 0 0 80px rgba(0, 229, 255, 0.04),
-              inset 0 1px 1px rgba(255, 255, 255, 0.04);
-}
-
-body.dark-mode .model3d-container:hover {
-  box-shadow: inset 0 0 80px rgba(0, 229, 255, 0.06),
-              inset 0 1px 1px rgba(255, 255, 255, 0.06),
-              0 0 0 0.5px rgba(0, 229, 255, 0.3);
-}
-
-body.dark-mode .model3d-controls {
-  background: rgba(15, 15, 20, 0.85);
-  border-color: rgba(255, 255, 255, 0.06);
-}
-
-body.dark-mode .model3d-btn:hover {
-  background: rgba(0, 229, 255, 0.1);
-  border-color: var(--primary);
-  color: var(--primary);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
-}
-
-body.dark-mode .model3d-btn.active {
-  background: var(--primary);
-  color: #0a0a0c;
-  box-shadow: 0 0 24px rgba(0, 229, 255, 0.4);
-}
-
-body.dark-mode #toggle-2d-3d {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: #0a0a0c;
-}
-
-body.dark-mode #toggle-2d-3d:hover {
-  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--accent-hover) 100%);
-  box-shadow: 0 6px 28px rgba(0, 229, 255, 0.4);
-}
-
-body.dark-mode .model3d-loading-spinner {
-  border-color: rgba(0, 229, 255, 0.1);
-  border-top-color: var(--primary);
-}
-
-/* ===================================================================
-   9. Responsive
-   =================================================================== */
-@media (max-width: 768px) {
-  .product-modal-image {
-    min-height: 300px;
-  }
-
-  .model3d-container {
-    min-height: 300px;
-  }
-
-  .model3d-viewer {
-    min-height: 300px;
-  }
-
-  .model3d-controls {
-    bottom: 8px;
-    padding: 5px;
-    gap: 6px;
-  }
-
-  .model3d-btn {
-    padding: 6px 12px;
-    font-size: 0.7rem;
+.model3d-quantity-group label {
+    font-size: 0.65rem;
+    font-weight: 600;
     letter-spacing: 1px;
-  }
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+}
 
-  .model3d-btn i {
+.model3d-qty-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.model3d-qty-btn:hover {
+    background: rgba(0, 242, 254, 0.5);
+    transform: scale(1.05);
+}
+
+.model3d-qty-value {
+    min-width: 28px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+}
+
+.model3d-premium-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: var(--font-display, 'Poppins', sans-serif);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 40px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s;
+    white-space: nowrap;
+}
+
+.model3d-premium-btn i {
     font-size: 0.85rem;
-  }
+    transition: transform 0.2s;
 }
 
-@media (max-width: 480px) {
-  .product-modal-image {
-    min-height: 240px;
-  }
-
-  .model3d-container {
-    min-height: 240px;
-  }
-
-  .model3d-viewer {
-    min-height: 240px;
-  }
-
-  .model3d-btn span {
-    display: none;
-  }
-
-  .model3d-btn {
-    padding: 6px 10px;
-    gap: 4px;
-  }
-
-  .model3d-controls {
-    bottom: 6px;
-    padding: 4px;
-    gap: 4px;
-  }
+.model3d-premium-btn:hover {
+    background: rgba(0, 242, 254, 0.15);
+    color: #00f2fe;
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
 }
 
-/* ===================================================================
-   End of file
-   =================================================================== */
+.model3d-premium-btn:hover i {
+    transform: scale(1.1);
+}
+
+.model3d-premium-btn.active {
+    background: rgba(0, 242, 254, 0.25);
+    color: #00f2fe;
+    box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+}
+
+.model3d-premium-btn.model3d-add-to-cart {
+    background: linear-gradient(135deg, #00c9ff, #0099cc);
+    color: #0b0f1c;
+    font-weight: 700;
+    box-shadow: 0 3px 14px rgba(0, 201, 255, 0.3);
+}
+
+.model3d-premium-btn.model3d-add-to-cart:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 201, 255, 0.5);
+    color: #0b0f1c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .model3d-premium-controls {
+        bottom: 16px;
+        left: 16px;
+        padding: 6px 12px;
+        gap: 6px;
+    }
+    .model3d-premium-btn span {
+        display: none;
+    }
+    .model3d-premium-btn {
+        padding: 5px 10px;
+    }
+    .model3d-premium-btn i {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    .model3d-premium-btn.model3d-add-to-cart span {
+        display: inline-block;
+        font-size: 0.6rem;
+    }
+    .model3d-quantity-group label {
+        display: none;
+    }
+}
+
+@media (max-width: 550px) {
+    .model3d-premium-controls {
+        flex-wrap: wrap;
+        width: auto;
+        max-width: 95%;
+        border-radius: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 12px;
+        justify-content: center;
+    }
+    .model3d-quantity-group {
+        order: 1;
+    }
+}
+
+/* Hotspot-uri */
+.model3d-hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+.hotspot-dot {
+    width: 12px;
+    height: 12px;
+    background: #00f2fe;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.5);
+    transition: all 0.2s ease;
+    animation: pulseHotspot 2s ease-in-out infinite;
+}
+
+@keyframes pulseHotspot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,242,254,0.6); }
+    50%       { box-shadow: 0 0 0 8px rgba(0,242,254,0); }
+}
+
+.model3d-hotspot:hover .hotspot-dot {
+    background: #ffb347;
+    transform: scale(1.3);
+    animation: none;
+    box-shadow: 0 0 0 4px rgba(255,179,71,0.5);
+}
+
+.hotspot-tooltip {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 20, 30, 0.95);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    z-index: 101;
+}
+
+.hotspot-tooltip strong {
+    display: block;
+    color: #00f2fe;
+    margin-bottom: 2px;
+}
+
+.model3d-hotspot:hover .hotspot-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Fullscreen */
+.model3d-container:fullscreen {
+    background: radial-gradient(ellipse at 40% 50%, #1a2538 0%, #0b0f1c 100%);
+    border-radius: 0;
+}
+
+.model3d-container:fullscreen .model3d-premium-controls {
+    bottom: 32px;
+    left: 32px;
+}
+
+/* Dark mode (deja dark) */
+body.dark-mode .model3d-premium-controls {
+    background: rgba(8, 12, 20, 0.85);
+}

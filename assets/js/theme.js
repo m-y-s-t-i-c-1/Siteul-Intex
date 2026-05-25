@@ -32,6 +32,8 @@
             document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
             try {
                 document.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: !!isDark } }));
+                // Also dispatch to window for cross-tab communication
+                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: !!isDark } }));
             } catch (e) {
                 
             }
@@ -65,6 +67,20 @@
                 }
             });
         }
+        
+        // Listen for theme changes from other pages
+        window.addEventListener('themeChanged', function(e) {
+            if (e.detail && typeof e.detail.isDark === 'boolean') {
+                applyTheme(e.detail.isDark);
+            }
+        });
+        
+        // Listen to localStorage changes (cross-tab communication)
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                applyTheme(e.newValue === 'dark');
+            }
+        });
     }
 
     function domReady() {
