@@ -221,59 +221,138 @@
 
     <div id="login-modal" class="login-modal">
         <div class="login-content">
-            <span class="close-btn" onclick="closeLoginModal()">&times;</span>
-            
-            <div class="login-tabs">
-                <button class="tab-btn active" onclick="switchTab('login')">Autentificare</button>
-                <button class="tab-btn" onclick="switchTab('register')">Inregistrare</button>
-            </div>
-            
-            <div id="login-form" class="form-container active">
-                <h3 data-i18n="login_title">Autentificare</h3>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="login-email" data-i18n="email_label">Email</label>
-                        <input type="email" id="login-email" required>
+            <button class="close-btn" onclick="closeLoginModal()" aria-label="Închide">&times;</button>
+
+            <!-- LEFT PANEL: branding -->
+            <div class="login-panel-left">
+                <div class="lp-brand">INTEX<span>MOLDOVA</span></div>
+
+                <div class="lp-body">
+                    <div class="lp-badge">
+                        <div class="lp-badge-dot"></div>
+                        Cont Premium
                     </div>
-                    <div class="form-group">
-                        <label for="login-password" data-i18n="password_label">Parola</label>
-                        <input type="password" id="login-password" required>
+                    <div class="lp-headline">Vara ta<br><em>Premium.</em></div>
+                    <p class="lp-desc">Acces la comenzi, istoric și oferte exclusive pentru clienții Intex Moldova.</p>
+                    <div class="lp-features">
+                        <div class="lp-feature">
+                            <div class="lp-feature-icon"><i class="fas fa-box"></i></div>
+                            <span>Urmărire comenzi în timp real</span>
+                        </div>
+                        <div class="lp-feature">
+                            <div class="lp-feature-icon"><i class="fas fa-tag"></i></div>
+                            <span>Oferte exclusive pentru membri</span>
+                        </div>
+                        <div class="lp-feature">
+                            <div class="lp-feature-icon"><i class="fas fa-headset"></i></div>
+                            <span>Suport prioritar dedicat</span>
+                        </div>
                     </div>
-                    <button type="submit" class="btn-main" data-i18n="login_btn">Autentificare</button>
-                </form>
-                <div class="form-footer">
-                    <a href="#" data-i18n="forgot_password">Ai uitat parola?</a>
                 </div>
             </div>
-            
-            <div id="register-form" class="form-container">
-                <h3 data-i18n="register_title">Inregistrare</h3>
-                <form id="registerForm">
-                    <div class="form-group">
-                        <label for="register-name" data-i18n="name_label">Nume complet</label>
-                        <input type="text" id="register-name" required>
+
+            <!-- RIGHT PANEL: forms -->
+            <div class="login-panel-right">
+
+                <div class="login-tabs" id="loginTabsBar">
+                    <div class="login-tabs-slider" id="loginTabSlider"></div>
+                    <button class="tab-btn active" id="tabBtnLogin" onclick="switchTab('login')" data-i18n="login_title">Autentificare</button>
+                    <button class="tab-btn" id="tabBtnRegister" onclick="switchTab('register')" data-i18n="register_title">Înregistrare</button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <div id="login-form" class="form-container active">
+                    <h3 data-i18n="login_title">Bun venit înapoi</h3>
+                    <p class="form-subtitle">Introdu datele contului tău</p>
+                    <form id="loginForm" autocomplete="on">
+                        <div class="form-group">
+                            <label for="login-email" data-i18n="email_label">Email</label>
+                            <input type="email" id="login-email" placeholder="exemplu@email.com" required autocomplete="email">
+                            <i class="fas fa-envelope field-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password" data-i18n="password_label">Parolă</label>
+                            <input type="password" id="login-password" placeholder="Parola ta" required autocomplete="current-password">
+                            <i class="fas fa-lock field-icon"></i>
+                            <button type="button" class="pw-toggle" onclick="togglePwViz('login-password',this)" aria-label="Arată parola">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <a href="#" class="forgot-link" data-i18n="forgot_password">Ai uitat parola?</a>
+                        <button type="submit" class="btn-main" data-i18n="login_btn">Autentificare</button>
+                    </form>
+                    <div class="auth-divider">
+                        <div class="auth-divider-line"></div>
+                        <span class="auth-divider-text">sau continuă cu</span>
+                        <div class="auth-divider-line"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="register-email" data-i18n="email_label">Email</label>
-                        <input type="email" id="register-email" required>
+                    <div class="social-auth-row">
+                        <button class="social-auth-btn" type="button">
+                            <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.616z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+                            Google
+                        </button>
+                        <button class="social-auth-btn" type="button">
+                            <i class="fab fa-facebook-f" style="color:#1877F2;font-size:13px"></i>
+                            Facebook
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="register-phone" data-i18n="phone_label">Telefon</label>
-                        <input type="tel" id="register-phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password" data-i18n="password_label">Parola</label>
-                        <input type="password" id="register-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-confirm-password" data-i18n="confirm_password">Confirma parola</label>
-                        <input type="password" id="register-confirm-password" required>
-                    </div>
-                    <button type="submit" class="btn-main" data-i18n="register_btn">Inregistrare</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                    <p class="auth-terms">Prin autentificare, accepți <a href="#">Termenii</a> și <a href="#">Confidențialitatea</a>.</p>
+                </div>
+
+                <!-- REGISTER FORM -->
+                <div id="register-form" class="form-container">
+                    <h3 data-i18n="register_title">Creează cont</h3>
+                    <p class="form-subtitle">Înregistrare rapidă și gratuită</p>
+                    <form id="registerForm" autocomplete="on">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label data-i18n="name_label">Prenume</label>
+                                <input type="text" id="register-firstname" placeholder="Ion" required autocomplete="given-name">
+                                <i class="fas fa-user field-icon"></i>
+                            </div>
+                            <div class="form-group">
+                                <label>Nume</label>
+                                <input type="text" id="register-name" placeholder="Popescu" required autocomplete="family-name">
+                                <i class="fas fa-user field-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="email_label">Email</label>
+                            <input type="email" id="register-email" placeholder="exemplu@email.com" required autocomplete="email">
+                            <i class="fas fa-envelope field-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="phone_label">Telefon</label>
+                            <input type="tel" id="register-phone" placeholder="+373 69 000 000" autocomplete="tel">
+                            <i class="fas fa-phone field-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="password_label">Parolă</label>
+                            <input type="password" id="register-password" placeholder="Min. 6 caractere" required autocomplete="new-password">
+                            <i class="fas fa-lock field-icon"></i>
+                            <button type="button" class="pw-toggle" onclick="togglePwViz('register-password',this)" aria-label="Arată parola">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="confirm_password">Confirmă parola</label>
+                            <input type="password" id="register-confirm-password" placeholder="Repetă parola" required autocomplete="new-password">
+                            <i class="fas fa-lock field-icon"></i>
+                        </div>
+                        <div class="auth-check-row">
+                            <input type="checkbox" id="reg-tos" required>
+                            <label class="auth-check-label" for="reg-tos">Accept <a href="#">Termenii și Condițiile</a> și <a href="#">Politica de Confidențialitate</a></label>
+                        </div>
+                        <button type="submit" class="btn-main" data-i18n="register_btn">Creează Cont</button>
+                    </form>
+                    <p class="auth-terms" style="margin-top:12px">
+                        Ai deja cont? <a href="#" onclick="switchTab('login');return false;">Autentifică-te →</a>
+                    </p>
+                </div>
+
+            </div><!-- /.login-panel-right -->
+        </div><!-- /.login-content -->
+    </div><!-- /#login-modal -->
 
     <!-- ============================================================
          VANILLA JS — No frameworks, no libraries (except Font Awesome)
@@ -395,6 +474,37 @@
         if (e.target === this) closeSearch();
     });
 
+
+    /* --- PASSWORD VISIBILITY TOGGLE --- */
+    function togglePwViz(inputId, btn) {
+        var inp = document.getElementById(inputId);
+        var icon = btn ? btn.querySelector('i') : null;
+        if (!inp) return;
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            if (icon) icon.className = 'fas fa-eye-slash';
+        } else {
+            inp.type = 'password';
+            if (icon) icon.className = 'fas fa-eye';
+        }
+    }
+    window.togglePwViz = togglePwViz;
+
+    /* --- TAB SLIDER SYNC (patches switchTab from main.js after load) --- */
+    window.addEventListener('load', function() {
+        var origSwitch = window.switchTab;
+        if (typeof origSwitch === 'function') {
+            window.switchTab = function(tab) {
+                origSwitch(tab);
+                var slider = document.getElementById('loginTabSlider');
+                var btnL = document.getElementById('tabBtnLogin');
+                var btnR = document.getElementById('tabBtnRegister');
+                if (slider) slider.classList.toggle('on-register', tab === 'register');
+                if (btnL) btnL.classList.toggle('active', tab === 'login');
+                if (btnR) btnR.classList.toggle('active', tab === 'register');
+            };
+        }
+    });
 
     /* --- LANGUAGE (placeholder — implement with i18n.js) --- */
     function setLanguage(lang) {

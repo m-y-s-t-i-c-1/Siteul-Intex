@@ -531,6 +531,9 @@
                 this.dom.list = document.getElementById('orders-list');
                 this.dom.container = document.getElementById('orders-container') || document.querySelector('.orders-container');
             this.dom.pagination = document.getElementById('orders-pagination');
+            this.dom.toolbar = document.querySelector('.orders-toolbar');
+            this.dom.filters = document.querySelector('.orders-filters');
+            this.dom.stats = document.querySelector('.orders-stats');
         }
 
         checkAuth() {
@@ -957,6 +960,15 @@
             }
             if (this.dom.list) {
                 this.dom.list.style.display = show ? 'none' : 'grid';
+            }
+            if (this.dom.toolbar) {
+                this.dom.toolbar.style.display = show ? 'none' : '';
+            }
+            if (this.dom.filters) {
+                this.dom.filters.style.display = show ? 'none' : '';
+            }
+            if (this.dom.stats) {
+                this.dom.stats.style.display = show ? 'none' : '';
             }
         }
 

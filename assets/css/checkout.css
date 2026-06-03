@@ -493,8 +493,8 @@ body:not(.dark-mode) .trust-badge span {
 .checkout-form {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 22px;
-  padding: 40px 36px;
+  border-radius: 28px;
+  padding: 36px 28px;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: 0 24px 60px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
@@ -589,12 +589,12 @@ body:not(.dark-mode) .section-number {
   width: 100%;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  border-radius: 24px;
   outline: none;
-  padding: 22px 44px 8px 16px;
+  padding: 14px 16px 8px 16px;
   color: var(--text-main);
   font-family: var(--font-body);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.4;
   transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
   appearance: none;
@@ -619,11 +619,11 @@ body:not(.dark-mode) .form-group.floating textarea {
   top: 50%;
   left: 16px;
   transform: translateY(-50%);
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.38);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.44);
   pointer-events: none;
-  transition: top 0.25s, font-size 0.25s, color 0.25s, transform 0.25s;
+  transition: top 0.22s, font-size 0.22s, color 0.22s, transform 0.22s;
   white-space: nowrap;
 }
 
@@ -660,9 +660,9 @@ body:not(.dark-mode) .form-group.floating textarea:focus ~ label {
 
 .form-group.floating input:focus,
 .form-group.floating textarea:focus {
-  border-color: rgba(0,212,184,0.5);
+  border-color: rgba(0,212,184,0.45);
   background: rgba(0,212,184,0.04);
-  box-shadow: 0 0 0 3px rgba(0,212,184,0.08);
+  box-shadow: 0 0 0 3px rgba(0,212,184,0.06);
 }
 
 body:not(.dark-mode) .form-group.floating input:focus,
@@ -711,6 +711,27 @@ body:not(.dark-mode) .input-icon {
   color: rgba(255,255,255,0.5);
   transition: color 0.2s;
   user-select: none;
+}
+
+/* Make filled/autofilled inputs use darker shade instead of white */
+.form-group.floating input:not(:placeholder-shown),
+.form-group.floating input:focus,
+.form-group.floating input:-webkit-autofill {
+  background: rgba(255,255,255,0.08);
+}
+
+body:not(.dark-mode) .form-group.floating input:not(:placeholder-shown),
+body:not(.dark-mode) .form-group.floating input:focus,
+body:not(.dark-mode) .form-group.floating input:-webkit-autofill {
+  background: rgba(255,255,255,0.95);
+}
+
+.form-group.floating input:-webkit-autofill,
+.form-group.floating input:-webkit-autofill:focus,
+.form-group.floating input:-webkit-autofill:hover {
+  -webkit-text-fill-color: var(--text-main);
+  box-shadow: 0 0 0px 1000px rgba(255,255,255,0.08) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .save-address-label:hover { 

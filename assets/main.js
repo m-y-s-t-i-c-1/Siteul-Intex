@@ -757,6 +757,18 @@ const translations = {
     }
 };
 
+// Ensure all languages contain the same set of keys.
+// If a translation is missing for `ru` or `en`, fill it from `ro` as a safe fallback.
+const baseKeys = Object.keys(translations.ro || {});
+["ru","en"].forEach(lang => {
+    translations[lang] = translations[lang] || {};
+    baseKeys.forEach(k => {
+        if (!Object.prototype.hasOwnProperty.call(translations[lang], k)) {
+            translations[lang][k] = translations.ro[k];
+        }
+    });
+});
+
 window.translations = window.translations || {};
 Object.keys(translations).forEach(lang => {
     window.translations[lang] = {
@@ -1144,9 +1156,19 @@ function showUserMenu(user) {
     
     try {
         const rect = loginBtn.getBoundingClientRect();
-        const top = rect.bottom + window.scrollY + 8;
-        const left = Math.min(window.innerWidth - 260, rect.left + window.scrollX - 160 + rect.width / 2);
-        menu.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; z-index: 9999;`;
+        const menuWidth = Math.min(320, Math.max(260, menu.offsetWidth || 280));
+        const top = rect.bottom + window.scrollY + 10;
+        const left = Math.min(
+            Math.max(12, rect.left + window.scrollX + rect.width / 2 - menuWidth / 2),
+            window.innerWidth - menuWidth - 12
+        );
+        menu.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; width: ${menuWidth}px; z-index: 9999;`;
+
+        const arrow = menu.querySelector('.user-menu-arrow');
+        if (arrow) {
+            const arrowLeft = Math.min(Math.max(rect.left + window.scrollX + rect.width / 2 - left - 10, 16), menuWidth - 36);
+            arrow.style.left = `${arrowLeft}px`;
+        }
     } catch (e) {
         menu.style.cssText = 'position: absolute; right: 16px; top: 60px; z-index: 9999;';
     }
