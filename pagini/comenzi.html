@@ -4,27 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="orders_page_title">Comenzile Mele | INTEX Moldova</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link rel="stylesheet" href="../assets/main.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
     <link rel="stylesheet" href="../assets/css/comenzi.css">
 </head>
 <body>
-
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
     <nav id="mainNav">
-        <button class="hamburger-btn" id="hamburgerBtn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <button class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></button>
         <div class="site-title">INTEX<span>MOLDOVA</span></div>
-
         <ul class="nav-menu">
             <li><a href="../index.html" data-i18n="menu_home">Acasă</a></li>
             <li><a href="produse.html" data-i18n="menu_products">Produse</a></li>
@@ -34,7 +26,6 @@
             <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
             <li><a href="#" class="active" data-i18n="menu_orders">Comenzi</a></li>
         </ul>
-
         <ul class="nav-menu mobile">
             <li><a href="../index.html" data-i18n="menu_home">Acasă</a></li>
             <li><a href="produse.html" data-i18n="menu_products">Produse</a></li>
@@ -44,78 +35,87 @@
             <li><a href="../index.html#contact" data-i18n="menu_contact">Contacte</a></li>
             <li><a href="#" class="active" data-i18n="menu_orders">Comenzi</a></li>
         </ul>
-
         <div class="nav-controls">
-            <button class="search-btn" id="searchBtn" title="Căutare">
-                <i class="fas fa-search"></i>
-            </button>
-            
+            <button class="search-btn" id="searchBtn" title="Căutare"><i class="fas fa-search"></i></button>
             <div class="lang-switch">
-                <span class="lang-opt active" data-lang="ro" onclick="setLanguage('ro')">RO</span>
-                <span style="opacity: 0.3">|</span>
-                <span class="lang-opt" data-lang="ru" onclick="setLanguage('ru')">RU</span>
-                <span style="opacity: 0.3">|</span>
-                <span class="lang-opt" data-lang="en" onclick="setLanguage('en')">EN</span>
+                <span class="lang-opt active" onclick="setLanguage('ro')">RO</span>
+                <span style="opacity:0.3">|</span>
+                <span class="lang-opt" onclick="setLanguage('ru')">RU</span>
+                <span style="opacity:0.3">|</span>
+                <span class="lang-opt" onclick="setLanguage('en')">EN</span>
             </div>
-
-            <div class="theme-toggle" id="themeBtn">
-                <i class="fas fa-moon"></i>
-            </div>
-
-            <button class="login-btn" id="loginBtn" title="Contul Meu">
-                <i class="fas fa-user"></i>
-            </button>
+            <div class="theme-toggle" id="themeBtn"><i class="fas fa-moon"></i></div>
+            <button class="login-btn" id="loginBtn" title="Contul Meu"><i class="fas fa-user"></i></button>
         </div>
     </nav>
 
+    <!-- Page header — exact ca produse.html -->
+    <header class="page-header orders-page-header">
+        <div class="grain"></div>
+        <div class="header-content">
+            <h1>Comenzile <em>Mele</em></h1>
+            <p data-i18n="orders_subtitle">Urmăriți statusul comenzilor în timp real.</p>
+        </div>
+    </header>
+
     <main class="orders-section">
         <div class="orders-container">
-            <div class="orders-header">
-                <h1 data-i18n="orders_title">Comenzile Mele</h1>
-                <p data-i18n="orders_subtitle">Vizualizați și urmăriți statusul comenzilor dumneavoastră în timp real.</p>
+
+            <!-- Stats + Filters row -->
+            <div class="orders-toolbar">
+                <div class="orders-stats" id="orders-stats">
+                    <div class="orders-stat">
+                        <span class="orders-stat-value" id="stat-total">—</span>
+                        <span class="orders-stat-label">Total</span>
+                    </div>
+                    <div class="orders-stat">
+                        <span class="orders-stat-value" id="stat-active">—</span>
+                        <span class="orders-stat-label">Active</span>
+                    </div>
+                </div>
+
+                <div class="orders-filters" id="orders-filters">
+                    <button class="orders-filter-btn active" data-filter="all">
+                        Toate <span class="filter-count" id="fc-all">0</span>
+                    </button>
+                    <button class="orders-filter-btn" data-filter="pending">
+                        <span style="color:#f59e0b">●</span> În așteptare
+                    </button>
+                    <button class="orders-filter-btn" data-filter="processing">
+                        <span style="color:#818cf8">●</span> Procesare
+                    </button>
+                    <button class="orders-filter-btn" data-filter="shipped">
+                        <span style="color:#60a5fa">●</span> Expediat
+                    </button>
+                    <button class="orders-filter-btn" data-filter="delivered">
+                        <span style="color:#00d4b8">●</span> Livrat
+                    </button>
+                    <button class="orders-filter-btn" data-filter="cancelled">
+                        <span style="color:#f87171">●</span> Anulat
+                    </button>
+                </div>
             </div>
 
-            <!-- NOUL LOADER PREMIUM -->
             <div id="orders-loading" class="orders-loading">
-                <div class="loading-animation">
-                    <div class="loading-spinner-outer"></div>
-                    <div class="loading-spinner-inner"></div>
-                    <i class="fas fa-truck-fast loading-icon"></i>
-                </div>
-                <div class="loading-text" data-i18n="loading_orders">Se încarcă comenzile...</div>
-                <div class="loading-bars">
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                </div>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <span data-i18n="loading_orders">Se încarcă comenzile...</span>
             </div>
 
-            <div id="orders-empty" class="orders-empty" style="display: none;">
-                <i class="fas fa-box-open"></i>
-                <h3 data-i18n="no_orders_title">Nicio comandă activă</h3>
-                <p data-i18n="no_orders_text">Încă nu ai adăugat produse în universul tău. Descoperă selecția noastră și plasează prima ta comandă!</p>
-                <a href="produse.html" class="btn-main" data-i18n="browse_products">Vezi Produse</a>
-            </div>
-
-            <div id="orders-list" class="orders-list" style="display: none;"></div>
-            
+            <div id="orders-empty" class="orders-empty" style="display:none;"></div>
+            <div id="orders-list" class="orders-list" style="display:none;"></div>
             <div id="orders-pagination"></div>
         </div>
     </main>
 
     <footer class="orders-footer">
-        <div class="footer-bottom">
-            © 2026 INTEX Moldova. All rights reserved.
-        </div>
+        <div class="footer-bottom">© 2026 INTEX Moldova. All rights reserved.</div>
     </footer>
 
     <div id="search-overlay" class="search-overlay">
         <div class="search-content">
             <button class="close-btn" onclick="closeSearch()">&times;</button>
-            <input type="text" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="Căutați produse...">
-            <a href="#" class="btn-main" data-i18n="search_button" onclick="performSearch(event)">Caută</a>
+            <input type="text" id="search-input" placeholder="Căutați produse...">
+            <a href="#" class="btn-main" onclick="performSearch(event)">Caută</a>
         </div>
     </div>
 
@@ -124,5 +124,35 @@
     <script src="../assets/js/notifications.js"></script>
     <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/orders.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const list = document.getElementById('orders-list');
+        const el   = id => document.getElementById(id);
+
+        function updateStats() {
+            const cards  = document.querySelectorAll('#orders-list .order-card');
+            const active = [...cards].filter(c =>
+                ['pending','processing','shipped'].includes(c.getAttribute('data-status') || '')
+            ).length;
+            if (el('stat-total'))  el('stat-total').textContent  = cards.length || '0';
+            if (el('stat-active')) el('stat-active').textContent = active || '0';
+            if (el('fc-all'))      el('fc-all').textContent      = cards.length || '0';
+        }
+
+        if (list) new MutationObserver(updateStats).observe(list, { childList: true });
+
+        document.querySelectorAll('.orders-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.orders-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('#orders-list .order-card').forEach(card => {
+                    const s = card.getAttribute('data-status') || '';
+                    card.style.display = (filter === 'all' || s === filter) ? '' : 'none';
+                });
+            });
+        });
+    });
+    </script>
 </body>
 </html>
