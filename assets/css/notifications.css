@@ -1,116 +1,115 @@
+/* ============================================================
+   INTEX MOLDOVA — Notifications / Toast System
+   ============================================================ */
+
 :root {
-  --notification-success: #10b981;
-  --notification-error: #ef4444;
-  --notification-info: #00f2fe;
-  --notification-warning: #f59e0b;
+  --notif-success: #10d690;
+  --notif-error:   #ff4d6d;
+  --notif-warning: #f59e0b;
+  --notif-info:    #00d4e8;
+
+  --notif-success-bg: rgba(16, 214, 144, 0.11);
+  --notif-error-bg:   rgba(255, 77, 109, 0.11);
+  --notif-warning-bg: rgba(245, 158, 11, 0.11);
+  --notif-info-bg:    rgba(0, 212, 232, 0.11);
 }
 
+/* ── Container ── */
 .toast-container {
   position: fixed;
-  top: 28px;
-  right: 28px;
+  top: 24px;
+  right: 24px;
   z-index: 10000;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-width: 420px;
+  gap: 10px;
+  max-width: 380px;
   pointer-events: none;
 }
 
+/* ── Base toast ── */
 .toast {
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  padding: 22px 24px;
-  border-radius: 22px;
-  background: rgba(15, 20, 35, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  gap: 14px;
+  padding: 15px 16px 19px 20px;
+  border-radius: 16px;
+  background: rgba(10, 16, 28, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   pointer-events: all;
-  min-width: 340px;
+  min-width: 300px;
   overflow: hidden;
   opacity: 0;
-  transform: translateX(50px) scale(0.95);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateX(44px) scale(0.96);
+  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .toast.show {
-  animation: toastIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  opacity: 1;
+  transform: translateX(0) scale(1);
 }
 
 .toast.removing {
-  animation: toastOut 0.45s cubic-bezier(0.4, 0, 1, 1) forwards;
+  opacity: 0;
+  transform: translateX(32px) scale(0.96);
+  transition: opacity 0.35s ease,
+              transform 0.35s ease;
 }
 
-@keyframes toastIn {
-  to { 
-   opacity: 1; 
-   transform: translateX(0) scale(1); 
-}
-}
-
-@keyframes toastOut {
-  to { 
-   opacity: 0; 
-   transform: translateX(30px) scale(0.95); 
-}
-}
-
-/* Accent Bar */
+/* ── Left accent bar ── */
 .toast::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 12px;
-  bottom: 12px;
-  width: 5px;
-  border-radius: 0 4px 4px 0;
-  background: var(--notification-info);
+  top: 13px;
+  bottom: 13px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--notif-info);
 }
 
-.toast.success::before { 
-   background: var(--notification-success); 
-}
+.toast.success::before { background: var(--notif-success); }
+.toast.error::before   { background: var(--notif-error); }
+.toast.warning::before { background: var(--notif-warning); }
 
-.toast.error::before { 
-   background: var(--notification-error); 
-}
-
-.toast.warning::before { 
-   background: var(--notification-warning); 
-}
-
-/* Icon */
+/* ── Icon ── */
 .toast-icon {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
   flex-shrink: 0;
-  background: rgba(0, 242, 254, 0.1);
-  color: var(--notification-info);
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+  background: var(--notif-info-bg);
+  color: var(--notif-info);
 }
 
 .toast.success .toast-icon {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+  background: var(--notif-success-bg);
+  color: var(--notif-success);
 }
 
 .toast.error .toast-icon {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
+  background: var(--notif-error-bg);
+  color: var(--notif-error);
 }
 
-/* Content */
+.toast.warning .toast-icon {
+  background: var(--notif-warning-bg);
+  color: var(--notif-warning);
+}
+
+/* ── Content ── */
 .toast-content {
   flex: 1;
   min-width: 0;
@@ -118,47 +117,76 @@
 
 .toast-title {
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  margin-bottom: 4px;
+  font-size: 0.85rem;
+  letter-spacing: -0.01em;
+  color: #f0f6ff;
+  margin-bottom: 3px;
+  line-height: 1.3;
 }
 
 .toast-message {
-  font-size: 0.92rem;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(240, 246, 255, 0.58);
 }
 
-/* Close Button */
+/* ── Close button ── */
 .toast-close {
   background: none;
   border: none;
-  font-size: 1.4rem;
-  color: rgba(255,255,255,0.4);
-  width: 32px;
-  height: 32px;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.22);
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-top: -1px;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
 }
 
 .toast-close:hover {
-  color: white;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f0f6ff;
 }
 
-/* Responsive */
-@media (max-width: 520px) {
+/* ── Progress bar ── */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.toast-progress-bar {
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(1);
+  border-radius: 0 0 16px 16px;
+  background: var(--notif-info);
+  transition: transform linear;
+}
+
+.toast.success .toast-progress-bar { background: var(--notif-success); }
+.toast.error   .toast-progress-bar { background: var(--notif-error); }
+.toast.warning .toast-progress-bar { background: var(--notif-warning); }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
   .toast-container {
-    left: 16px;
-    right: 16px;
-    top: 16px;
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    max-width: 100%;
   }
   .toast {
-    min-width: auto;
+    min-width: unset;
     width: 100%;
   }
 }
