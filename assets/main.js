@@ -949,19 +949,29 @@ function showWarningMessage(key) {
 
 function openLoginModal() {
     const modal = DOM.get('login-modal');
-    if (modal) {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
+    if (!modal) return;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    // ensure default tab is login
+    try { switchTab('login'); } catch (e) {}
 }
 
 function closeLoginModal() {
     const modal = DOM.get('login-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
 }
+
+// Close login modal when clicking on overlay (outside the content)
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('login-modal');
+    if (!modal) return;
+    if (!modal.classList.contains('active')) return;
+    if (e.target === modal) {
+        closeLoginModal();
+    }
+});
 
 function switchTab(tab) {
     const buttons = document.querySelectorAll('.tab-btn');
@@ -1042,19 +1052,21 @@ function handleRegister(event) {
     
     if (result.success) {
         showAuthSuccess('auth_registration_auto');
+        const registeredName = nameInput ? nameInput.value.trim() : '';
+        const registeredEmail = emailInput ? emailInput.value.trim() : '';
+        const registeredPassword = passwordInput ? passwordInput.value : '';
         const form = document.getElementById('registerForm');
         if (form) form.reset();
         
         setTimeout(() => {
             const loginResult = window.authManager.login(
-                emailInput ? emailInput.value.trim() : '',
-                passwordInput ? passwordInput.value : ''
+                registeredEmail,
+                registeredPassword
             );
             if (loginResult.success) {
                 closeLoginModal();
                 updateLoginState(true, loginResult.user);
-                const name = nameInput ? nameInput.value.trim() : '';
-                showAuthSuccess('auth_welcome', { name: name });
+                showAuthSuccess('auth_welcome', { name: registeredName });
             }
         }, 500);
     } else {

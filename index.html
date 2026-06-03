@@ -6,6 +6,7 @@
     <title data-i18n="main_page_title">INTEX Premium Moldova</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/notifications.css">
     
     <link rel="stylesheet" href="assets/main.css">
 </head>
@@ -56,7 +57,7 @@
             </div>
 
             <div class="theme-toggle" id="themeBtn" title="Tema intunecata">
-                <i class="fas fa-moon"></i>
+                <i class="fas fa-moon" id="theme-icon"></i>
             </div>
 
             <button class="login-btn" id="loginBtn" title="Contul Meu" onclick="openLoginModal()">
@@ -366,25 +367,6 @@
         });
     })();
 
-    /* --- THEME TOGGLE --- */
-    (function() {
-        var themeBtn = document.getElementById('themeBtn');
-        if (!themeBtn) return;
-        
-        var saved = localStorage.getItem('intex-theme');
-        if (saved === 'dark') {
-            document.body.classList.add('dark-mode');
-            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        themeBtn.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            var isDark = document.body.classList.contains('dark-mode');
-            themeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            localStorage.setItem('intex-theme', isDark ? 'dark' : 'light');
-        });
-    })();
-
     /* --- SEARCH OVERLAY --- */
     function openSearch() {
         document.getElementById('search-overlay').classList.add('active');
@@ -413,63 +395,6 @@
         if (e.target === this) closeSearch();
     });
 
-    /* --- LOGIN / REGISTER MODAL --- */
-    function openLoginModal() {
-        document.getElementById('login-modal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeLoginModal() {
-        document.getElementById('login-modal').classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    function switchTab(tab) {
-        var tabs = document.querySelectorAll('.tab-btn');
-        var forms = document.querySelectorAll('.form-container');
-        
-        tabs.forEach(function(t) { t.classList.remove('active'); });
-        forms.forEach(function(f) { f.classList.remove('active'); });
-        
-        if (tab === 'login') {
-            tabs[0].classList.add('active');
-            document.getElementById('login-form').classList.add('active');
-        } else {
-            tabs[1].classList.add('active');
-            document.getElementById('register-form').classList.add('active');
-        }
-    }
-
-    document.getElementById('login-modal').addEventListener('click', function(e) {
-        if (e.target === this) closeLoginModal();
-    });
-
-    /* --- FORM SUBMISSIONS (demo) --- */
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Autentificare reusita (demo)!');
-        closeLoginModal();
-    });
-
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var pass = document.getElementById('register-password').value;
-        var confirm = document.getElementById('register-confirm-password').value;
-        if (pass !== confirm) {
-            alert('Parolele nu coincid!');
-            return;
-        }
-        alert('Inregistrare reusita (demo)!');
-        closeLoginModal();
-    });
-
-    /* --- ESC KEY to close modals --- */
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeSearch();
-            closeLoginModal();
-        }
-    });
 
     /* --- LANGUAGE (placeholder — implement with i18n.js) --- */
     function setLanguage(lang) {
@@ -481,6 +406,8 @@
     }
     </script>
     
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/notifications.js"></script>
     <script src="assets/main.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>

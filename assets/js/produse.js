@@ -121,6 +121,19 @@
         if (countEl) countEl.innerText = total;
     }
 
+    function showCartEmptyWarning() {
+        const lang = getLang();
+        const t = (window.translations && window.translations[lang]) ? window.translations[lang] : (window.translations && window.translations.ro) || {};
+        const message = t.cart_empty_warning || 'Adăugați produse în coș înainte de a finaliza comanda.';
+        if (window.showInfoI18n && t.cart_empty_warning) {
+            window.showInfoI18n('cart_empty_warning');
+        } else if (window.showInfo) {
+            window.showInfo(message);
+        } else {
+            alert(message);
+        }
+    }
+
     function addToCart(id) {
         const found = State.cart.find(i=>i.id===id);
         if (found) found.qty = (found.qty||0)+1;
@@ -225,6 +238,12 @@
 
         container.innerHTML = '';
         if (linesEl) linesEl.innerHTML = '';
+
+        const checkoutBtn = document.querySelector('.cart-checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.classList.toggle('disabled', !State.cart.length);
+            checkoutBtn.setAttribute('aria-disabled', !State.cart.length ? 'true' : 'false');
+        }
 
         if (!State.cart.length) {
             container.innerHTML = `<p class="cart-empty" data-i18n="cart_empty">Coșul este gol</p>`;
@@ -1031,6 +1050,15 @@
 
         const cartBtn = byId('cartBtn'); if (cartBtn) cartBtn.addEventListener('click', openCart);
         const closeCartBtns = document.querySelectorAll('#cart-overlay .close-btn'); closeCartBtns.forEach(b=>b.addEventListener('click', closeCart));
+        const cartCheckoutBtn = document.querySelector('.cart-checkout-btn');
+        if (cartCheckoutBtn) {
+            cartCheckoutBtn.addEventListener('click', (e) => {
+                if (!State.cart.length) {
+                    e.preventDefault();
+                    showCartEmptyWarning();
+                }
+            });
+        }
 
         window.addEventListener('languageChanged', (e) => {
             try {

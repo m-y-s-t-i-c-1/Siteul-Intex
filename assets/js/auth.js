@@ -506,12 +506,6 @@ class AuthManager {
             } catch (e) {
                 console.warn('[AUTH] Could not save redirect URL');
             }
-            
-            try {
-                sessionStorage.setItem('auth_redirect_url', window.location.href);
-            } catch (e) {
-                console.warn('[AUTH] Could not save redirect URL');
-            }
 
             return null;
         }
@@ -561,15 +555,16 @@ window.authGetRedirectUrl = () => window.authManager.getRedirectUrl();
         window.location.pathname.includes('/pagini/comenzi')
     );
     
-    if (isProtectedPage) {
+    function enforceAuth() {
         console.log('[AUTH] Protected page detected:', currentPage);
-        
+        window.authManager.requireAuth('../index.html', true);
+    }
+
+    if (isProtectedPage) {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                window.authManager.requireAuth('../index.html', true);
-            });
+            document.addEventListener('DOMContentLoaded', enforceAuth);
         } else {
-            window.authManager.requireAuth('../index.html', true);
+            setTimeout(enforceAuth, 0);
         }
     }
 })();

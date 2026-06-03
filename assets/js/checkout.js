@@ -22,10 +22,14 @@ function initCheckout() {
 function displayCheckoutItems() {
     const cart = JSON.parse(localStorage['intex_cart'] || '[]');
     const container = document.getElementById('checkout-items-container');
+    const checkoutButton = document.querySelector('.checkout-submit');
     
     if (!container) return;
     
     container.innerHTML = '';
+    if (checkoutButton) {
+        checkoutButton.disabled = cart.length === 0;
+    }
     
     if (cart.length === 0) {
         const emptyMsg = document.createElement('div');
@@ -120,6 +124,21 @@ function setupFormSubmit() {
 
 function submitOrder() {
     const form = document.getElementById('checkout-form');
+    const cart = JSON.parse(localStorage['intex_cart'] || '[]');
+    
+    if (!cart || cart.length === 0) {
+        const lang = getLang();
+        const t = (window.translations && window.translations[lang]) ? window.translations[lang] : (window.translations && window.translations.ro) || {};
+        const message = t.order_empty_warning || 'Coșul este gol. Adăugați produse înainte de a plasa comanda.';
+        if (window.showInfoI18n && t.order_empty_warning) {
+            window.showInfoI18n('order_empty_warning');
+        } else if (window.showInfo) {
+            window.showInfo(message);
+        } else {
+            alert(message);
+        }
+        return;
+    }
     
     if (!form.checkValidity()) {
         const lang = getLang();

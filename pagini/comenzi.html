@@ -70,12 +70,26 @@
 
     <main class="orders-section">
         <div class="orders-container">
-            <h1 data-i18n="orders_title">Comenzile Mele</h1>
-            <p class="orders-subtitle" data-i18n="orders_subtitle">Vizualizați și urmăriți statusul comenzilor dumneavoastră în timp real.</p>
+            <div class="orders-header">
+                <h1 data-i18n="orders_title">Comenzile Mele</h1>
+                <p data-i18n="orders_subtitle">Vizualizați și urmăriți statusul comenzilor dumneavoastră în timp real.</p>
+            </div>
 
+            <!-- NOUL LOADER PREMIUM -->
             <div id="orders-loading" class="orders-loading">
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <span data-i18n="loading_orders">Se încarcă detaliile...</span>
+                <div class="loading-animation">
+                    <div class="loading-spinner-outer"></div>
+                    <div class="loading-spinner-inner"></div>
+                    <i class="fas fa-truck-fast loading-icon"></i>
+                </div>
+                <div class="loading-text" data-i18n="loading_orders">Se încarcă comenzile...</div>
+                <div class="loading-bars">
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                </div>
             </div>
 
             <div id="orders-empty" class="orders-empty" style="display: none;">
@@ -85,8 +99,7 @@
                 <a href="produse.html" class="btn-main" data-i18n="browse_products">Vezi Produse</a>
             </div>
 
-            <div id="orders-list" class="orders-list" style="display: none;">
-            </div>
+            <div id="orders-list" class="orders-list" style="display: none;"></div>
             
             <div id="orders-pagination"></div>
         </div>

@@ -1,5 +1,5 @@
 (function () {
-    const STORAGE_KEY = 'intex_theme';
+    const STORAGE_KEY = 'intex-theme';
     const DARK_CLASS = 'dark-mode';
 
     function getSaved() {
