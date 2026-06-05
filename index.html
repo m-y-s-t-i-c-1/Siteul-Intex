@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-i18n="main_page_title">INTEX Premium Moldova</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,7 @@
     <div id="cursor-follower"></div>
 
     <nav id="mainNav">
-        <button class="hamburger-btn" id="hamburgerBtn">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Meniu">
             <span></span>
             <span></span>
             <span></span>
@@ -34,7 +34,7 @@
         </ul>
 
         <ul class="nav-menu mobile">
-            <li><a href="#" data-i18n="menu_home">Acasa</a></li>
+            <li class="menu-close"><button class="close-mobile" aria-label="Închide meniu">✕</button></li>            <li><a href="#" data-i18n="menu_home">Acasa</a></li>
             <li><a href="pagini/produse.html" data-i18n="menu_products">Produse</a></li>
             <li><a href="#despre" data-i18n="menu_about">Despre Noi</a></li>
             <li><a href="pagini/FAQ.html" data-i18n="menu_faq">FAQ</a></li>
@@ -44,23 +44,21 @@
         </ul>
 
         <div class="nav-controls">
-            <button class="search-btn" id="searchBtn" title="Cautare">
+            <button class="search-btn" id="searchBtn" title="Cautare" aria-label="Cautare">
                 <i class="fas fa-search"></i>
             </button>
             
             <div class="lang-switch">
                 <span class="lang-opt active" data-lang="ro" onclick="setLanguage('ro')">RO</span>
-                <span style="opacity: 0.3">|</span>
                 <span class="lang-opt" data-lang="ru" onclick="setLanguage('ru')">RU</span>
-                <span style="opacity: 0.3">|</span>
                 <span class="lang-opt" data-lang="en" onclick="setLanguage('en')">EN</span>
             </div>
 
-            <div class="theme-toggle" id="themeBtn" title="Tema intunecata">
+            <div class="theme-toggle" id="themeBtn" title="Tema intunecata" aria-label="Schimbă tema">
                 <i class="fas fa-moon" id="theme-icon"></i>
             </div>
 
-            <button class="login-btn" id="loginBtn" title="Contul Meu" onclick="openLoginModal()">
+            <button class="login-btn" id="loginBtn" title="Contul Meu" onclick="openLoginModal()" aria-label="Contul meu">
                 <i class="fas fa-user"></i>
             </button>
         </div>
@@ -79,9 +77,6 @@
         </div>
     </header>
 
-    <!-- ============================================================
-         ABOUT SECTION — Layout premium cu about-inner, stats, social
-         ============================================================ -->
     <section class="about-section" id="despre">
         <div class="about-inner">
             <div class="about-text">
@@ -90,7 +85,6 @@
                 <p class="reveal" data-i18n="about_p1">La Intex Moldova, nu livram doar produse, ci promisiunea unei experiente premium. Fiecare detaliu este gandit pentru a rezista testului timpului, oferindu-ti siguranta unui brand lider mondial, direct in curtea casei tale.</p>
                 <p class="reveal" data-i18n="about_p2">Credem ca relaxarea inseamna confort absolut si libertatea de a alege. De aceea, iti punem la dispozitie cea mai bogata gama de produse din regiune: de la sisteme complexe cu cadru metalic pentru intreaga familie, pana la solutii compacte si accesorii de ultima generatie. Indiferent de spatiul tau, avem solutia ideala pentru a-ti transforma vara intr-o vacanta continua.</p>
 
-                <!-- Stats -->
                 <div class="about-stats reveal">
                     <div class="stat-item">
                         <span class="stat-number" data-count="10">10+</span>
@@ -122,13 +116,9 @@
         </div>
     </section>
 
-    <!-- ============================================================
-         CONTACT SECTION — Card-uri premium: showroom, program, suport, CTA + harta
-         ============================================================ -->
     <section class="contact-section" id="contact">
         <div class="contact-container">
 
-            <!-- Header -->
             <div class="contact-header reveal">
                 <div class="contact-header-text">
                     <span class="section-label" data-i18n="contact_label">Contacte</span>
@@ -137,10 +127,8 @@
                 <p data-i18n="contact_desc">Suntem aici pentru tine. Viziteaza showroom-ul nostru sau contacteaza-ne direct — echipa Intex Moldova iti raspunde cu placere.</p>
             </div>
 
-            <!-- Card grid -->
             <div class="contact-cards reveal">
 
-                <!-- Card 1: Showroom & Sediu -->
                 <div class="contact-card">
                     <div class="contact-card-icon">
                         <i class="fas fa-map-marker-alt"></i>
@@ -151,7 +139,6 @@
                     </span>
                 </div>
 
-                <!-- Card 2: Program Showroom -->
                 <div class="contact-card hours">
                     <div class="contact-card-icon">
                         <i class="fas fa-clock"></i>
@@ -173,7 +160,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Suport Tehnic -->
                 <div class="contact-card">
                     <div class="contact-card-icon">
                         <i class="fas fa-headset"></i>
@@ -185,7 +171,6 @@
                     </span>
                 </div>
 
-                <!-- Card 4: CTA accent -->
                 <div class="contact-card cta" onclick="openLoginModal()">
                     <div class="contact-card-icon">
                         <i class="fas fa-comments"></i>
@@ -194,9 +179,8 @@
                     <span class="contact-card-value" data-i18n="cta_value">Solicită o<br>consultație gratuită</span>
                 </div>
 
-            </div><!-- /.contact-cards -->
+            </div>
 
-            <!-- Harta -->
             <div class="map-container reveal">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2721.059431468007!2d28.909538!3d46.999806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDbCsDU5JzU5LjMiTiAyOMKwNTQnMzQuMyJF!5e0!3m2!1sro!2s!4v1767444291941!5m2!1sro!2s" 
@@ -204,7 +188,7 @@
                 </iframe>
             </div>
 
-        </div><!-- /.contact-container -->
+        </div>
 
         <div class="footer-bottom">
             &copy; 2025 Intex Moldova. Toate drepturile rezervate.
@@ -223,7 +207,6 @@
         <div class="login-content">
             <button class="close-btn" onclick="closeLoginModal()" aria-label="Închide">&times;</button>
 
-            <!-- LEFT PANEL: branding -->
             <div class="login-panel-left">
                 <div class="lp-brand">INTEX<span>MOLDOVA</span></div>
 
@@ -251,7 +234,6 @@
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: forms -->
             <div class="login-panel-right">
 
                 <div class="login-tabs" id="loginTabsBar">
@@ -260,7 +242,6 @@
                     <button class="tab-btn" id="tabBtnRegister" onclick="switchTab('register')" data-i18n="register_title">Înregistrare</button>
                 </div>
 
-                <!-- LOGIN FORM -->
                 <div id="login-form" class="form-container active">
                     <h3 data-i18n="login_title">Bun venit înapoi</h3>
                     <p class="form-subtitle" data-i18n="login_subtitle">Introdu datele contului tău</p>
@@ -299,7 +280,6 @@
                     <p class="auth-terms"><span data-i18n="auth_terms_prefix">Prin autentificare, accepți</span> <a href="#">Termenii</a> și <a href="#">Confidențialitatea</a>.</p>
                 </div>
 
-                <!-- REGISTER FORM -->
                 <div id="register-form" class="form-container">
                     <h3 data-i18n="register_title">Creează cont</h3>
                     <p class="form-subtitle" data-i18n="register_subtitle">Înregistrare rapidă și gratuită</p>
@@ -350,15 +330,11 @@
                     </p>
                 </div>
 
-            </div><!-- /.login-panel-right -->
-        </div><!-- /.login-content -->
-    </div><!-- /#login-modal -->
+            </div>
+        </div>
+    </div>
 
-    <!-- ============================================================
-         VANILLA JS — No frameworks, no libraries (except Font Awesome)
-         ============================================================ -->
     <script>
-    /* --- SCROLL REVEAL --- */
     (function() {
         var reveals = document.querySelectorAll('.reveal');
         var observer = new IntersectionObserver(function(entries) {
@@ -372,11 +348,12 @@
         reveals.forEach(function(el) { observer.observe(el); });
     })();
 
-    /* --- CUSTOM CURSOR --- */
     (function() {
         var cursor = document.getElementById('cursor');
         var follower = document.getElementById('cursor-follower');
         if (!cursor || !follower || window.innerWidth < 1200) return;
+        
+        document.body.classList.add('cursor-ready');
         
         var mx = 0, my = 0, fx = 0, fy = 0;
         
@@ -396,7 +373,6 @@
         }
         animateFollower();
         
-        /* Hover effect on interactive elements */
         var hoverTargets = document.querySelectorAll('a, button, input, .social-link, .lang-opt, .theme-toggle');
         hoverTargets.forEach(function(el) {
             el.addEventListener('mouseenter', function() {
@@ -410,44 +386,7 @@
         });
     })();
 
-    /* --- NAVBAR SCROLL EFFECT --- */
-    (function() {
-        var nav = document.getElementById('mainNav');
-        if (!nav) return;
-        
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 80) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-    })();
-
-    /* --- HAMBURGER MENU --- */
-    (function() {
-        var btn = document.getElementById('hamburgerBtn');
-        var mobileMenu = document.querySelector('.nav-menu.mobile');
-        if (!btn || !mobileMenu) return;
-        
-        btn.addEventListener('click', function() {
-            btn.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-        });
-        
-        /* Close menu on link click */
-        mobileMenu.querySelectorAll('a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                btn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-    })();
-
-    /* --- SEARCH OVERLAY --- */
-    function openSearch() {
+    window.openSearch = function() {
         document.getElementById('search-overlay').classList.add('active');
         document.body.style.overflow = 'hidden';
         setTimeout(function() {
@@ -455,12 +394,12 @@
         }, 300);
     }
 
-    function closeSearch() {
+    window.closeSearch = function() {
         document.getElementById('search-overlay').classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    function performSearch(e) {
+    window.performSearch = function(e) {
         e.preventDefault();
         var q = document.getElementById('search-input').value.trim();
         if (q) {
@@ -474,9 +413,21 @@
         if (e.target === this) closeSearch();
     });
 
+    window.openLoginModal = function() {
+        document.getElementById('login-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
-    /* --- PASSWORD VISIBILITY TOGGLE --- */
-    function togglePwViz(inputId, btn) {
+    window.closeLoginModal = function() {
+        document.getElementById('login-modal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('login-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeLoginModal();
+    });
+
+    window.togglePwViz = function(inputId, btn) {
         var inp = document.getElementById(inputId);
         var icon = btn ? btn.querySelector('i') : null;
         if (!inp) return;
@@ -488,32 +439,56 @@
             if (icon) icon.className = 'fas fa-eye';
         }
     }
-    window.togglePwViz = togglePwViz;
 
-    /* --- TAB SLIDER SYNC (patches switchTab from main.js after load) --- */
-    window.addEventListener('load', function() {
-        var origSwitch = window.switchTab;
-        if (typeof origSwitch === 'function') {
-            window.switchTab = function(tab) {
-                origSwitch(tab);
-                var slider = document.getElementById('loginTabSlider');
-                var btnL = document.getElementById('tabBtnLogin');
-                var btnR = document.getElementById('tabBtnRegister');
-                if (slider) slider.classList.toggle('on-register', tab === 'register');
-                if (btnL) btnL.classList.toggle('active', tab === 'login');
-                if (btnR) btnR.classList.toggle('active', tab === 'register');
-            };
+    window.switchTab = function(tab) {
+        var loginForm = document.getElementById('login-form');
+        var registerForm = document.getElementById('register-form');
+        var tabBtnLogin = document.getElementById('tabBtnLogin');
+        var tabBtnRegister = document.getElementById('tabBtnRegister');
+        var slider = document.getElementById('loginTabSlider');
+        
+        if (tab === 'login') {
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            tabBtnLogin.classList.add('active');
+            tabBtnRegister.classList.remove('active');
+            if (slider) slider.classList.remove('on-register');
+        } else {
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+            tabBtnLogin.classList.remove('active');
+            tabBtnRegister.classList.add('active');
+            if (slider) slider.classList.add('on-register');
         }
+    }
+
+    window.setLanguage = function(lang) {
+        var opts = document.querySelectorAll('.lang-opt');
+        opts.forEach(function(o) { 
+            o.classList.remove('active');
+            if (o.getAttribute('data-lang') === lang) {
+                o.classList.add('active');
+            }
+        });
+        localStorage.setItem('intex-lang', lang);
+    }
+
+    document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Funcționalitate de autentificare - în dezvoltare');
     });
 
-    /* --- LANGUAGE (placeholder — implement with i18n.js) --- */
-    function setLanguage(lang) {
-        var opts = document.querySelectorAll('.lang-opt');
-        opts.forEach(function(o) { o.classList.remove('active'); });
-        event.target.classList.add('active');
-        localStorage.setItem('intex-lang', lang);
-        /* i18n translation logic goes here */
-    }
+    document.getElementById('registerForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var password = document.getElementById('register-password').value;
+        var confirm = document.getElementById('register-confirm-password').value;
+        if (password !== confirm) {
+            alert('Parolele nu coincid!');
+            return;
+        }
+        alert('Cont creat cu succes! Te poți autentifica acum.');
+        switchTab('login');
+    });
     </script>
     
     <script src="assets/js/auth.js"></script>

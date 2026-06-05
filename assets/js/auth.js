@@ -489,23 +489,39 @@ class AuthManager {
                 try {
                     if (window.showInfoI18n) {
                         window.showInfoI18n('auth_required');
+                        // also offer login modal shortly after
+                        setTimeout(() => { if (window.openLoginModal) window.openLoginModal(); }, 700);
                     } else if (window.showInfo) {
                         window.showInfo(message);
+                        setTimeout(() => { if (window.openLoginModal) window.openLoginModal(); }, 700);
                     } else if (window.openLoginModal) {
+                        // directly open login modal
                         window.openLoginModal();
                     } else {
                         console.info('[AUTH] ' + message);
+                        // as last resort, redirect to provided redirectUrl after a brief delay
+                        setTimeout(() => { try { window.location.href = redirectUrl; } catch(e){} }, 800);
                     }
                 } catch (e) {
                     console.warn('[AUTH] Could not show styled auth message', e);
                 }
             }
             
+
             try {
                 sessionStorage.setItem('auth_redirect_url', window.location.href);
             } catch (e) {
                 console.warn('[AUTH] Could not save redirect URL');
             }
+
+            // If the page is protected and we couldn't show a modal, ensure user can't stay on it
+            // (safe fallback) — redirect after short delay to avoid abrupt navigation.
+            setTimeout(() => {
+                const stillOnProtected = window.location.href.includes('comenzi') || window.location.href.includes('checkout');
+                if (stillOnProtected && !window.authManager.isLoggedIn()) {
+                    try { window.location.href = redirectUrl; } catch (e) { /* ignore */ }
+                }
+            }, 1200);
 
             return null;
         }

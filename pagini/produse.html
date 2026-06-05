@@ -22,7 +22,7 @@
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
-    <nav>
+    <nav id="mainNav">
         <button class="hamburger-btn" id="hamburgerBtn">
             <span></span>
             <span></span>
@@ -131,7 +131,6 @@
 
             <div class="contact-cards">
 
-                <!-- Adresa -->
                 <div class="contact-card">
                     <div class="contact-card-icon">
                         <i class="fas fa-map-marker-alt"></i>
@@ -140,7 +139,6 @@
                     <span class="contact-card-value">ул. Заводская 201/12,<br>Кишинев</span>
                 </div>
 
-                <!-- Telefon -->
                 <div class="contact-card">
                     <div class="contact-card-icon">
                         <i class="fas fa-phone-alt"></i>
@@ -151,7 +149,6 @@
                     </span>
                 </div>
 
-                <!-- Email -->
                 <div class="contact-card">
                     <div class="contact-card-icon">
                         <i class="fas fa-envelope"></i>
@@ -162,7 +159,6 @@
                     </span>
                 </div>
 
-                <!-- Program -->
                 <div class="contact-card hours">
                     <div class="contact-card-icon">
                         <i class="fas fa-clock"></i>
@@ -223,7 +219,6 @@
                 <div id="cart-items-container" class="cart-items-container"></div>
             </div>
 
-            <!-- RIGHT: Summary panel -->
             <div class="cart-right">
                 <div class="cart-right-header">
                     <div class="cart-right-header-top">
@@ -233,7 +228,6 @@
                     </div>
                 </div>
 
-                <!-- Item totals (populated by JS) -->
                 <div class="cart-lines" id="cart-lines"></div>
 
                 <div class="cart-summary-divider"></div>
@@ -321,12 +315,10 @@
                 <div class="product-modal-image">
                     <img id="modal-product-image" src="" alt="Produs" style="width: 100%; height: auto;">
                     
-                    <!-- Container pentru model 3D - se ascunde/arata cu display -->
                     <div id="model3d-container" class="model3d-container hidden">
                         <div class="model3d-viewer" id="model3d-viewer"></div>
                     </div>
                     
-                    <!-- Butonul de comutare 2D/3D - MEREU VIZIBIL pe imagine -->
                     <div class="model3d-controls">
                         <button class="model3d-btn" id="toggle-2d-3d" title="Comută între imagine 2D și model 3D">
                             <i class="fas fa-cube"></i> <span data-i18n="view_3d">Vezi în 3D</span>
@@ -361,24 +353,50 @@
         </div>
     </div>
     <script>
-        document.querySelectorAll('.product-card, .category-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-  });
-});
+        (function() {
+        var cursor = document.getElementById('cursor');
+        var follower = document.getElementById('cursor-follower');
+        if (!cursor || !follower || window.innerWidth < 1200) return;
+        
+        document.body.classList.add('cursor-ready');
+        
+        var mx = 0, my = 0, fx = 0, fy = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX;
+            my = e.clientY;
+            cursor.style.left = mx - 4 + 'px';
+            cursor.style.top = my - 4 + 'px';
+        });
+        
+        function animateFollower() {
+            fx += (mx - fx) * 0.12;
+            fy += (my - fy) * 0.12;
+            follower.style.left = fx - 20 + 'px';
+            follower.style.top = fy - 20 + 'px';
+            requestAnimationFrame(animateFollower);
+        }
+        animateFollower();
+        
+        var hoverTargets = document.querySelectorAll('a, button, input, .social-link, .lang-opt, .theme-toggle');
+        hoverTargets.forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                cursor.classList.add('hovering');
+                follower.classList.add('hovering');
+            });
+            el.addEventListener('mouseleave', function() {
+                cursor.classList.remove('hovering');
+                follower.classList.remove('hovering');
+            });
+        });
+    })();
     </script>
 
-    <!-- Three.js Library pentru modele 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="../assets/js/OrbitControls.js"></script>
     <script src="../assets/js/GLTFLoader.js"></script>
-    
-    <!-- 3D Models Management -->
     <script src="../assets/js/3d-models.js"></script>
-    <script src="../assets/js/model3d-viewer.js"></script>
-    
+    <script src="../assets/js/model3d-viewer.js"></script
     <script src="../assets/js/notifications.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/main.js"></script>
@@ -386,8 +404,6 @@
     <script src="../assets/js/descrieri_produse.js"></script>
     <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/produse.js"></script>
-    
-    <!-- 3D Integration (trebuie la final după produse.js) -->
     <script src="../assets/js/produse-3d-integration.js"></script>
 </body>
 

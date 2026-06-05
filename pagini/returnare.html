@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="return_page_title">Termeni și Condiții | INTEX Moldova</title>
     
-    <!-- Awwwards Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -15,16 +14,58 @@
     <link rel="stylesheet" href="../assets/main.css">
     <link rel="stylesheet" href="../assets/css/returnare.css">
     <link rel="stylesheet" href="../assets/css/notifications.css"> 
+    <style>
+      body.returnare-page { cursor: none; }
+      body.returnare-page .noise-overlay { pointer-events: none; }
+      body.returnare-page #cursor,
+      body.returnare-page #cursor-follower {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 99999;
+        transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%);
+        opacity: 1 !important;
+        will-change: transform, opacity;
+      }
+      body.returnare-page #cursor {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #00d4e8;
+        box-shadow: 0 0 8px rgba(0, 212, 232, 0.9), 0 0 16px rgba(0, 212, 232, 0.4);
+        transition: opacity 120ms linear, transform 80ms linear, background 0.2s ease;
+      }
+      body.returnare-page #cursor-follower {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(0, 212, 232, 0.7);
+        background: rgba(0, 212, 232, 0.04);
+        box-shadow: 0 0 12px rgba(0, 212, 232, 0.15), inset 0 0 8px rgba(0, 212, 232, 0.05);
+        transition: transform 160ms var(--ease-out-expo), opacity 160ms var(--ease-out-expo), border-color 0.25s ease, box-shadow 0.25s ease;
+      }
+      body.returnare-page #cursor-follower.hovering {
+        transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%) scale(1.6);
+        opacity: 0.7;
+      }
+      body.returnare-page #cursor.hovering {
+        transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%) scale(0.5);
+        opacity: 0.6;
+      }
+      body.returnare-page .no-custom-cursor #cursor,
+      body.returnare-page .no-custom-cursor #cursor-follower { display: none !important; }
+      body.returnare-page .no-custom-cursor { cursor: auto !important; }
+    </style>
 </head>
-<body class="dark-mode"> <!-- Force dark mode for Awwwards style -->
+<body class="dark-mode returnare-page">
 
-    <!-- Awwwards Elements -->
     <div class="noise-overlay"></div>
     <div class="scroll-progress" id="scrollProgress"></div>
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
-    <nav>
+    <nav id="mainNav">
         <button class="hamburger-btn" id="hamburgerBtn">
             <span></span><span></span><span></span>
         </button>
@@ -62,7 +103,6 @@
                 <span class="lang-opt" data-lang="en" onclick="setLanguage('en')">EN</span>
             </div>
 
-            <!-- Am restabilit butonul de theme -->
             <div class="theme-toggle" id="themeBtn">
                 <i class="fas fa-moon"></i>
             </div>
@@ -71,7 +111,6 @@
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
     <header class="page-header policy-header">
         <div class="header-content">
             <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; padding: 8px 16px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); backdrop-filter: blur(8px);">
@@ -89,7 +128,6 @@
         </div>
     </header>
 
-    <!-- ===== MARQUEE ===== -->
     <div style="padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); overflow: hidden; background: #050505;">
         <div class="marquee-track">
             <span style="display: flex; align-items: center; gap: 32px; padding: 0 16px;">
@@ -117,11 +155,9 @@
         </div>
     </div>
 
-    <!-- ===== POLICY CONTENT ===== -->
     <section class="policy-section">
         <div class="policy-container">
             
-            <!-- Intro Box -->
             <div class="policy-intro">
                 <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #FF4D00; display: block; margin-bottom: 12px;">INTRODUCERE</span>
                 <h2 data-i18n="terms_intro_title">INTRODUCERE. TERMENI ȘI CONDIȚII DE UTILIZARE</h2>
@@ -205,7 +241,6 @@
                     </ul>
                 </article>
 
-                <!-- ACEASTA ESTE SECȚIUNEA COMPLETĂ 9 RESTABILITĂ -->
                 <article class="policy-card policy-card-full" data-anim="section">
                     <span class="policy-card-number">09</span>
                     <h3 data-i18n="terms_refund_title">POLITICA DE RAMBURSĂRI ȘI RETURNĂRI</h3>
@@ -256,7 +291,6 @@
         </div>
     </section>
 
-    <!-- ===== CONTACT ===== -->
     <section class="contact-section" id="contact">
         <div class="contact-container">
 
@@ -386,85 +420,46 @@
         </div>
     </div>
 
-    <!-- Awwwards Premium JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-
     <script>
-        // === LENIS SMOOTH SCROLL ===
-        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
-
-        // === SCROLL PROGRESS BAR ===
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollTop / docHeight) * 100;
-            document.getElementById('scrollProgress').style.width = progress + '%';
+        (function() {
+        var cursor = document.getElementById('cursor');
+        var follower = document.getElementById('cursor-follower');
+        if (!cursor || !follower || window.innerWidth < 1200) return;
+        
+        document.body.classList.add('cursor-ready');
+        
+        var mx = 0, my = 0, fx = 0, fy = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX;
+            my = e.clientY;
+            cursor.style.left = mx - 4 + 'px';
+            cursor.style.top = my - 4 + 'px';
         });
-
-        // === CUSTOM CURSOR ===
-        const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-        let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            cursor.style.left = mouseX - 4 + 'px';
-            cursor.style.top = mouseY - 4 + 'px';
-        });
-
+        
         function animateFollower() {
-            followerX += (mouseX - followerX) * 0.15;
-            followerY += (mouseY - followerY) * 0.15;
-            follower.style.left = followerX - 20 + 'px';
-            follower.style.top = followerY - 20 + 'px';
+            fx += (mx - fx) * 0.12;
+            fy += (my - fy) * 0.12;
+            follower.style.left = fx - 20 + 'px';
+            follower.style.top = fy - 20 + 'px';
             requestAnimationFrame(animateFollower);
         }
         animateFollower();
-
-        const hoverables = document.querySelectorAll('a, button, .contact-card, .policy-card');
-        hoverables.forEach(el => {
-            el.addEventListener('mouseenter', () => follower.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => follower.classList.remove('hovering'));
-        });
-
-        // === SPOTLIGHT EFFECT ON CARDS ===
-        document.querySelectorAll('.policy-card, .policy-container').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
-                card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+        
+        var hoverTargets = document.querySelectorAll('a, button, input, .social-link, .lang-opt, .theme-toggle');
+        hoverTargets.forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                cursor.classList.add('hovering');
+                follower.classList.add('hovering');
+            });
+            el.addEventListener('mouseleave', function() {
+                cursor.classList.remove('hovering');
+                follower.classList.remove('hovering');
             });
         });
-
-        // === GSAP SCROLL ANIMATIONS ===
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Animate Policy Cards
-        document.querySelectorAll('.policy-card').forEach((card, i) => {
-            gsap.from(card, {
-                y: 40, opacity: 0, duration: 0.8, delay: i * 0.05, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%' }
-            });
-        });
-
-        // Animate Contact Cards
-        document.querySelectorAll('.contact-card').forEach((card, i) => {
-            gsap.from(card, {
-                y: 40, opacity: 0, duration: 0.8, delay: i * 0.08, ease: 'power3.out',
-                scrollTrigger: { trigger: '.contact-cards', start: 'top 80%' }
-            });
-        });
-
-        // Animate Big Numbers Parallax
-        document.querySelectorAll('.policy-card-number').forEach(num => {
-            gsap.to(num, {
-                y: 30, scrollTrigger: { trigger: num.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 }
-            });
-        });
+    })();
     </script>
 
     <script src="../assets/js/auth.js"></script>

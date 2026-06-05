@@ -1,3 +1,4 @@
+// ======================== TRADUCERI (COMPLETE) ========================
 const translations = {
     ro: {
         main_page_title: "INTEX Moldova - Piscine și Accesorii",
@@ -206,7 +207,7 @@ const translations = {
         refund_cases_delivery: "Livrarea este imposibilă sau nu a fost efectuată în limitele termenului maxim / nu a fost efectuată în termen de 30 (treizeci) zile din data confirmării Operațiunii de plată.",
         refund_obligation: "\"Zova Grup\" SRL este obligată să inițieze Revocarea Operațiunii de plată/Tranzacției respective. Rambursarea are loc doar la cardul cu care s-a efectuat tranzacția online.",
         return_conditions_list_header: "Se accepta returnarea produselor dacă sunt îndeplinite următoarele condiții:",
-        return_condition_1: "Nu depășesc termenul de 14 de zile de la data primirii",
+        return_condition_1: "Nu depășesc termenul de 14 zile de la data primirii",
         return_condition_2: "A fost păstrat ambalajul",
         return_condition_3: "Marfa a fost cumpărată de la Zova Grup SRL",
         return_condition_4: "Nu reprezintă produse care au fost aduse la comandă",
@@ -223,7 +224,6 @@ const translations = {
         produse_page_title: "Produse INTEX | Catalog Complet",
         social_facebook: "Urmărește-ne pe Facebook",
         social_tiktok: "Urmărește-ne pe TikTok",
-        /* ── Chei noi About & Contact ── */
         about_label: "Despre noi",
         stat_years: "Ani\nExperiență",
         stat_products: "Produse\nDisponibile",
@@ -255,7 +255,7 @@ const translations = {
         auth_registration_auto: 'Înregistrare reușită! Se autentifică...',
         auth_welcome: 'Bine ați venit, {name}!',
         auth_welcome_title: 'Autentificare automată',
-        orders_page_title: "Comenzile Mele | INTEX Moldova", 
+        orders_page_title: "Comenzile Mele | INTEX Moldova",
         orders_title: "Comenzile Mele",
         orders_subtitle: "Vizualizați și urmăriți toate comenzile dumneavoastră",
         loading_orders: "Se încarcă comenzile...",
@@ -266,6 +266,10 @@ const translations = {
         order_cancelled: "Comanda a fost anulată cu succes",
         items_added_to_cart: "Produsele au fost adăugate în coș",
         my_orders: "Comenzile mele",
+        view_3d: "Vezi în 3D",
+        view_2d: "Vezi în 2D",
+        quantity_label: "Cantitate:",
+        category_label: "Categorie",
         logout: "Deconectare"
     },
     ru: {
@@ -426,7 +430,7 @@ const translations = {
         terms_intro_title: "ВВЕДЕНИЕ. УСЛОВИЯ И ПОЛОЖЕНИЯ ИСПОЛЬЗОВАНИЯ",
         terms_data_p1: "\"Zova Grup\" SRL обрабатывает персональные данные в соответствии с Законом № 133 от 08.07.2011. Используемые данные включают: IP-адрес, имя, фамилию, телефон, адрес электронной почты, информацию о доставке и банковские реквизиты.",
         terms_data_p2: "Цели обработки данных: Заключение и управление отношениями с клиентами, найм, статистический анализ, политика cookies, персональная реклама и определение победителя в акциях.",
-        terms_data_p3: "Доступ или передача информации может быть предоставлены: Сотрудникам компании, поставщикам услуг платежей/банков, поставщикам услуг исследования рынка/маркетинга и государственным учреждениям по запросу в соответствии с законодательством.",
+        terms_data_p3: "Доступ или передача информации могут быть предоставлены: Сотрудникам компании, поставщикам услуг платежей/банков, поставщикам услуг исследования рынка/маркетинга и государственным учреждениям по запросу в соответствии с законодательством.",
         terms_cookies_p1: "Продавец имеет право использовать метод \"cookies\" для сбора определенной информации о клиентах и отслеживания посещений нашего сайта, улучшая идентификацию пользователей.",
         terms_purchase_process_p1: "Для упрощения отслеживания мы добавили явный раздел (№ 5) для процесса покупки перед разделом \"Как покупать?\"",
         terms_purchase_p1: "На странице нужного продукта выберите количество и тип. Нажмите на 'ДОБАВИТЬ В КОРЗИНУ'. Перейдите в 'КОРЗИНУ ПОКУПОК' и продолжайте заказ, нажав кнопку 'ЗАКАЗАТЬ'.",
@@ -475,7 +479,6 @@ const translations = {
         produse_page_title: "Товары INTEX | Полный каталог",
         social_facebook: "Следите за нами в Facebook",
         social_tiktok: "Следите за нами в TikTok",
-        /* ── Новые ключи About & Contact ── */
         about_label: "О нас",
         stat_years: "Лет\nОпыта",
         stat_products: "Товаров\nДоступно",
@@ -518,6 +521,10 @@ const translations = {
         order_cancelled: "Заказ успешно отменён",
         items_added_to_cart: "Товары добавлены в корзину",
         my_orders: "Мои заказы",
+        view_3d: "Посмотреть в 3D",
+        view_2d: "Посмотреть 2D",
+        quantity_label: "Количество:",
+        category_label: "Категория",
         logout: "Выйти"
     },
     en: {
@@ -727,7 +734,6 @@ const translations = {
         produse_page_title: "INTEX Products | Complete Catalog",
         social_facebook: "Follow us on Facebook",
         social_tiktok: "Follow us on TikTok",
-        /* ── New About & Contact keys ── */
         about_label: "About us",
         stat_years: "Years\nExperience",
         stat_products: "Products\nAvailable",
@@ -770,12 +776,15 @@ const translations = {
         order_cancelled: "Order cancelled successfully",
         items_added_to_cart: "Items added to cart",
         my_orders: "My Orders",
+        view_3d: "View in 3D",
+        view_2d: "View in 2D",
+        quantity_label: "Quantity:",
+        category_label: "Category",
         logout: "Logout"
     }
 };
 
-// Ensure all languages contain the same set of keys.
-// If a translation is missing for `ru` or `en`, fill it from `ro` as a safe fallback.
+// Asigură completarea cheilor lipsă pentru RU și EN
 const baseKeys = Object.keys(translations.ro || {});
 ["ru","en"].forEach(lang => {
     translations[lang] = translations[lang] || {};
@@ -794,169 +803,105 @@ Object.keys(translations).forEach(lang => {
     };
 });
 
-// Global translation manager
+// ======================== MANAGER TRADUCERI ========================
 const TranslationManager = {
     currentLanguage: localStorage.getItem('intex_language') || 'ro',
     
-    setLanguage: function(lang) {
+    setLanguage(lang) {
         if (!window.translations[lang]) lang = 'ro';
         this.currentLanguage = lang;
         localStorage.setItem('intex_language', lang);
         this.applyTranslations();
         
-        // Update language buttons
         document.querySelectorAll('.lang-opt').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
         });
         
-        // Dispatch global event for other pages
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
     },
     
-    getText: function(key) {
-        if (window.translations[this.currentLanguage] && window.translations[this.currentLanguage][key]) {
+    getText(key) {
+        if (window.translations[this.currentLanguage]?.[key]) {
             return window.translations[this.currentLanguage][key];
         }
-        if (window.translations['ro'] && window.translations['ro'][key]) {
-            return window.translations['ro'][key];
-        }
-        return key;
+        return window.translations.ro?.[key] || key;
     },
     
-    applyTranslations: function() {
-        document.querySelectorAll('[data-i18n]').forEach(element => {
-            const key = element.getAttribute('data-i18n');
+    applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
             const text = this.getText(key);
-            element.textContent = text;
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                if (el.placeholder !== undefined) el.placeholder = text;
+                else el.textContent = text;
+            } else {
+                el.textContent = text;
+            }
+        });
+        
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (el.placeholder !== undefined) el.placeholder = this.getText(key);
         });
     }
 };
 
-// Make it global
-window.setLanguage = function(lang) {
-    TranslationManager.setLanguage(lang);
-};
+window.setLanguage = (lang) => TranslationManager.setLanguage(lang);
 
-// Initialize translations on page load
-document.addEventListener('DOMContentLoaded', function() {
-    TranslationManager.currentLanguage = localStorage.getItem('intex_language') || 'ro';
-    TranslationManager.applyTranslations();
-    
-    // Update active language button
-    document.querySelectorAll('.lang-opt').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-lang') === TranslationManager.currentLanguage);
-    });
-    
-    // Listen for language changes from other pages
-    window.addEventListener('languageChanged', function(e) {
-        TranslationManager.currentLanguage = e.detail.language;
-        TranslationManager.applyTranslations();
-    });
-    
-    // Listen to localStorage changes (cross-tab communication)
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'intex_language') {
-            TranslationManager.setLanguage(e.newValue || 'ro');
-        }
-    });
-});
-
+// ======================== DOM CACHE ========================
 const DOM = {
     _cache: {},
-    
-    get(id) {
-        if (!this._cache[id]) {
-            this._cache[id] = document.getElementById(id);
-        }
-        return this._cache[id];
-    },
-    
-    query(selector) {
-        return document.querySelector(selector);
-    },
-    
-    queryAll(selector) {
-        return document.querySelectorAll(selector);
-    },
-    
-    reset() {
-        this._cache = {};
-    }
+    get(id) { return this._cache[id] || (this._cache[id] = document.getElementById(id)); },
+    query(sel) { return document.querySelector(sel); },
+    queryAll(sel) { return document.querySelectorAll(sel); },
+    reset() { this._cache = {}; }
 };
 
-let searchOverlay = null;
-let searchInput = null;
-let langOptions = null;
-
-function initializeDOMElements() {
-    searchOverlay = DOM.get('search-overlay');
-    searchInput = DOM.get('search-input');
-    langOptions = DOM.queryAll('.lang-opt');
-    
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-        if (!searchOverlay) console.warn('[INIT] #search-overlay not found in DOM');
-        if (!searchInput) console.warn('[INIT] #search-input not found in DOM');
-        if (!langOptions.length) console.warn('[INIT] .lang-opt elements not found in DOM');
-    }
-}
-
+// ======================== FUNCȚII AJUTĂTOARE ========================
 function getTranslation(key, params = {}) {
     const lang = window.currentLang || localStorage.getItem('intex_language') || 'ro';
-    const translations = window.translations && window.translations[lang];
-    
-    if (!translations || !translations[key]) {
-        console.warn(`[TRANSLATION] Missing key: ${key} for language: ${lang}`);
-        return key;
-    }
-    
-    let text = translations[key];
-    
+    const t = window.translations[lang];
+    if (!t || !t[key]) return key;
+    let text = t[key];
     Object.keys(params).forEach(k => {
         text = text.replace(new RegExp(`{${k}}`, 'g'), params[k]);
     });
-    
     return text;
 }
-
 window.getTranslation = getTranslation;
 
+function escapeHtml(str) {
+    if (!str) return '';
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return String(str).replace(/[&<>"']/g, m => map[m]);
+}
+
+// ======================== MODAL CAUTARE ========================
 function openSearch() {
-    if (!searchOverlay) {
-        console.error('[SEARCH] Search overlay not initialized. Call initializeDOMElements() first.');
-        return;
-    }
-    searchOverlay.style.display = 'flex';
-    setTimeout(() => {
-        if (searchInput) searchInput.focus();
-    }, 100);
+    const overlay = DOM.get('search-overlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => DOM.get('search-input')?.focus(), 100);
 }
 
 function closeSearch() {
-    if (!searchOverlay) return;
-    searchOverlay.style.display = 'none';
-    if (searchInput) searchInput.value = '';
+    const overlay = DOM.get('search-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    const input = DOM.get('search-input');
+    if (input) input.value = '';
 }
 
 function performSearch(event) {
-    if (event) {
-        event.preventDefault();
-    }
-    
-    if (!searchInput) {
-        console.error('[SEARCH] Search input not initialized');
+    if (event) event.preventDefault();
+    const query = DOM.get('search-input')?.value?.trim();
+    if (!query) {
+        window.showWarningI18n?.('search_empty_alert') || alert(getTranslation('search_empty_alert'));
         return;
     }
-    
-    const query = searchInput.value ? searchInput.value.trim() : '';
-    
-    if (query.length === 0) {
-        showWarningMessage('search_empty_alert');
-        return;
-    }
-    
-    const isOnProductsPage = window.location.pathname.includes('produse.html');
-    
-    if (isOnProductsPage && typeof window.productsSearch === 'function') {
+    if (window.location.pathname.includes('produse.html') && typeof window.productsSearch === 'function') {
         window.productsSearch(query);
         closeSearch();
     } else {
@@ -964,25 +909,13 @@ function performSearch(event) {
     }
 }
 
-function showWarningMessage(key) {
-    const lang = localStorage.getItem('intex_language') || 'ro';
-    const translations = window.translations && window.translations[lang];
-    const message = translations && translations[key] ? translations[key] : 'Please enter a search term';
-    
-    if (window.showWarningI18n) {
-        window.showWarningI18n(key);
-    } else if (window.alert) {
-        alert(message);
-    }
-}
-
+// ======================== MODAL AUTENTIFICARE ========================
 function openLoginModal() {
     const modal = DOM.get('login-modal');
     if (!modal) return;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    // ensure default tab is login
-    try { switchTab('login'); } catch (e) {}
+    try { switchTab('login'); } catch(e) {}
 }
 
 function closeLoginModal() {
@@ -992,66 +925,32 @@ function closeLoginModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Close login modal when clicking on overlay (outside the content)
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('login-modal');
-    if (!modal) return;
-    if (!modal.classList.contains('active')) return;
-    if (e.target === modal) {
-        closeLoginModal();
-    }
+document.addEventListener('click', (e) => {
+    const modal = DOM.get('login-modal');
+    if (modal?.classList.contains('active') && e.target === modal) closeLoginModal();
 });
 
 function switchTab(tab) {
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach((btn, index) => {
-        const isActive = (index === 0 && tab === 'login') || (index === 1 && tab === 'register');
-        btn.classList.toggle('active', isActive);
+    document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', (idx === 0 && tab === 'login') || (idx === 1 && tab === 'register'));
     });
-    
-    document.querySelectorAll('.form-container').forEach(container => {
-        container.classList.remove('active');
-    });
-    
-    const activeForm = DOM.get(tab + '-form');
-    if (activeForm) {
-        activeForm.classList.add('active');
-    }
+    document.querySelectorAll('.form-container').forEach(container => container.classList.remove('active'));
+    DOM.get(`${tab}-form`)?.classList.add('active');
 }
 
 function handleLogin(event) {
     event.preventDefault();
-    
-    const emailInput = DOM.get('login-email');
-    const passwordInput = DOM.get('login-password');
-    
-    if (!emailInput || !passwordInput) {
-        console.error('[AUTH] Login form elements not found');
-        return;
-    }
-    
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    
-    if (!email || !password) {
-        showAuthError('fill_required');
-        return;
-    }
-    
-    if (!window.authManager) {
-        console.error('[AUTH] authManager not available');
-        showAuthError('auth_not_initialized');
-        return;
-    }
+    const email = DOM.get('login-email')?.value.trim();
+    const password = DOM.get('login-password')?.value;
+    if (!email || !password) return showAuthError('fill_required');
+    if (!window.authManager) return showAuthError('auth_not_initialized');
     
     const result = window.authManager.login(email, password);
-    
     if (result.success) {
         showAuthSuccess(result.message || 'auth_login_success');
         closeLoginModal();
         updateLoginState(true, result.user);
-        const form = document.getElementById('loginForm');
-        if (form) form.reset();
+        document.getElementById('loginForm')?.reset();
     } else {
         showAuthError(result.message || 'auth_login_invalid_credentials');
     }
@@ -1059,43 +958,26 @@ function handleLogin(event) {
 
 function handleRegister(event) {
     event.preventDefault();
-    
-    const nameInput = DOM.get('register-name');
-    const emailInput = DOM.get('register-email');
-    const phoneInput = DOM.get('register-phone');
-    const passwordInput = DOM.get('register-password');
-    const confirmInput = DOM.get('register-confirm-password');
-    
-    if (!window.authManager) {
-        showAuthError('auth_not_initialized');
-        return;
-    }
+    if (!window.authManager) return showAuthError('auth_not_initialized');
     
     const result = window.authManager.register({
-        name: nameInput ? nameInput.value.trim() : '',
-        email: emailInput ? emailInput.value.trim() : '',
-        phone: phoneInput ? phoneInput.value.trim() : '',
-        password: passwordInput ? passwordInput.value : '',
-        confirmPassword: confirmInput ? confirmInput.value : ''
+        name: DOM.get('register-name')?.value.trim(),
+        email: DOM.get('register-email')?.value.trim(),
+        phone: DOM.get('register-phone')?.value.trim(),
+        password: DOM.get('register-password')?.value,
+        confirmPassword: DOM.get('register-confirm-password')?.value
     });
     
     if (result.success) {
         showAuthSuccess('auth_registration_auto');
-        const registeredName = nameInput ? nameInput.value.trim() : '';
-        const registeredEmail = emailInput ? emailInput.value.trim() : '';
-        const registeredPassword = passwordInput ? passwordInput.value : '';
-        const form = document.getElementById('registerForm');
-        if (form) form.reset();
-        
+        const email = DOM.get('register-email')?.value.trim();
+        const pwd = DOM.get('register-password')?.value;
+        document.getElementById('registerForm')?.reset();
         setTimeout(() => {
-            const loginResult = window.authManager.login(
-                registeredEmail,
-                registeredPassword
-            );
+            const loginResult = window.authManager.login(email, pwd);
             if (loginResult.success) {
                 closeLoginModal();
                 updateLoginState(true, loginResult.user);
-                showAuthSuccess('auth_welcome', { name: registeredName });
             }
         }, 500);
     } else {
@@ -1104,39 +986,27 @@ function handleRegister(event) {
 }
 
 function showAuthSuccess(key, params = {}) {
-    if (window.showSuccessI18n) {
-        window.showSuccessI18n(key, params);
-    } else {
-        console.log('[AUTH SUCCESS]', key, params);
-    }
+    window.showSuccessI18n?.(key, params) || console.log('[AUTH SUCCESS]', key, params);
 }
 
 function showAuthError(key) {
-    if (window.showErrorI18n) {
-        window.showErrorI18n(key);
-    } else {
-        console.error('[AUTH ERROR]', key);
-    }
+    window.showErrorI18n?.(key) || console.error('[AUTH ERROR]', key);
 }
 
 function updateLoginState(isLoggedIn, user = null) {
-    const loginBtn = DOM.get('loginBtn');
-    if (!loginBtn) return;
-    
+    const btn = DOM.get('loginBtn');
+    if (!btn) return;
     if (isLoggedIn && user) {
-        const avatarUrl = user.avatar || 'https://www.gravatar.com/avatar/default?d=identicon&s=32';
-        const userName = typeof user === 'object' ? user.name : user;
-        
-        loginBtn.innerHTML = `<img src="${escapeHtml(avatarUrl)}" alt="${escapeHtml(userName)}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">`;
-        loginBtn.title = `Conectat ca ${userName}`;
-        loginBtn.style.cssText = 'cursor: pointer; border: none; background: none; padding: 0;';
-        
-        loginBtn.onclick = () => showUserMenu(user);
+        const avatar = user.avatar || 'https://www.gravatar.com/avatar/default?d=identicon&s=32';
+        const name = user.name || 'User';
+        btn.innerHTML = `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">`;
+        btn.title = `Conectat ca ${name}`;
+        btn.style.cssText = 'cursor:pointer;border:none;background:none;padding:0;';
+        btn.onclick = () => showUserMenu(user);
     } else {
-        loginBtn.innerHTML = '<i class="fas fa-user"></i>';
-        loginBtn.title = 'Contul Meu';
-        loginBtn.style.cursor = 'pointer';
-        loginBtn.onclick = openLoginModal;
+        btn.innerHTML = '<i class="fas fa-user"></i>';
+        btn.title = 'Contul Meu';
+        btn.onclick = openLoginModal;
     }
 }
 
@@ -1144,23 +1014,19 @@ function showUserMenu(user) {
     const existing = document.querySelector('.user-menu');
     if (existing) existing.remove();
     
-    const loginBtn = DOM.get('loginBtn');
-    if (!loginBtn) return;
-    
-    const userName = typeof user === 'object' ? user.name : '';
-    const userEmail = typeof user === 'object' ? user.email : '';
+    const btn = DOM.get('loginBtn');
+    if (!btn) return;
     
     const menu = document.createElement('div');
     menu.className = 'user-menu';
-    
     menu.innerHTML = `
-        <div class="user-menu-arrow" aria-hidden="true"></div>
+        <div class="user-menu-arrow"></div>
         <div class="user-menu-body">
             <div class="user-menu-header">
-                <img src="${escapeHtml(user.avatar || 'https://www.gravatar.com/avatar/default?d=identicon&s=64')}" alt="avatar" class="user-menu-avatar">
+                <img src="${escapeHtml(user.avatar || 'https://www.gravatar.com/avatar/default?d=identicon&s=64')}" class="user-menu-avatar">
                 <div class="user-menu-info">
-                    <div class="user-menu-name">${escapeHtml(userName)}</div>
-                    <div class="user-menu-email">${escapeHtml(userEmail)}</div>
+                    <div class="user-menu-name">${escapeHtml(user.name)}</div>
+                    <div class="user-menu-email">${escapeHtml(user.email)}</div>
                 </div>
             </div>
             <div class="user-menu-actions">
@@ -1168,288 +1034,183 @@ function showUserMenu(user) {
             </div>
         </div>
     `;
-    
     document.body.appendChild(menu);
     
-    try {
-        const rect = loginBtn.getBoundingClientRect();
-        const menuWidth = Math.min(320, Math.max(260, menu.offsetWidth || 280));
-        const top = rect.bottom + window.scrollY + 10;
-        const left = Math.min(
-            Math.max(12, rect.left + window.scrollX + rect.width / 2 - menuWidth / 2),
-            window.innerWidth - menuWidth - 12
-        );
-        menu.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; width: ${menuWidth}px; z-index: 9999;`;
-
-        const arrow = menu.querySelector('.user-menu-arrow');
-        if (arrow) {
-            const arrowLeft = Math.min(Math.max(rect.left + window.scrollX + rect.width / 2 - left - 10, 16), menuWidth - 36);
-            arrow.style.left = `${arrowLeft}px`;
-        }
-    } catch (e) {
-        menu.style.cssText = 'position: absolute; right: 16px; top: 60px; z-index: 9999;';
+    const rect = btn.getBoundingClientRect();
+    const menuWidth = Math.min(320, Math.max(260, menu.offsetWidth || 280));
+    const top = rect.bottom + window.scrollY + 10;
+    const left = Math.min(Math.max(12, rect.left + window.scrollX + rect.width/2 - menuWidth/2), window.innerWidth - menuWidth - 12);
+    menu.style.cssText = `position:absolute; top:${top}px; left:${left}px; width:${menuWidth}px; z-index:9999;`;
+    const arrow = menu.querySelector('.user-menu-arrow');
+    if (arrow) {
+        const arrowLeft = Math.min(Math.max(rect.left + window.scrollX + rect.width/2 - left - 10, 16), menuWidth - 36);
+        arrow.style.left = `${arrowLeft}px`;
     }
     
     const logoutBtn = menu.querySelector('.user-menu-logout');
     logoutBtn.addEventListener('click', () => {
-        if (window.authManager) {
-            window.authManager.logout();
-            updateLoginState(false);
-            showAuthSuccess('auth_logout_success');
-        }
+        window.authManager?.logout();
+        updateLoginState(false);
+        showAuthSuccess('auth_logout_success');
         menu.remove();
         if (window.location.pathname.includes('checkout') || window.location.pathname.includes('comenzi')) {
             window.location.href = '../index.html';
         }
     });
     
-    function onDocClick(e) {
-        if (!menu.contains(e.target) && e.target !== loginBtn) {
+    const closeMenu = (e) => {
+        if (!menu.contains(e.target) && e.target !== btn) {
             menu.remove();
-            document.removeEventListener('click', onDocClick);
+            document.removeEventListener('click', closeMenu);
             document.removeEventListener('keydown', onKeyDown);
         }
-    }
-    
-    function onKeyDown(e) {
-        if (e.key === 'Escape') {
-            menu.remove();
-            document.removeEventListener('click', onDocClick);
-            document.removeEventListener('keydown', onKeyDown);
-        }
-    }
-    
-    setTimeout(() => document.addEventListener('click', onDocClick), 0);
+    };
+    const onKeyDown = (e) => { if (e.key === 'Escape') { menu.remove(); document.removeEventListener('click', closeMenu); document.removeEventListener('keydown', onKeyDown); } };
+    setTimeout(() => document.addEventListener('click', closeMenu), 0);
     document.addEventListener('keydown', onKeyDown);
 }
 
-function setLanguage(lang) {
-    console.log('[TRANSLATION] Setting language:', lang);
-    
-    window.currentLang = lang;
-    const currentTranslations = window.translations && window.translations[lang];
-    
-    if (!currentTranslations) {
-        console.error('[TRANSLATION] No translations available for language:', lang);
-        return;
-    }
-    
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const translation = currentTranslations[key];
-        if (!translation) return;
-        
-        if (el.tagName === 'TITLE') {
-            document.title = translation;
-        } else if (key === 'hero_btn' && el.tagName === 'A') {
-            const icon = el.querySelector('i');
-            el.innerHTML = translation + ' ' + (icon ? icon.outerHTML : '');
-        } else {
-            el.textContent = translation;
-        }
-    });
-    
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (currentTranslations[key]) {
-            el.placeholder = currentTranslations[key];
-        }
-    });
-    
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        if (currentTranslations[key]) {
-            el.title = currentTranslations[key];
-        }
-    });
-    
-    document.querySelectorAll('[data-i18n-value]').forEach(el => {
-        const key = el.getAttribute('data-i18n-value');
-        if (currentTranslations[key]) {
-            el.value = currentTranslations[key];
-        }
-    });
-    
-    document.querySelectorAll('.lang-opt').forEach(span => {
-        const isActive = span.textContent.toLowerCase().trim() === lang;
-        span.classList.toggle('active', isActive);
-    });
-    
-    localStorage.setItem('intex_language', lang);
-    
-    try {
-        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
-    } catch (e) {
-    }
-}
-
-function normalizeAllImagePaths() {
-    const base = (typeof getBasePath === 'function') ? getBasePath() : (window.location.pathname.includes('/pagini/') ? '../' : './');
-    document.querySelectorAll('img').forEach(img => {
-        const srcAttr = img.getAttribute('src');
-        if (!srcAttr) return;
-        if (/^https?:\/\//i.test(srcAttr) || srcAttr.startsWith('data:')) return;
-        if (/^(?:\.\/|\.\.\/)/.test(srcAttr)) return;
-        const cleaned = srcAttr.replace(/^\/+/, '');
-        if (cleaned.startsWith(base)) return;
-        img.src = base + cleaned;
-    });
-}
-
-function initialize() {
-    console.log('[MAIN] Initializing...');
-    
-    initializeDOMElements();
-    
-    const savedLang = localStorage.getItem('intex_language') || 'ro';
-    setLanguage(savedLang);
-    
-    setupMobileMenu();
-    
-    setupSearch();
-    
-    setupAuth();
-    
-    setupLanguageSwitchers();
-    
-    try {
-        try { normalizeAllImagePaths(); } catch (e) {}
-        window.dispatchEvent(new CustomEvent('mainJsReady', { detail: { lang: savedLang } }));
-    } catch (e) {
-
-    }
-    
-    console.log('[MAIN] Initialization complete');
-}
-
+// ======================== MENIU MOBIL ========================
 function setupMobileMenu() {
-    const hamburgerBtn = DOM.get('hamburgerBtn');
-    const navMenu = DOM.query('.nav-menu.mobile') || DOM.query('nav .nav-menu');
+    const hamburger = DOM.get('hamburgerBtn');
+    const mobileMenu = DOM.query('.nav-menu.mobile');
+    if (!hamburger || !mobileMenu) return;
     
-    if (!hamburgerBtn) return;
-    
-    hamburgerBtn.addEventListener('click', () => {
-        hamburgerBtn.classList.toggle('active');
-        
-        if (window.innerWidth <= 1280 && navMenu) {
-            navMenu.classList.toggle('active');
-            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
-        }
-    });
-    
-    if (navMenu) {
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburgerBtn.classList.remove('active');
-                if (window.innerWidth <= 1280) {
-                    navMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-    }
-    
-    const closeMobile = document.querySelector('.close-mobile');
-    if (closeMobile && navMenu) {
-        closeMobile.addEventListener('click', () => {
-            hamburgerBtn.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    }
+    const closeBtn = mobileMenu.querySelector('.close-mobile');
+    const open = () => {
+        hamburger.classList.add('active');
+        mobileMenu.classList.add('active');
+        document.body.style.cssText = 'overflow:hidden;position:fixed;width:100%;';
+    };
+    const close = () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.cssText = '';
+    };
+    hamburger.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', close));
+    mobileMenu.addEventListener('click', e => { if (e.target === mobileMenu) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileMenu.classList.contains('active')) close(); });
 }
 
+// ======================== NAVBAR SCROLL ========================
+function setupNavbarScroll() {
+    const nav = document.querySelector('nav');
+    if (!nav) return;
+    const update = () => nav.classList.toggle('scrolled', window.scrollY > 80);
+    update();
+    window.addEventListener('scroll', update);
+}
+
+// ======================== CAUTARE ========================
 function setupSearch() {
     const searchBtn = DOM.query('.search-btn');
-    const closeSearchBtn = DOM.query('.search-overlay .close-btn');
-    
-    if (searchBtn) {
-        searchBtn.addEventListener('click', openSearch);
-    }
-    
-    if (closeSearchBtn) {
-        closeSearchBtn.addEventListener('click', closeSearch);
-    }
-    
-    const searchForm = DOM.get('search-form');
-    if (searchForm) {
-        searchForm.addEventListener('submit', performSearch);
-    } else if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performSearch(e);
-        });
-    }
+    searchBtn?.addEventListener('click', openSearch);
+    DOM.query('.search-overlay .close-btn')?.addEventListener('click', closeSearch);
+    DOM.get('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(e); });
 }
 
+// ======================== AUTENTIFICARE ========================
 function setupAuth() {
     const loginBtn = DOM.get('loginBtn');
     if (!loginBtn) return;
     
-    if (window.authManager) {
-        const currentUser = window.authManager.getCurrentUser();
-        if (currentUser) {
-            updateLoginState(true, currentUser);
-            return;
-        }
+    if (window.authManager?.getCurrentUser()) {
+        updateLoginState(true, window.authManager.getCurrentUser());
+    } else {
+        loginBtn.addEventListener('click', openLoginModal);
     }
     
-    loginBtn.addEventListener('click', openLoginModal);
+    // Blochează accesul la comenzi dacă utilizatorul nu e autentificat
+    document.querySelectorAll('a[href*="comenzi"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (!window.authManager?.isLoggedIn()) {
+                e.preventDefault();
+                openLoginModal();
+            }
+        });
+    });
     
-    const loginForm = DOM.get('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-    
-    const registerForm = DOM.get('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
-    }
+    DOM.get('loginForm')?.addEventListener('submit', handleLogin);
+    DOM.get('registerForm')?.addEventListener('submit', handleRegister);
 }
 
+// ======================== SCHIMBARE LIMBĂ ========================
 function setupLanguageSwitchers() {
-    const langOpts = DOM.queryAll('.lang-opt');
-    langOpts.forEach(span => {
-        span.addEventListener('click', () => {
-            const lang = span.textContent.toLowerCase().trim();
-            setLanguage(lang);
-        });
+    document.querySelectorAll('.lang-opt').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.textContent.toLowerCase().trim()));
     });
 }
 
-function escapeHtml(str) {
-    if (!str) return '';
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return String(str).replace(/[&<>"']/g, m => map[m]);
+// ======================== ANIMAȚII SCROLL ========================
+function setupScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize);
-} else {
-    initialize();
+// ======================== CURSOR PERSONALIZAT (DESKTOP) ========================
+function setupCustomCursor() {
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    if (!cursor || !follower || window.innerWidth < 1200) return;
+    
+    document.body.classList.add('cursor-ready');
+    let mx = 0, my = 0, fx = 0, fy = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        cursor.style.left = mx - 4 + 'px';
+        cursor.style.top = my - 4 + 'px';
+    });
+    
+    function animate() {
+        fx += (mx - fx) * 0.12;
+        fy += (my - fy) * 0.12;
+        follower.style.left = fx - 20 + 'px';
+        follower.style.top = fy - 20 + 'px';
+        requestAnimationFrame(animate);
+    }
+    animate();
+    
+    const targets = document.querySelectorAll('a, button, input, .social-link, .lang-opt, .theme-toggle');
+    targets.forEach(el => {
+        el.addEventListener('mouseenter', () => { cursor.classList.add('hovering'); follower.classList.add('hovering'); });
+        el.addEventListener('mouseleave', () => { cursor.classList.remove('hovering'); follower.classList.remove('hovering'); });
+    });
 }
 
+// ======================== INIT ========================
+function init() {
+    DOM.reset();
+    const savedLang = localStorage.getItem('intex_language') || 'ro';
+    setLanguage(savedLang);
+    setupMobileMenu();
+    setupNavbarScroll();
+    setupSearch();
+    setupAuth();
+    setupLanguageSwitchers();
+    setupScrollReveal();
+    setupCustomCursor();
+}
 
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
 
+// ======================== EXPUNERE GLOBALĂ ========================
 window.IntexApp = {
-    setLanguage,
-    openSearch,
-    closeSearch,
-    performSearch,
-    openLoginModal,
-    closeLoginModal,
-    switchTab,
-    handleLogin,
-    handleRegister,
-    updateLoginState,
-    getTranslation,
-    DOM,
-    escapeHtml
+    setLanguage, openSearch, closeSearch, performSearch,
+    openLoginModal, closeLoginModal, switchTab,
+    handleLogin, handleRegister, updateLoginState,
+    getTranslation, DOM, escapeHtml
 };
 
 window.setLanguage = setLanguage;
@@ -1461,51 +1222,4 @@ window.closeLoginModal = closeLoginModal;
 window.switchTab = switchTab;
 window.handleLogin = handleLogin;
 window.handleRegister = handleRegister;
-
-// ===== CUSTOM CURSOR =====
-const cursor = document.getElementById('cursor');
-const cursorFollower = document.getElementById('cursor-follower');
-
-if (cursor && cursorFollower) {
-    document.addEventListener('mousemove', (e) => {
-        if (window.innerWidth > 1200) {
-            // Update main cursor
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            // Update follower with delay
-            setTimeout(() => {
-                cursorFollower.style.left = (e.clientX - 17.5) + 'px';
-                cursorFollower.style.top = (e.clientY - 17.5) + 'px';
-            }, 40);
-            
-            // 3D parallax effect on hero visual
-            const visual = document.querySelector('.visual-3d');
-            if (visual) {
-                const x = (window.innerWidth / 2 - e.clientX) / 75;
-                const y = (window.innerHeight / 2 - e.clientY) / 75;
-                visual.style.transform = `rotateY(${-20 + x}deg) rotateX(${10 + y}deg)`;
-            }
-        }
-    });
-}
-
-// ===== SCROLL REVEAL ANIMATIONS =====
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
-    });
-}, { threshold: 0.1 });
-
-// Observe all elements with reveal class
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// Trigger hero reveal animations on page load
-window.addEventListener('load', () => {
-    document.querySelectorAll('.hero .reveal').forEach(el => {
-        el.classList.add('active');
-    });
-});
 window.updateLoginState = updateLoginState;

@@ -255,7 +255,7 @@ class Model3DViewer {
         const group = document.createElement('div');
         group.className = 'model3d-quantity-group';
         group.innerHTML = `
-            <label>Cantitate:</label>
+            <label data-i18n="quantity_label">Cantitate:</label>
             <div class="model3d-quantity-controls">
                 <button class="model3d-qty-btn" data-action="decr">−</button>
                 <span class="model3d-qty-value">1</span>
@@ -263,6 +263,7 @@ class Model3DViewer {
             </div>
         `;
         this.premiumControlsBar.appendChild(group);
+        if (typeof TranslationManager !== 'undefined') TranslationManager.applyTranslations();
         
         const decrBtn = group.querySelector('[data-action="decr"]');
         const incrBtn = group.querySelector('[data-action="incr"]');

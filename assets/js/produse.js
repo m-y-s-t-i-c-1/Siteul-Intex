@@ -603,6 +603,7 @@
                     `<div class="price-val">${formatPrice(p.price)}</div>`;
                 
                 const subLabel = State.showingSubcategory ? State.showingSubcategory.label : '';
+                const categoryLabel = (window.translations && window.translations[getLang()] && window.translations[getLang()].category_label) || 'Categorie';
                 const ratingVal = p.rating || (3 + Math.floor(Math.random() * 2));
                 const starsHtml = [1,2,3,4,5].map(s => `<i class="fas fa-star${s <= ratingVal ? '' : '-half-alt'}" style="color:${s <= ratingVal ? '#c9a84c' : 'rgba(255,255,255,0.25)'}; font-size:0.7rem;"></i>`).join('');
                 card.innerHTML = `
@@ -612,8 +613,8 @@
                     <div class="card-body">
                         <h5 class="product-title">${title}</h5>
                         <div class="card-meta">
-                            ${subLabel ? `<span class="category-label">Categorie</span><span class="category-value">${subLabel}</span>` : ''}
-                        </div>
+                                ${subLabel ? `<span class="category-label">${categoryLabel}</span><span class="category-value">${subLabel}</span>` : ''}
+                            </div>
                         <div class="card-footer">
                             <div class="rating-price">
                                 <div class="product-price">${priceHtml}</div>
@@ -738,7 +739,13 @@
                 </div>` : 
                 `<div class="price-val">${formatPrice(p.price)}</div>`;
             
-            const subLabel2 = p.subcategory || p.sub || (p.category ? p.category.replace(/_/g, ' ') : '');
+            let subLabel2 = '';
+            if (p.subcategory || p.sub) {
+                subLabel2 = getSubcategoryLabel(p.subcategory || p.sub) || (p.subcategory || p.sub || '').replace(/_/g, ' ');
+            } else if (p.category) {
+                subLabel2 = getCategoryTitle(p.category) || (p.category || '').replace(/_/g, ' ');
+            }
+            const categoryLabel = (window.translations && window.translations[getLang()] && window.translations[getLang()].category_label) || 'Categorie';
             const ratingVal2 = p.rating || (3 + Math.floor((p.price || 100) % 3));
             const starsHtml2 = [1,2,3,4,5].map(s => `<i class="fas fa-star" style="color:${s <= ratingVal2 ? '#c9a84c' : 'rgba(255,255,255,0.2)'}; font-size:0.7rem;"></i>`).join('');
             card.innerHTML = `
@@ -748,7 +755,7 @@
                 <div class="card-body">
                     <h5 class="product-title">${title}</h5>
                     <div class="card-meta">
-                        ${subLabel2 ? `<span class="category-label">Categorie</span><span class="category-value">${subLabel2}</span>` : ''}
+                        ${subLabel2 ? `<span class="category-label">${categoryLabel}</span><span class="category-value">${subLabel2}</span>` : ''}
                     </div>
                     <div class="card-footer">
                         <div class="rating-price">

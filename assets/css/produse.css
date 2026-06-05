@@ -1420,6 +1420,53 @@ body:not(.dark-mode) .modal-badge-text span {
   white-space: nowrap;
 }
 
+/* Enhanced visual for 2D/3D toggle to make action obvious */
+.model3d-btn {
+  background: linear-gradient(180deg, rgba(6,20,28,0.95), rgba(6,14,22,0.88));
+  border: 1px solid rgba(0,212,232,0.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45), 0 0 12px rgba(0,212,232,0.03) inset;
+  color: #e6fbff;
+}
+.model3d-btn i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.16);
+  color: var(--cosmic-cyan, #00d4e8);
+  font-size: 0.9rem;
+  border: 1px solid rgba(0,212,232,0.08);
+}
+.model3d-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 18px rgba(0,212,232,0.06) inset;
+}
+.model3d-btn:active { transform: translateY(0) scale(0.995); }
+
+/* Small label tweak for clarity */
+.model3d-btn span { font-weight: 700; letter-spacing: 0.12em; }
+
+/* MOBILE: prevent 3D toggle overlapping close button */
+@media (max-width: 600px) {
+  .product-modal .model3d-controls {
+    top: auto !important;
+    bottom: 18px !important;
+    right: 18px !important;
+    left: auto !important;
+    z-index: 120 !important; /* above modal content but away from close button */
+    pointer-events: auto;
+  }
+
+  .product-modal .model3d-btn {
+    padding: 6px 10px !important;
+    font-size: 0.56rem !important;
+    border-radius: 20px !important;
+    gap: 6px !important;
+  }
+}
+
 .model3d-btn i {
   font-size: 0.78rem;
 }
@@ -2040,6 +2087,80 @@ body.dark-mode .subcategory-card {
 
 .nav-controls .cart-btn:hover .cart-count {
   transform: scale(1.12);
+}
+
+/* ===================================================================
+   MOBILE OPTIMIZATION — Product Modal Fullscreen (≤550px)
+   =================================================================== */
+@media (max-width: 550px) {
+  .product-modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+  
+  .product-modal-content {
+    max-height: 100vh;
+    width: 100%;
+    border-radius: 0;
+    max-width: none;
+    animation: modalSlideUp 0.4s var(--ease-premium);
+  }
+  
+  .product-modal-body {
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .product-modal-image {
+    min-height: 50vh;
+    max-height: 50vh;
+    padding: 40px 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .product-modal-image::before {
+    font-size: clamp(4rem, 15vw, 8rem);
+    bottom: -5%;
+    right: -3%;
+  }
+  
+  .product-modal-info {
+    padding: 24px 16px 32px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  
+  .product-modal-content .close-btn {
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+  
+  /* Modelul 3D pe mobile — mai mare */
+  .model3d-container {
+    min-height: 50vh;
+    max-height: 50vh;
+  }
+  
+  .product-modal-info h2 {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+  
+  .product-modal-price {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+  }
+  
+  .btn-add-cart {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
